@@ -31,6 +31,8 @@ $ pm2 unstartup
 $ pm2 startup
 ```
 
+<!--more-->
+
 ## 参考文档
 
 - [Windows 下 Node.js 程序保活 - PM2 方案](https://github.com/Dream4ever/Knowledge-Base/issues/59)

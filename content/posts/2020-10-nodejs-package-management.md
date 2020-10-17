@@ -30,6 +30,8 @@ $ yarn config set registry https://registry.npm.taobao.org
 $ yarn config get registry
 ```
 
+<!--more-->
+
 ## 理解 npm 包版本号
 
 版本规范：对于 npm 包的版本号 `1.2.3`，第一个小数点之前数字是主版本号（major），两个小数点中间的是次版本号（minor），第二个小数点之后的是补丁版本号（patch）。
