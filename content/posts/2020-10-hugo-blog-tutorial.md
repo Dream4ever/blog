@@ -1,6 +1,7 @@
 ---
 title: "Hugo 博客配置教程"
 date: 2020-10-17T11:31:39+08:00
+tags: ['Hugo', 'Blog 博客', 'Tutorial 教程']
 draft: false
 ---
 

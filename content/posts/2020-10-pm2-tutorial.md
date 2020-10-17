@@ -1,6 +1,7 @@
 ---
 title: "用 PM2 管理 Node.js 后端项目"
 date: 2020-10-08T04:31:20+08:00
+tags: ['Node.js', 'PM2', 'Tutorial 教程']
 draft: false
 ---
 
