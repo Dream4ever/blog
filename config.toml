@@ -13,6 +13,27 @@ pygmentCodeFences = true
 [author]
   name = "何伟"
 
+[[menu.main]]
+  name = "首页"
+  weight = 10
+  identifier = "home"
+  url = "/"
+[[menu.main]]
+  name = "归档"
+  weight = 20
+  identifier = "archive"
+  url = "/posts/"
+[[menu.main]]
+  name = "标签"
+  weight = 30
+  identifier = "tags"
+  url = "/tags/"
+[[menu.main]]
+  name = "我"
+  weight = 40
+  identifier = "about"
+  url = "/about/"
+
 [params]
   enableSummary = true  # display the article summary
   
