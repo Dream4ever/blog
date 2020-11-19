@@ -19,11 +19,11 @@ draft: false
 
 随系统盘一起购买的数据盘，虽然已经被挂载到 ECS 实例上了，但还需要创建分区、创建文件系统、挂载文件系统，以及在开机后自动挂载这个新分区，才能让数据盘正常使用。
 
-具体操作流程参考 [Linux格式化数据盘](https://help.aliyun.com/document_detail/25426.html) 一文中的操作即可，文章讲解得十分详细，完全照做就行，其中文件系统选择 `ext4` 即可，系统分区使用的也是这个文件系统。
+具体操作流程参考 [Linux格式化数据盘](https://help.aliyun.com/document_detail/25426.html) 中的操作即可，文章讲解得十分详细，完全照做就行，其中文件系统选择 `ext4` ，系统分区使用的也是这个文件系统。
 
 ### 安装云监控插件
 
-参考 [这篇文章](https://developer.aliyun.com/article/628229)，在 CentOS 7 上安装云监控查看，并在[网页端](https://cloudmonitor.console.aliyun.com/)查看云监控插件是否正常运行。
+参考 [安装和卸载插件](https://help.aliyun.com/document_detail/183482.html)，在 CentOS 7 上安装云监控查看，并在 [网页端](https://cloudmonitor.console.aliyun.com/) 查看云监控插件是否正常运行。
 
 ### 启用 CPU 监控
 
@@ -31,7 +31,7 @@ draft: false
 
 ### 修改 SSH 默认端口
 
-参考 [修改Linux系统实例默认远程端口](https://help.aliyun.com/document_detail/51644.html#title-0qk-cyo-ljc) 一文中的方法，登录服务器后先备份 sshd 服务配置文件，然后修改 sshd 服务端口号为 30000 以上的端口，并重启 sshd 服务。
+参考 [修改Linux系统实例默认远程端口](https://help.aliyun.com/document_detail/51644.html#title-0qk-cyo-ljc)，登录服务器后先备份 sshd 服务配置文件，然后修改 sshd 服务端口号为 30000 以上的端口，并重启 sshd 服务。
 
 CentOS 7 默认安装了 Firewalld，但默认没有启动，也没有开机启动，所以需要启动之后，依然按照这篇文章中的方法，将新的 sshd 服务端口号永久放行。
 
