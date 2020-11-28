@@ -60,7 +60,7 @@ $ sudo ls -la /root
 
 #### 3.1.2 提升密码安全性（可选）
 
-参考 [Password Policies](https://wiki.centos.org/HowTos/OS_Protection#Password_Policies) 和 [Enable password aging on Linux systems](https://www.techrepublic.com/article/enable-password-aging-on-linux-systems/) 中的方法，为当前已存在的用户（root）和之后新创建的用户，设置修改密码的最小时间间隔（7 天），和密码失效时间（180 天）。
+参考 [Password Policies](https://wiki.centos.org/HowTos/OS_Protection#Password_Policies) 和 [Enable password aging on Linux systems](https://www.techrepublic.com/article/enable-password-aging-on-linux-systems/) 中的方法，设置修改密码的最小时间间隔（7 天），和密码失效时间（180 天）。
 
 ```shell
 # 备份密码配置文件
