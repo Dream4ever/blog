@@ -39,7 +39,7 @@ draft: false
 
 ### 3.1 用户加固
 
-#### 3.1.1 提升密码安全性
+#### 3.1.1 提升密码安全性（删除）
 
 参考 [Password Policies](https://wiki.centos.org/HowTos/OS_Protection#Password_Policies) 和 [Enable password aging on Linux systems](https://www.techrepublic.com/article/enable-password-aging-on-linux-systems/) 中的方法，为当前已存在的用户（root）和之后新创建的用户，设置修改密码的最小时间间隔（7 天），和密码失效时间（180 天）。
 
@@ -95,7 +95,7 @@ $ adduser www
 # 为新用户设置高强度密码
 $ passwd www
 # 将用户 www 加入 wheel 用户组，可执行 sudo 命令
-$ gpasswd -a demo wheel
+$ gpasswd -a www wheel
 # 切换至用户 www
 $ su www
 # 测试用户 www 是否能执行 sudo 命令，首次执行需要输入用户 www 的密码
