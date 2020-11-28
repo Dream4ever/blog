@@ -41,7 +41,7 @@ draft: false
 
 #### 3.1.1 建立新用户并赋予 root 权限
 
-参考 [Initial Server Setup with CentOS 7](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-centos-7) 中的建议，建立新用户并赋予 root 权限，以后只用该用户通过 SSH 登录至服务器。
+参考 [Initial Server Setup with CentOS 7](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-centos-7) 中的建议，建立新用户并赋予 root 权限，以后只用该用户远程登录服务器。
 
 ```shell
 # 先用 root 用户 SSH 登录至服务器
