@@ -76,7 +76,7 @@ $ vi /etc/login.defs
 # 然后保存并关闭文件
 
 # 上面的配置只对之后新建的用户生效
-# 这里还要为已存在的 root 用户启用同样的设置
+# 这里还要为已存在的 root/www 用户启用同样的设置
 $ chage --maxdays 180 root
 $ chage --mindays 7 root
 $ chage --warndays 14 root
