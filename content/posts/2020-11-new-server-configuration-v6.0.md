@@ -5,7 +5,7 @@ tags: ['Server 服务器', 'Ops 运维', 'Note 学习笔记']
 draft: false
 ---
 
-为了之后将业务从 Windows 迁移到 Linux，现在就买了一台阿里云服务器，安装了 Linux 系统，然后开始配置各方面的功能，以便之后迅速迁移。
+为了之后将业务从 Windows 迁移到 Linux，现在就买了一台阿里云服务器，安装了 CentOS 系统，然后开始配置各方面的功能，以便之后迅速迁移。
 
 <!--more-->
 
@@ -17,7 +17,7 @@ draft: false
 
 ### 1.1 安装系统
 
-选择安装 CentOS 7 的最新版，安装时创建密钥对，并且后面进行设置，要求只能用密钥对远程登录系统，提高安全性。
+选择安装 CentOS 7 的最新版，并选择“安全加固”，同时在安装时创建密钥对或选择已有的密钥对。这样安装完成的系统，默认只能用密钥对进行 SSH 连接，无法使用密码连接，提高了安全性。
 
 ### 1.2 格式化并挂载数据盘
 
@@ -39,7 +39,26 @@ draft: false
 
 ### 3.1 用户加固
 
-#### 3.1.1 提升密码安全性（删除）
+#### 3.1.1 建立新用户并赋予 root 权限
+
+参考 [Initial Server Setup with CentOS 7](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-centos-7) 中的建议，建立新用户并赋予 root 权限，以后只用该用户通过 SSH 登录至服务器。
+
+```shell
+# 先用 root 用户 SSH 登录至服务器
+
+# 建立新用户
+$ adduser www
+# 为新用户设置高强度密码
+$ passwd www
+# 将用户 www 加入 wheel 用户组，可执行 sudo 命令
+$ gpasswd -a www wheel
+# 切换至用户 www
+$ su www
+# 测试用户 www 是否能执行 sudo 命令，需要输入用户 www 的密码
+$ sudo ls -la /root
+```
+
+#### 3.1.2 提升密码安全性（可选）
 
 参考 [Password Policies](https://wiki.centos.org/HowTos/OS_Protection#Password_Policies) 和 [Enable password aging on Linux systems](https://www.techrepublic.com/article/enable-password-aging-on-linux-systems/) 中的方法，为当前已存在的用户（root）和之后新创建的用户，设置修改密码的最小时间间隔（7 天），和密码失效时间（180 天）。
 
@@ -83,25 +102,6 @@ $ vi /etc/security/pwquality.conf
 
 修改 `/etc/pam.d/password-auth` 和 `/etc/pam.d/system-auth` 这两个文件，在 `password sufficient pam_unix.so` 这行的末尾配置 `remember` 参数为 24。原来的内容不用更改，只在行尾添加 ` remember=24` 即可。
 
-#### 3.1.2 建立新用户并赋予 root 权限
-
-参考 [Initial Server Setup with CentOS 7](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-centos-7) 中的建议，建立新用户并赋予 root 权限，以后只用该用户通过 SSH 登录至服务器。
-
-```shell
-# 先用 root 用户 SSH 登录至服务器
-
-# 建立新用户
-$ adduser www
-# 为新用户设置高强度密码
-$ passwd www
-# 将用户 www 加入 wheel 用户组，可执行 sudo 命令
-$ gpasswd -a www wheel
-# 切换至用户 www
-$ su www
-# 测试用户 www 是否能执行 sudo 命令，首次执行需要输入用户 www 的密码
-$ sudo ls -la /root
-```
-
 ### 3.2 SSH 加固
 
 #### 3.2.1 修改 SSH 默认端口
@@ -126,17 +126,15 @@ $ systemctl restart sshd
 # 还需修改安全组中对应 SSH 端口号
 ```
 
-TODO:
-
-待确认：CentOS 7 默认安装了 Firewalld，但默认没有启动，也没有开机启动，所以需要启动之后，依然按照这篇文章中的方法，将新的 sshd 服务端口号永久放行。
-
-#### 3.2.2 使用 SSH 配置文件用密钥对连接 Linux 实例
+#### 3.2.2 使用 SSH 配置文件连接 CentOS
 
 按照文档 [在支持SSH命令的环境中使用密钥对（通过config文件配置信息）](https://help.aliyun.com/document_detail/51798.html?#title-ii4-zmw-zxi) 中的流程，使用 SSH 密钥对，以 root 用户的身份连接至 Linux 实例。
 
+记得先按前一小节 [通过命令配置](https://help.aliyun.com/document_detail/51798.html#title-7je-5ba-sm2) 的流程做一遍，这样才能够确保私钥文件的权限符合密钥登录的要求，否则将无法登录。
+
 #### 3.2.3 配置新用户的 SSH 公钥
 
-再配置新用户的 SSH 公钥。
+配置新用户的 SSH 公钥。
 
 ```shell
 # 切换至用户 www
@@ -156,9 +154,9 @@ $ chmod 400 authorized_keys
 在本机执行以下命令。
 
 ```shell
-# 将 User 字段后面的值由 root 改为 www
 $ vi ~/.ssh/config
-# 正常情况下，严格按照前面的流程操作，这里就能够以 www 用户的身份连接至服务器
+# 将 User 字段后面的值由 root 改为 www
+# 正常情况下，严格按照前面的流程操作的话，这里就能够以 www 用户的身份连接至服务器
 $ ssh ecs
 ```
 
@@ -179,7 +177,7 @@ $ sudo usermod -a -G sshusers www
 
 ```
 ListenAddress 0.0.0.0
-Port 38964
+Port 33333
 
 ########################################################################################################
 # start settings from https://infosec.mozilla.org/guidelines/openssh#modern-openssh-67 as of 2019-01-01
@@ -279,7 +277,7 @@ SyslogFacility AUTHPRIV
 
 修改完成后，保存并关闭文件，然后重启 sshd 服务 `systemctl restart sshd` ，新的配置即可生效。
 
-可以分别用 root 和 www 两个用户，以密钥对方式登录，测试配置是否成功。
+可以分别用 root 和 www 两个用户，以密钥对方式登录，测试配置是否成功。如果 root 无法登录而 www 可以登录，就说明配置成功了。
 
 #### 3.2.7 删除短的 Diffie-Hellman 密钥
 
