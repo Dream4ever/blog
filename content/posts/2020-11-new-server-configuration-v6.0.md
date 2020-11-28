@@ -11,7 +11,7 @@ draft: false
 
 ## 零、通用操作规范
 
-1. 备份文件时，统一用 `cp file_name file_name_bak` 这样的命令，为文件添加后缀 `_bak`
+1. 备份文件时，统一用 `cp file_name file_name_bak` 这样的命令，为文件添加后缀 `.bak` 。
 
 ## 一、系统安装
 
