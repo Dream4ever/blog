@@ -15,7 +15,7 @@ set -e
 
 color_print "Deploying updates to GitHub...\n\n" "info";
 
-color_print "Set proxy for GitHub...\n\n" "info";
+color_print "Setting proxy for GitHub...\n\n" "info";
 export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
 
 # Build the project
@@ -24,13 +24,13 @@ hugo -D
 # Go To Public folder
 cd public
 
-color_print "\nPush generated static blog files...\n" "info";
+color_print "\nPushing generated static blog files...\n" "info";
 # Push generated static blog files
 git push
 
 # Go to root directory
 cd ..
 
-color_print "\nPush source filess...\n" "info";
+color_print "\nPushing source filess...\n" "info";
 # Push source filess
 git push
