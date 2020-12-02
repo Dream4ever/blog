@@ -5,21 +5,19 @@ set -e
 
 printf "\033[0;32mDeploying updates to GitHub...\033[0m\n"
 
-# Build the project.
-hugo -t zozo # if using a theme, replace with `hugo -t <YOURTHEME>`
+export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
+
+# Build the project
+hugo -D
 
 # Go To Public folder
 cd public
 
-# Add changes to git.
-git add .
+# Push generated static blog files
+git push
 
-# Commit changes.
-msg="rebuilding site $(date)"
-if [ -n "$*" ]; then
-	msg="$*"
-fi
-git commit -m "$msg"
+# Go to root directory
+cd ..
 
-# Push source and build repos.
-git push origin main
+# Push source filess
+git push
