@@ -24,12 +24,26 @@ hugo -D
 # Go To Public folder
 cd public
 
+git add .
+msg="rebuilding site $(date)"
+if [ -n "$*" ]; then
+	msg="$*"
+fi
+git commit -m "$msg"
+
 color_print "\nPushing generated static blog files...\n";
 # Push generated static blog files
 git push
 
 # Go to root directory
 cd ..
+
+git add .
+msg="rebuilding site $(date)"
+if [ -n "$*" ]; then
+	msg="$*"
+fi
+git commit -m "$msg"
 
 color_print "\nPushing source filess...\n";
 # Push source filess
