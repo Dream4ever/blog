@@ -9,8 +9,8 @@ draft: false
 
 假设你在 GitHub 上的用户名是 `abcd`，那么在 GitHub 上创建下面两个 repo：
 
-- 一个叫 `blog`，用于存放 Hugo 博客的源文件
-- 另一个叫 `abcd.github.io`，用于存放 Hugo 编译生成的网页文件
+- 一个叫 `blog`，用于存放 Hugo 博客的原始文件，包括博客配置，文章的 md 文件等。
+- 另一个叫 `abcd.github.io`，用于存放 Hugo 编译生成的网页文件，访问博客时看到的就是网页文件。
 
 记得在创建第二个 repo 的时候，至少选上 README、.gitignore、LICENSE 三个文件中的一个，这样创建出来的 repo 就不是空的。
 
@@ -42,14 +42,14 @@ echo 'theme = "zozo"' >> config.toml
 
 ```shell
 # 将 public 文件夹与 repo abcd.github.io 相关联
-$ git submodule add -b main https://github.com/abcd/dream4ever.github.io.git public
+$ git submodule add -b main https://github.com/abcd/abcd.github.io.git public
 ```
 
-然后编辑 Hugo 的配置文件 `config.toml`，将 `baseUrl` 字段的值设置为 `baseUrl = "https://dream4ever.github.io/"`
+编辑 Hugo 的配置文件 `config.toml`，将 `baseUrl` 字段的值设置为 `baseUrl = "https://abcd.github.io/"`
 
-同时在主项目根目录的 `static` 文件夹中新建文件 `CNAME`，文件内容为 `dream4ever.github.io`。
+同时在主项目根目录的 `static` 文件夹中新建文件 `CNAME`，文件内容为 `abcd.github.io`。
 
-这样一来，执行 `hugo -D` 所编译的最终网页 repo 中的所有页面及代码，相关的根链接就都被设置为 `https://dream4ever.github.io/`，这样可以保证 GitHub Pages 的功能会正常启用。
+这样一来，执行 `hugo -D` 所编译生成的最终网页 repo 中的所有页面及代码，相关的根链接就都被设置为 `https://abcd.github.io/`，这样可以保证 GitHub Pages 的功能会正常启用。
 
 除此之外，还需要查看该 repo 的设置界面中，`GitHub Pages` 这一栏的 `Source`，所选的分支是不是 `main`，如果是 `Master`，还需要切换为 `main` 才行。
 
