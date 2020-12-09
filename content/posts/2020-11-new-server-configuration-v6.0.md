@@ -289,8 +289,46 @@ $ sudo awk '$5 >= 3071' /etc/ssh/moduli | sudo tee /etc/ssh/moduli.tmp
 $ sudo mv /etc/ssh/moduli.tmp /etc/ssh/moduli
 ```
 
-### 网络加固
+### 3.3 网络加固
 
 #### 配置安全组
 
 此外，还需要在云服务器的安全组中，放行对应端口的入方向请求。
+
+#### 配置 FirewallD
+
+先彻底禁用 iptables：
+
+```shell
+$ sudo systemctl stop iptables
+$ sudo systemctl mask iptables
+```
+
+然后执行下面的命令启动 FirewallD
+
+```shell
+$ sudo systemctl start firewalld
+```
+
+结果终端连接立刻无响应了，猜测是 FirewallD 中没有 SSH 相关规则导致的。
+
+于是在浏览器中登录阿里云控制台，通过云助手发送命令 `sudo systemctl stop firewalld` 至服务器，先暂时停止 FirewallD。
+
+然后查看 FirewallD 的运行状态：
+
+```shell
+$ sudo systemctl status firewalld
+...
+Dec 09 11:37:03 ecs02 firewalld[11787]: WARNING: AllowZoneDrifting is enabled. This is considered an insecure configuration option. It will be removed in a future release. Please consider disabling it now.
+...
+```
+
+上面的 `WARNING` 那一行建议用户关闭 `AllowZoneDrifting` 这个不全安的配置，上网搜索之后，按照 [AllowZoneDrifting - Firewalld: What is it and should I disable it?](https://stackoverflow.com/questions/61402334/allowzonedrifting-firewalld-what-is-it-and-should-i-disable-it) 中所说的，将 `/etc/firewalld/firewalld.conf` 文件中 `AllowZoneDrifting` 的值由 `yes` 改为 `no`。
+
+另外，上面的提示文字说这个不安全的配置在未来的某个版本中可能删除，于是将 FirewallD 升级到最新版：
+
+```shell
+$ sudo yum update firewalld
+```
+
+然后按照 DigitalOcean 的教程 [How To Set Up a Firewall Using FirewallD on CentOS 7](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7) 来配置 FirewallD：
