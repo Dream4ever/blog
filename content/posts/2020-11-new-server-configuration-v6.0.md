@@ -293,7 +293,7 @@ $ sudo mv /etc/ssh/moduli.tmp /etc/ssh/moduli
 
 #### 配置安全组
 
-此外，还需要在云服务器的安全组中，放行对应端口的入方向请求。
+在云服务器的安全组中，采用白名单策略，只开放个人电脑 IP 的 SSH 权限。
 
 #### 配置 FirewallD
 
