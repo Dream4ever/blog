@@ -331,11 +331,11 @@ Dec 09 11:37:03 ecs02 firewalld[11787]: WARNING: AllowZoneDrifting is enabled. T
 $ sudo yum update firewalld
 ```
 
-### 了解 FirewallD
+##### 了解 FirewallD
 
 然后按照 DigitalOcean 的教程 [How To Set Up a Firewall Using FirewallD on CentOS 7](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7) 来配置 FirewallD。
 
-#### Zones
+##### Zones
 
 教程先介绍了 FirewallD 中预定义的“zones”，信任级别由低到高依次为：
 
