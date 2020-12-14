@@ -331,4 +331,20 @@ Dec 09 11:37:03 ecs02 firewalld[11787]: WARNING: AllowZoneDrifting is enabled. T
 $ sudo yum update firewalld
 ```
 
-然后按照 DigitalOcean 的教程 [How To Set Up a Firewall Using FirewallD on CentOS 7](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7) 来配置 FirewallD：
+### 了解 FirewallD
+
+然后按照 DigitalOcean 的教程 [How To Set Up a Firewall Using FirewallD on CentOS 7](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7) 来配置 FirewallD。
+
+#### Zones
+
+教程先介绍了 FirewallD 中预定义的“zones”，信任级别由低到高依次为：
+
+- **drop**: 最低信任级别，入方向连接全部 drop，没有 reply，只允许出方向连接。
+- **block**: 与上面相似，只是入方向连接不是 drop 而是 reject，同时附带消息 `icmp-host-prohibited` 或 `icmp6-adm-prohibited`。
+- **public**: 公开、不受信的网络，不信任其他计算机，只允许特定情况的入方向连接。
+- **external**: 使用防火墙作为网关时的外部网络部分，配置用来实现 NAT masquerading，使内网依然 private 同时又可触达（reachable）。
+- **internal**: 使用防火墙作为网关时的内部网络部分，其他计算机是非常可信的，同时允许更多的服务所产生的请求。
+- **dmz**: 用于 DMZ 中的计算机，只允许特定的入方向连接。
+- **work**: 用于工作环境，信任网络中的大部分计算机，在前面的基础上，还允许另外少数服务所产生的请求。
+- **home**: 用于家庭环境，信任网络中的大部分计算机，在前面的基础上，还允许另外少数服务所产生的请求。
+- **trusted**: 信任网络中的所有计算机，开放程度最高，需谨慎使用。
