@@ -11,7 +11,7 @@ draft: false
 
 ## 零、通用操作规范
 
-1. 备份文件时，统一用 `cp file_name file_name_bak` 这样的命令，为文件添加后缀 `.bak` 。
+1. 备份文件时，统一用 `cp file_name file_name.bak` 这样的命令，为文件添加后缀 `.bak` 。
 
 ## 一、系统安装
 
@@ -64,7 +64,7 @@ $ sudo ls -la /root
 
 ```shell
 # 备份密码配置文件
-$ cp /etc/login.defs /etc/login.defs_bak
+$ cp /etc/login.defs /etc/login.defs.bak
 
 # 修改密码配置文件
 $ vi /etc/login.defs
@@ -88,7 +88,7 @@ $ chage --warndays 14 root
 
 ```shell
 # 备份密码质量文件
-$ cp /etc/security/pwquality.conf /etc/security/pwquality.conf_bak
+$ cp /etc/security/pwquality.conf /etc/security/pwquality.conf.bak
 
 # 修改密码质量文件
 $ vi /etc/security/pwquality.conf
@@ -110,7 +110,7 @@ $ vi /etc/security/pwquality.conf
 
 ```shell
 # 备份 sshd 服务配置文件
-$ cp /etc/ssh/sshd_config /etc/ssh/sshd_config_bak
+$ cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 
 # 编辑 sshd_config 配置文件
 $ vim /etc/ssh/sshd_config
@@ -283,7 +283,7 @@ SyslogFacility AUTHPRIV
 
 ```shell
 # 备份 SSH 的 moduli 文件 /etc/ssh/moduli
-$ sudo cp /etc/ssh/moduli /etc/ssh/moduli_bak
+$ sudo cp /etc/ssh/moduli /etc/ssh/moduli.bak
 # 删除短的 Diffie-Hellman 密钥
 $ sudo awk '$5 >= 3071' /etc/ssh/moduli | sudo tee /etc/ssh/moduli.tmp
 $ sudo mv /etc/ssh/moduli.tmp /etc/ssh/moduli
