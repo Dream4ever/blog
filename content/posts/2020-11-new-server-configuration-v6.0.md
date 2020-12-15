@@ -297,6 +297,8 @@ $ sudo mv /etc/ssh/moduli.tmp /etc/ssh/moduli
 
 #### 配置 FirewallD
 
+##### 尝试启动
+
 先彻底禁用 iptables：
 
 ```shell
@@ -314,6 +316,8 @@ $ sudo systemctl start firewalld
 
 于是在浏览器中登录阿里云控制台，通过云助手发送命令 `sudo systemctl stop firewalld` 至服务器，先暂时停止 FirewallD。
 
+##### 关闭不安全配置
+
 然后查看 FirewallD 的运行状态：
 
 ```shell
@@ -324,6 +328,8 @@ Dec 09 11:37:03 ecs02 firewalld[11787]: WARNING: AllowZoneDrifting is enabled. T
 ```
 
 上面的 `WARNING` 那一行建议用户关闭 `AllowZoneDrifting` 这个不全安的配置，上网搜索之后，按照 [AllowZoneDrifting - Firewalld: What is it and should I disable it?](https://stackoverflow.com/questions/61402334/allowzonedrifting-firewalld-what-is-it-and-should-i-disable-it) 中所说的，将 `/etc/firewalld/firewalld.conf` 文件中 `AllowZoneDrifting` 的值由 `yes` 改为 `no`。
+
+##### 升级至最新版
 
 另外，上面的提示文字说这个不安全的配置在未来的某个版本中可能删除，于是将 FirewallD 升级到最新版：
 
@@ -348,3 +354,50 @@ $ sudo yum update firewalld
 - **work**: 用于工作环境，信任网络中的大部分计算机，在前面的基础上，还允许另外少数服务所产生的请求。
 - **home**: 用于家庭环境，信任网络中的大部分计算机，在前面的基础上，还允许另外少数服务所产生的请求。
 - **trusted**: 信任网络中的所有计算机，开放程度最高，需谨慎使用。
+
+##### 配置规则
+
+因为 FirewallD 中目前没有预定义任何配置，所以从本地通过 SSH 连接到服务器的话，一开启 FirewallD 就会导致 SSH 断开连接，所以先通过阿里云 ECS 实例页面的 **发送命令** 功能来配置 FirewallD。
+
+另外该功能用的是具有 `sudo` 权限的账号执行命令的，所有命令都无需在前面添加 `sudo`，更不需要输入密码。
+
+先让 FirewallD 开机自动启动 `systemctl enable firewalld`。
+
+然后启动 FirewallD `systemctl start firewalld`，并查看运行状态 `firewall-cmd --state`，输出 `running`，说明启动成功。
+
+接着查看 FirewallD 默认的 zone `firewall-cmd --get-default-zone`，输出 `public`，一切正常。
+
+再查看当前被激活的 zone `firewall-cmd --get-active-zones`，结果发现没有任何输出，和上面 DigitalOcean 的教程中的结果不符，就说明目前没有任何 zone 被激活。
+
+然后执行 `firewall-cmd --list-all`，发现输出结果中，`interfaces` 这一项值为空，意味着 `publi` 这个 zone 没有和网卡相关联，那先解决这个问题。
+
+执行 `ifconfig`，可以看到有 3 个 interfaces：docker0、eth0 和 lo。查看各自的 `inet` 属性值，也就是 IP 地址，可知 `eth0` 是连接外网的网卡，那么把 `public` 这个 zone 绑定到 `eth0` 上即可。
+
+Google `firewalld interfaces empty`，在第一个链接 DigitalOcean 的问答贴 [No Network Interfaces Bound to Firewalld Zone](https://www.digitalocean.com/community/questions/no-network-interfaces-bound-to-firewalld-zone)，给出了命令 `sudo firewall-cmd --zone=public --change-interface=eth0`，执行该命令后返回 `success`。
+
+然后再执行 `firewall-cmd --get-active-zones`，输出结果如下，说明操作的确成功了。
+
+```
+public
+  interfaces: eth0
+```
+
+再执行 `firewall-cmd --list-all`，第一行的 `public` 后面只有 `active`，没有 `default`，那么就把 `public` 这个 zone 设为默认：
+
+```shell
+$ firewall-cmd --set-default-zone=public
+Warning: ZONE_ALREADY_SET: public
+success
+```
+
+由于 SSH 用的不是默认端口，所以需要在 FirewallD 中进行对应设置：
+
+```shell
+$ firewall-cmd --zone=public --add-service=ssh
+Warning: ALREADY_ENABLED: 'ssh' already in 'public'
+success
+$ firewall-cmd --zone=public --permanent --service=ssh --add-port=37962/tcp
+$ reboot
+```
+
+执行了上面的命令之后，就可以从任意电脑上通过 SSH 连接服务器了。
