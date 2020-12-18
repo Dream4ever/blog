@@ -401,3 +401,80 @@ $ reboot
 ```
 
 执行了上面的命令之后，就可以从任意电脑上通过 SSH 连接服务器了。
+
+#### 配置 fail2ban
+
+##### 安装 fail2ban
+
+```shell
+$ sudo yum update && sudo yum install epel-release
+$ sudo yum install fail2ban
+```
+
+##### 启动 fail2ban
+
+```shell
+$ sudo systemctl start fail2ban
+# 设置 fail2ban 开机启动
+$ sudo systemctl enable fail2ban
+```
+
+##### fail2ban 基础配置
+
+`fail2ban.conf` 包含了 fail2ban 的默认配置，并且每次升级时会覆盖该文件。如果需要修改该文件中的配置，合理的方式是将该文件复制一份，并重命名为 `fail2ban.local`，这样就不会被升级影响了。
+
+不过在后面的配置中，不需要修改这个文件，所以这一步操作不做也可以。
+
+然后再将 Jail 配置文件 `jail.conf` 也复制一份并重命名为 `jail.local`，避免在软件升级时被覆盖。
+
+```shell
+$ sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+```
+
+然后将配置文件中对应字段修改如下：
+
+```
+# 不屏蔽本机 IP
+ignoreip = 127.0.0.1/8 ::1
+# 屏蔽持续 14 天
+bantime  = 14d
+# 登录失败一次就屏蔽
+maxretry = 1
+# CentOS 7 系统，需要改成这个值
+backend = systemd
+# CentOS 7 使用 FirewallD 作为防火墙，需要改成这两个值
+banaction = firewallcmd-ipset
+banaction_allports = firewallcmd-ipset
+```
+
+上面的字段 `bantime` 原本设置为 `10y`，也就是 10 年。结果在查看 fail2ban 的日志 `/var/log/fail2ban.log` 时，发现每次在屏蔽登录失败的 IP 时，都会报 `stderr: "ipset v7.1: Syntax error: '315576000' is out of range 0-2147483"` 这么一个错误，原来是给这个字段设置的值超出了它允许的最大值。
+
+将最大值 `2147483` 换算成天，差不多是 24 天，为了保险期间，就把 `bantime` 的值设置为 `14d`，也就是登录失败一次，就屏蔽两个星期，这已经够久了。
+
+##### fail2ban 具体服务配置
+
+新建 `/etc/fail2ban/jail.d/sshd.local` 文件，用于配置 SSH 服务的屏蔽设置，具体配置如下：
+
+```
+[sshd]
+
+# To use more aggressive sshd modes set filter parameter "mode" in jail.local:
+# normal (default), ddos, extra or aggressive (combines all).
+# See "tests/files/logs/sshd" or "filter.d/sshd.conf" for usage example and details.
+#mode   = normal
+enabled = true
+port    = 66666
+logpath = /var/log/secure
+```
+
+因为 `jail.local` 这个通用配置文件中的 `enabled` 字段值为 `false`，所以需要在这里将该字段值设置为 `true`，来启用 SSHD 服务的安全防护。
+
+`port` 字段则设置为 SSHD 服务的自定义端口。
+
+`logpath` 字段设置为 `/var/log/secure`，这是 CentOS 下的登录日志文件所在位置。
+
+##### 参考资料
+
+- [Using Fail2ban to Secure Your Server - A Tutorial](https://www.linode.com/docs/guides/using-fail2ban-to-secure-your-server-a-tutorial/)
+- [Add a jail file to protect SSH](https://www.howtoforge.com/tutorial/how-to-install-fail2ban-on-centos/#add-a-jail-file-to-protect-ssh)
+- [where-to-find-ssh-login-log-files-on-centos](https://superuser.com/questions/1224688/)
