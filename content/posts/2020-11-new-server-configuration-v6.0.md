@@ -35,11 +35,9 @@ draft: false
 
 参考 ECS 最佳实践中的 [设置报警阈值和报警规则](https://help.aliyun.com/document_detail/52047.html#title-ri6-gxw-2an)，为云服务器添加 CPU 告警规则，连续 3 个 5 分钟 CPU 使用率都大于等于 70% 的话，就发短信报警。
 
-# 三、系统加固
+# 三、 账号加固
 
-## 3.1 用户加固
-
-### 3.1.1 建立新用户并赋予 root 权限
+## 3.1 建立新用户并赋予 root 权限
 
 参考 [Initial Server Setup with CentOS 7](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-centos-7) 中的建议，建立新用户并赋予 root 权限，以后只用该用户远程登录服务器。
 
@@ -58,7 +56,7 @@ $ su www
 $ sudo ls -la /root
 ```
 
-### 3.1.2 提升密码安全性（可选）
+## 3.2 提升密码安全性（可选）
 
 参考 [Password Policies](https://wiki.centos.org/HowTos/OS_Protection#Password_Policies) 和 [Enable password aging on Linux systems](https://www.techrepublic.com/article/enable-password-aging-on-linux-systems/) 中的方法，设置修改密码的最小时间间隔（7 天），和密码失效时间（180 天）。
 
@@ -102,9 +100,9 @@ $ vi /etc/security/pwquality.conf
 
 修改 `/etc/pam.d/password-auth` 和 `/etc/pam.d/system-auth` 这两个文件，在 `password sufficient pam_unix.so` 这行的末尾配置 `remember` 参数为 24。原来的内容不用更改，只在行尾添加 ` remember=24` 即可。
 
-## 3.2 SSH 加固
+# 四、 SSH 加固
 
-### 3.2.1 修改 SSH 默认端口
+## 4.1 修改 SSH 默认端口
 
 参考 [修改Linux系统实例默认远程端口](https://help.aliyun.com/document_detail/51644.html#title-0qk-cyo-ljc) 进行修改。
 
@@ -126,13 +124,13 @@ $ systemctl restart sshd
 # 还需修改安全组中对应 SSH 端口号
 ```
 
-### 3.2.2 使用 SSH 配置文件连接 CentOS
+## 4.2 使用 SSH 配置文件连接 CentOS
 
 按照文档 [在支持SSH命令的环境中使用密钥对（通过config文件配置信息）](https://help.aliyun.com/document_detail/51798.html?#title-ii4-zmw-zxi) 中的流程，使用 SSH 密钥对，以 root 用户的身份连接至 Linux 实例。
 
 记得先按前一小节 [通过命令配置](https://help.aliyun.com/document_detail/51798.html#title-7je-5ba-sm2) 的流程做一遍，这样才能够确保私钥文件的权限符合密钥登录的要求，否则将无法登录。
 
-### 3.2.3 配置新用户的 SSH 公钥
+## 4.3 配置新用户的 SSH 公钥
 
 配置新用户的 SSH 公钥。
 
@@ -149,7 +147,7 @@ $ sudo cat /root/.ssh/authorized_keys > ./authorized_keys
 $ chmod 400 authorized_keys
 ```
 
-### 3.2.4 测试新用户的 SSH 连接
+## 4.4 测试新用户的 SSH 连接
 
 在本机执行以下命令。
 
@@ -160,7 +158,7 @@ $ vi ~/.ssh/config
 $ ssh ecs
 ```
 
-### 3.2.5 为 SSH 创立专门用户组
+## 4.5 为 SSH 创立专门用户组
 
 按照 [Create SSH Group For AllowGroups](https://github.com/imthenachoman/How-To-Secure-A-Linux-Server/blob/master/README.md) 中给出的方法，为允许通过 SSH 连接至服务器的用户，创立专门的用户组。
 
@@ -171,7 +169,7 @@ $ sudo groupadd sshusers
 $ sudo usermod -a -G sshusers www
 ```
 
-### 3.2.6 加固 SSH 服务端配置
+## 4.6 加固 SSH 服务端配置
 
 参考 [How-To-Secure-A-Linux-Server#the-ssh-server](https://github.com/imthenachoman/How-To-Secure-A-Linux-Server#the-ssh-server) 一节中的内容，以非 root 用户的身份，通过 SSH 连接至 Linux 实例后，手动修改 SSH 服务端配置文件，改成如下内容：
 
@@ -279,7 +277,7 @@ SyslogFacility AUTHPRIV
 
 可以分别用 root 和 www 两个用户，以密钥对方式登录，测试配置是否成功。如果 root 无法登录而 www 可以登录，就说明配置成功了。
 
-### 3.2.7 删除短的 Diffie-Hellman 密钥
+## 4.7 删除短的 Diffie-Hellman 密钥
 
 ```shell
 # 备份 SSH 的 moduli 文件 /etc/ssh/moduli
@@ -289,15 +287,15 @@ $ sudo awk '$5 >= 3071' /etc/ssh/moduli | sudo tee /etc/ssh/moduli.tmp
 $ sudo mv /etc/ssh/moduli.tmp /etc/ssh/moduli
 ```
 
-## 3.3 网络加固
+# 五、 网络加固
 
-### 3.3.1 配置安全组
+## 5.1 配置安全组
 
 在云服务器的安全组中，采用白名单策略，只开放个人电脑 IP 的 SSH 权限。
 
-### 3.3.2 配置 FirewallD
+## 5.2 配置 FirewallD
 
-#### 3.3.2.1 尝试启动
+### 5.2.1 尝试启动
 
 先彻底禁用 iptables：
 
@@ -316,7 +314,7 @@ $ sudo systemctl start firewalld
 
 于是在浏览器中登录阿里云控制台，通过云助手发送命令 `sudo systemctl stop firewalld` 至服务器，先暂时停止 FirewallD。
 
-#### 3.3.2.2 关闭不安全配置
+### 5.2.2 关闭不安全配置
 
 然后查看 FirewallD 的运行状态：
 
@@ -329,7 +327,7 @@ Dec 09 11:37:03 ecs02 firewalld[11787]: WARNING: AllowZoneDrifting is enabled. T
 
 上面的 `WARNING` 那一行建议用户关闭 `AllowZoneDrifting` 这个不全安的配置，上网搜索之后，按照 [AllowZoneDrifting - Firewalld: What is it and should I disable it?](https://stackoverflow.com/questions/61402334/allowzonedrifting-firewalld-what-is-it-and-should-i-disable-it) 中所说的，将 `/etc/firewalld/firewalld.conf` 文件中 `AllowZoneDrifting` 的值由 `yes` 改为 `no`。
 
-#### 3.3.2.3 升级至最新版
+### 5.2.3 升级至最新版
 
 另外，上面的提示文字说这个不安全的配置在未来的某个版本中可能删除，于是将 FirewallD 升级到最新版：
 
@@ -337,11 +335,11 @@ Dec 09 11:37:03 ecs02 firewalld[11787]: WARNING: AllowZoneDrifting is enabled. T
 $ sudo yum update firewalld
 ```
 
-#### 3.3.2.4 了解 FirewallD
+### 5.2.4 了解 FirewallD
 
 然后按照 DigitalOcean 的教程 [How To Set Up a Firewall Using FirewallD on CentOS 7](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7) 来配置 FirewallD。
 
-#### 3.3.2.5 Zones
+### 5.2.5 Zones
 
 教程先介绍了 FirewallD 中预定义的“zones”，信任级别由低到高依次为：
 
@@ -355,7 +353,7 @@ $ sudo yum update firewalld
 - **home**: 用于家庭环境，信任网络中的大部分计算机，在前面的基础上，还允许另外少数服务所产生的请求。
 - **trusted**: 信任网络中的所有计算机，开放程度最高，需谨慎使用。
 
-#### 3.3.2.6 配置规则
+### 5.2.6 配置规则
 
 因为 FirewallD 中目前没有预定义任何配置，所以从本地通过 SSH 连接到服务器的话，一开启 FirewallD 就会导致 SSH 断开连接，所以先通过阿里云 ECS 实例页面的 **发送命令** 功能来配置 FirewallD。
 
@@ -402,9 +400,9 @@ $ reboot
 
 执行了上面的命令之后，就可以从任意电脑上通过 SSH 连接服务器了。
 
-### 3.3.3 配置 fail2ban
+## 六、 配置 fail2ban
 
-#### 3.3.3.0 fail2ban 的意义
+### 6.0 fail2ban 的意义
 
 即使在前面的步骤中，启用了 SSH 密钥登录，禁用了 SSH 密码登录，fail2ban 也非常有用。
 
@@ -412,14 +410,14 @@ $ reboot
 
 fail2ban 功能极其丰富，它本质上是通过监控各种日志文件，找出符合规则的记录，然后将记录中的 IP 加以屏蔽。这样一来，不只是 SSH，像 Nginx、Wordpress 之类的应用，也是可以屏蔽的，比如屏蔽掉那些尝试暴力登录网站的请求等等。
 
-#### 3.3.3.1 安装 fail2ban
+### 6.1 安装 fail2ban
 
 ```shell
 $ sudo yum update && sudo yum install epel-release
 $ sudo yum install fail2ban
 ```
 
-#### 3.3.3.2 启动 fail2ban
+### 6.2 启动 fail2ban
 
 ```shell
 $ sudo systemctl start fail2ban
@@ -427,7 +425,7 @@ $ sudo systemctl start fail2ban
 $ sudo systemctl enable fail2ban
 ```
 
-#### 3.3.3.3 fail2ban 基础配置
+### 6.3 fail2ban 基础配置
 
 `fail2ban.conf` 包含了 fail2ban 的默认配置，并且每次升级时会覆盖该文件。如果需要修改该文件中的配置，合理的方式是将该文件复制一份，并重命名为 `fail2ban.local`，这样就不会被升级影响了。
 
@@ -459,7 +457,7 @@ banaction_allports = firewallcmd-ipset
 
 将最大值 `2147483` 换算成天，差不多是 24 天，为了保险期间，就把 `bantime` 的值设置为 `14d`，也就是登录失败一次，就屏蔽两个星期，这已经够久了。
 
-#### 3.3.3.4 fail2ban 具体服务配置
+### 6.4 fail2ban 具体服务配置
 
 新建 `/etc/fail2ban/jail.d/sshd.local` 文件，用于配置 SSH 服务的屏蔽设置，具体配置如下：
 
@@ -481,7 +479,7 @@ logpath = /var/log/secure
 
 `logpath` 字段设置为 `/var/log/secure`，这是 CentOS 下的登录日志文件所在位置。
 
-#### 3.3.3.5 参考资料
+### 6.5 参考资料
 
 - [Using Fail2ban to Secure Your Server - A Tutorial](https://www.linode.com/docs/guides/using-fail2ban-to-secure-your-server-a-tutorial/)
 - [Add a jail file to protect SSH](https://www.howtoforge.com/tutorial/how-to-install-fail2ban-on-centos/#add-a-jail-file-to-protect-ssh)
