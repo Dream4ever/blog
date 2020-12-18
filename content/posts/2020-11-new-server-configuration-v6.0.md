@@ -402,7 +402,7 @@ $ reboot
 
 ## 六、 配置 fail2ban
 
-### 6.0 fail2ban 的意义
+### 6.1 fail2ban 的意义
 
 即使在前面的步骤中，启用了 SSH 密钥登录，禁用了 SSH 密码登录，fail2ban 也非常有用。
 
@@ -410,14 +410,14 @@ $ reboot
 
 fail2ban 功能极其丰富，它本质上是通过监控各种日志文件，找出符合规则的记录，然后将记录中的 IP 加以屏蔽。这样一来，不只是 SSH，像 Nginx、Wordpress 之类的应用，也是可以屏蔽的，比如屏蔽掉那些尝试暴力登录网站的请求等等。
 
-### 6.1 安装 fail2ban
+### 6.2 安装 fail2ban
 
 ```shell
 $ sudo yum update && sudo yum install epel-release
 $ sudo yum install fail2ban
 ```
 
-### 6.2 启动 fail2ban
+### 6.3 启动 fail2ban
 
 ```shell
 $ sudo systemctl start fail2ban
@@ -425,7 +425,7 @@ $ sudo systemctl start fail2ban
 $ sudo systemctl enable fail2ban
 ```
 
-### 6.3 fail2ban 基础配置
+### 6.4 fail2ban 基础配置
 
 `fail2ban.conf` 包含了 fail2ban 的默认配置，并且每次升级时会覆盖该文件。如果需要修改该文件中的配置，合理的方式是将该文件复制一份，并重命名为 `fail2ban.local`，这样就不会被升级影响了。
 
@@ -457,7 +457,7 @@ banaction_allports = firewallcmd-ipset
 
 将最大值 `2147483` 换算成天，差不多是 24 天，为了保险期间，就把 `bantime` 的值设置为 `14d`，也就是登录失败一次，就屏蔽两个星期，这已经够久了。
 
-### 6.4 fail2ban 具体服务配置
+### 6.5 fail2ban 具体服务配置
 
 新建 `/etc/fail2ban/jail.d/sshd.local` 文件，用于配置 SSH 服务的屏蔽设置，具体配置如下：
 
@@ -479,7 +479,7 @@ logpath = /var/log/secure
 
 `logpath` 字段设置为 `/var/log/secure`，这是 CentOS 下的登录日志文件所在位置。
 
-### 6.5 参考资料
+### 6.6 参考资料
 
 - [Using Fail2ban to Secure Your Server - A Tutorial](https://www.linode.com/docs/guides/using-fail2ban-to-secure-your-server-a-tutorial/)
 - [Add a jail file to protect SSH](https://www.howtoforge.com/tutorial/how-to-install-fail2ban-on-centos/#add-a-jail-file-to-protect-ssh)
