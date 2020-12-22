@@ -5,9 +5,9 @@ tags: ['Note 学习笔记']
 draft: false
 ---
 
-<!--more-->
+原文链接：[前端组件化（一）：从一个简单的例子讲起](http://huziketang.mangojuice.top/books/react/lesson2)
 
-原文链接：[http://huziketang.mangojuice.top/books/react/lesson2](http://huziketang.mangojuice.top/books/react/lesson2)
+<!--more-->
 
 ## 最简单的点赞功能
 
