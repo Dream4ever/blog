@@ -1,5 +1,5 @@
 ---
-title: "前端组件化（二）：优化 DOM 操作"
+title: "React 小书学习笔记：前端组件化（二）：优化 DOM 操作"
 date: 2020-12-22T22:24:03+08:00
 tags: ['Note 学习笔记']
 draft: false
