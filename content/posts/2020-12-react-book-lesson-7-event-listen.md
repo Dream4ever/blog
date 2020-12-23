@@ -1,11 +1,11 @@
 ---
-title: "React 小书学习笔记：组件的组合、嵌套和组件树"
-date: 2020-12-23T21:52:58+08:00
+title: "React 小书学习笔记：事件监听"
+date: 2020-12-23T22:12:35+08:00
 tags: ['Note 学习笔记']
 draft: false
 ---
 
-原文链接：[组件的组合、嵌套和组件树](http://huziketang.mangojuice.top/books/react/lesson8)
+原文链接：[事件监听](http://huziketang.mangojuice.top/books/react/lesson9)
 
 <!--more-->
 
