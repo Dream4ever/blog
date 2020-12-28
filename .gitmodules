@@ -1,6 +1,7 @@
 [submodule "themes/zozo"]
 	path = themes/zozo
-	url = https://github.com/varkai/hugo-theme-zozo
+	url = https://github.com/Dream4ever/hugo-theme-zozo
+	branch = master
 [submodule "public"]
 	path = public
 	url = https://github.com/Dream4ever/dream4ever.github.io.git
