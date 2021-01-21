@@ -7,9 +7,7 @@ draft: false
 
 ## 在各个 commit 之间切换
 
-可以将当前分支 checkout 到另一个分支上，然后在另一个分支中，在各个 commit 之间切换，这样不会影响当前分支，还能够看到各个 commit 项目的状态。
-
-看完各个 commit 之后，再将新建的分支删除即可。
+执行 `git checkout commitId`，将当前项目切换至某个 commit 之后的状态。之后再执行 `git checkout master`，就会再切换回最新的 commit。
 
 - [How do I revert a Git repository to a previous commit?](https://stackoverflow.com/questions/4114095/how-do-i-revert-a-git-repository-to-a-previous-commit)
 
