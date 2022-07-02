@@ -4,9 +4,13 @@
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
+const siteInfo = {
+  title: '追忆似水年华',
+};
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'My Site',
+  title: siteInfo.title,
   tagline: 'Dinosaurs are cool',
   url: 'https://your-docusaurus-test-site.com',
   baseUrl: '/',
@@ -57,7 +61,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'My Site',
+        title: siteInfo.title,
         logo: {
           alt: 'My Site Logo',
           src: 'img/logo.svg',
