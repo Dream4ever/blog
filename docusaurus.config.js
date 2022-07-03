@@ -12,7 +12,7 @@ const siteInfo = {
 const config = {
   title: siteInfo.title,
   tagline: 'Dinosaurs are cool',
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://www.hewei.in',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
