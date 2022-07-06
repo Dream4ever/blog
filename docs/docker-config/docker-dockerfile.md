@@ -3,9 +3,7 @@ sidebar_position: 5
 title: Dockerfile
 ---
 
-## Dockerfile 指令
-
-### 配置指令
+## 配置指令
 
 - `FROM` Dockerfile 中第一条指令必须是它。如果在一个 Dockerfile 中创建多个镜像，每个镜像都需指定一个 `FROM` 指令。
 - `ARG` 和 `ENV` 都可以在创建镜像过程中设置变量，只不过前者在镜像编译成功后会消失，后者则会保留。
@@ -20,5 +18,5 @@ title: Dockerfile
 - `SHELL` 指定其他命令使用 shell 时的默认 shell 类型，默认值为 `["/bin/sh", "-c"]`。
   - Windows 系统的 Shell 路径中使用了 `\` 作为分隔符，建议在 Dockerfile 开头添加 `# escape='` 来指定转义符。
 
-### 操作指令
+## 操作指令
 
