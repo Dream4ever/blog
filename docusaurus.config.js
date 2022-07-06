@@ -63,11 +63,11 @@ const config = {
             type: 'doc',
             docId: 'intro',
             position: 'left',
-            label: 'Tutorial',
+            label: '笔记',
           },
           {
             to: '/blog',
-            label: 'Blog',
+            label: '博客',
             position: 'left',
           },
           {
