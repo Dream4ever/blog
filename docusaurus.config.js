@@ -55,8 +55,8 @@ const config = {
       navbar: {
         title: siteInfo.title,
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          alt: 'Site Logo',
+          src: 'img/logo.jpg',
         },
         items: [
           {
