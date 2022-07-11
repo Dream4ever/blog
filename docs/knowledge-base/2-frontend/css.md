@@ -1,11 +1,9 @@
 ---
-sidebar_position: 2
-title: 前端开发
+sidebar_position: 1
+title: CSS
 ---
 
-## CSS
-
-### 文字渐变效果
+## 文字渐变效果
 
 搜索关键词：`css text background linear gradient`。
 
