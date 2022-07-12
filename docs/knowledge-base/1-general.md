@@ -182,16 +182,30 @@ IE8的份额仅占7%左右，视具体目标用户群体而定，该数量可能
 
 ### Vue 支持度统计
 
+#### Vue 3.X
+
+Google `vue3 chrome compatibility`。
+
+看到这个 issue：[Minimum Browser versions supported by Vue library #1151](https://github.com/vuejs/docs/issues/1151)，提到在 [What browsers does Vue support?](https://vuejs.org/about/faq.html#what-browsers-does-vue-support) 中有说。
+
+查看文档，说是 Vue 3 要正常使用，需要浏览器原生支持 `ECMAScript 2015 (ES6)`。
+
+再查看 [Can I Use](https://caniuse.com/es6) 上面的数据，Chrome 系列浏览器从 51 开始就全面支持了，iOS Safari 从10 开始就全面支持了。
+
+然后又查看 Google Analytics 上面 2022 年 6 月用户的 UserAgent 统计信息，Android 用户完全符合 Chrome >= 51 的标准，iOS Safari 的话，还是有少数用户（41 / 16327） iOS < 10。
+
+这个用户数量很少，应该没什么影响，那以后新的前端项目就可以考虑直接用 Vue 3 + Vite 来创建了。
+
+#### Vue 2.X
+
 官方文档：
 
 - iOS：10+
 - Android：4.4+
 
-2019年1月24日更新：用两个旧设备打开用 Vue.js 简单写的测试页面，都可以正常显示内容，iPhone 是 iOS 7，Android 是 4.4，那以后的页面开发就都用 Vue.js 了。
+用两个旧设备打开用 Vue.js 简单写的测试页面，都可以正常显示内容，iPhone 是 iOS 7，Android 是 4.4，那以后的页面开发就都用 Vue.js 了。
 
-2018年9月12日更新：最近用这两个旧设备测试打开 Vue.js 官网，是可以正常打开的，看来还需要仔细检查一下这两款设备是否正常支持 Vue.js。
-
-用真机 iOS 7 和 Android 4.4 测试，在 iOS 7 中检测 Vue.js 用到的特性 `Object.defineProperty` 和 `Object['__defineSetter__']`，结果都是支持的，但是在两个设备上都无法正常显示用到了 Vue 的页面，既然如此，就没法用这种检测兼容性的方式来测试是否支持 Vue.js 了，那就用原生 JS 写页面吧。
+用真机 iOS 7 和 Android 4.4 测试，在 iOS 7 中检测 Vue.js 用到的特性 `Object.defineProperty` 和 `Object['__defineSetter__']`，结果都是支持的。
 
 #### 参考资料
 
