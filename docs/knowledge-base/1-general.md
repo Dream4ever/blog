@@ -67,3 +67,136 @@ This template allows you to quickly scaffold a Vue project with Vue Router, VueX
 多看 GitHub 开源项目的文档，要图文结合才能把设计说清楚。
 
 写项目设计文档，其实就是写一份教程。如何把教程写得通俗易懂，也是一门学问。
+
+## 兼容性数据统计
+
+为了保证所研发的页面在各种电脑端、手机端上都能正常使用，就需要充分研究各类浏览器、手机系统的市场份额。
+
+### PC 端 IE 份额统计
+
+#### 友盟
+
+- [2017上半年中国互联网发展趋势盘点](http://www.umeng.com/reports.html)
+- [china_s_internet_development_trend_inventory_in_the_first_half_of_2017.pdf](http://tip.umeng.com/uploads/data_report/china_s_internet_development_trend_inventory_in_the_first_half_of_2017.pdf)
+
+P13：PC端浏览器占比，2017年6月，IE系列26.5%。
+
+#### Search1990
+
+- [2017年12月，全球&国内浏览器市场份额排行榜](http://www.search1990.com/other/201611200936.html)
+
+- IE9 8.80%
+- IE8 6.56%
+- IE7 2.38%
+
+#### 百度统计流量研究院
+
+链接：[https://tongji.baidu.com/data/browser](https://tongji.baidu.com/data/browser)
+
+- IE9 8.42%
+- IE8 7.41%
+- IE7 2.66%
+
+其它 15.56%，其中应当包含了 IE11 的份额。
+
+#### StatCounter
+
+[Desktop Browser Version Market Share China](http://gs.statcounter.com/browser-version-market-share/desktop/china/#monthly-201612-201712-bar)
+
+- IE11 5.58%
+- IE8 5.19%
+- IE9 2.48%
+
+#### 备注
+
+- IE9：仅有部分OEM厂商在其出厂的电脑中预安装了IE9。
+- IE7：预装于Vista及Server 2008中。
+
+#### 总结
+
+两大主流前端框架：React及Vue均原生支持IE9+。
+
+React有兼容IE8的方案，但该框架较重，体量偏大，不适合于快速开发。
+
+Vue则完全无法兼容IE8。类似的框架Avalon虽支持IE8，但实际应用中发现支持效果并不理想。
+
+结合前面统计数据可知，IE9已经占据了相当程度的市场份额，且份额已经超越IE8。
+
+IE8的份额仅占7%左右，视具体目标用户群体而定，该数量可能更低。
+
+而为了兼容IE8，所需额外增加的工作量至少是一倍左右，有时甚至更多，因为除了上面JS框架的兼容性很差之外，IE8也几乎不支持HTML5、CSS3中的新特性。
+
+因此，建议对IE8用户进行引导，建议其安装360等国产双核浏览器，既可保证用户可获得较好的用户体验，也不需要升级更新IE，以免产生新的问题。
+
+#### 参考资料
+
+- [Internet Explorer 9 - Wikipedia](https://en.wikipedia.org/wiki/Internet_Explorer_9)
+- [Internet Explorer 7 - Wikipedia](https://en.wikipedia.org/wiki/Internet_Explorer_7)
+- [CSS Compatibility in Internet Explorer](https://msdn.microsoft.com/en-us/library/hh781508%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396)
+- [Does IE8 support HTML5 and CSS3?](https://stackoverflow.com/questions/5497587/does-ie8-support-html5-and-css3)
+- [Think you know the top web browsers?](https://medium.com/samsung-internet-dev/think-you-know-the-top-web-browsers-458a0a070175)
+
+### 安卓版本统计
+
+#### 关键字
+
+- android version statistics
+- 安卓 版本 统计
+- google android version distribution
+
+#### 参考链接
+
+- [Google Chrome version history](https://ipfs.io/ipfs/QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco/wiki/Google_Chrome_version_history.html)：列出了 Google Chrome 浏览器的各个版本，包含 Android 版。
+- [Android version history](https://en.wikipedia.org/wiki/Android_version_history)：列出了 Android 的各个版本，并提到了搭配 Android 4.4 的 Chrome 最早版本为 30。
+- [Android 操作系统分布 | 腾讯移动分析](https://mta.qq.com/mta/data/device/os)
+- [Distribution dashboard  |  Android Developers](https://developer.android.com/about/dashboards/)：页面语言设置为英文，并且需要翻墙，才可显示统计数据
+- [移动设备系统排名 | 百度统计 - 流量研究院](https://mtj.baidu.com/data/mobile/device)：无需 Flash，右上角系统版本选择 Android
+- statcounter: [Mobile & Tablet Android Version Market Share China - 截止 18 年 5 月近一年的数据](http://gs.statcounter.com/android-version-market-share/mobile-tablet/china)
+- Statistic: [Android operating system share worldwide by OS version from 2013 to 2018](https://www.statista.com/statistics/271774/share-of-android-platforms-on-mobile-devices-with-android-os/)
+
+#### 结果统计
+
+综合上面四个链接的统计数据，占一定市场份额的低版本安卓比例如下：
+
+- 4.4：10% 左右
+- 5.0：3% ~ 5%
+- 5.1：18% 左右
+
+### iOS 版本统计
+
+#### 参考链接
+
+- [移动设备系统排名 | 百度统计 - 流量研究院](https://mtj.baidu.com/data/mobile/device)：无需 Flash，右上角系统版本选择 iOS
+
+#### 结果统计
+
+根据上面的统计数据，iOS 11 用户为 65.62%，iOS 10 为 20.68%，iOS 9 为 8.29%，iOS 8 为 4.24%，总计 98.83%。
+
+其余各低版本用户总计 1.17%，其中 iOS 7 0.93%。伴随着 2018 年 iOS 12 的发布，低版本用户比例将继续下降。
+
+#### 实际数据分析
+
+查看服务器上 IIS 的日志，访问页面的 UserAgent，Android 版本最低为 4.4.4，和测试机基本相同；iOS 版本最低为 8.3，比测试机还高一个大版本。
+
+这样的话，以后业务开发就一定要用两台测试机做基础测试，通过之后再用其它较新设备测试。
+
+### Vue 支持度统计
+
+官方文档：
+
+- iOS：10+
+- Android：4.4+
+
+2019年1月24日更新：用两个旧设备打开用 Vue.js 简单写的测试页面，都可以正常显示内容，iPhone 是 iOS 7，Android 是 4.4，那以后的页面开发就都用 Vue.js 了。
+
+2018年9月12日更新：最近用这两个旧设备测试打开 Vue.js 官网，是可以正常打开的，看来还需要仔细检查一下这两款设备是否正常支持 Vue.js。
+
+用真机 iOS 7 和 Android 4.4 测试，在 iOS 7 中检测 Vue.js 用到的特性 `Object.defineProperty` 和 `Object['__defineSetter__']`，结果都是支持的，但是在两个设备上都无法正常显示用到了 Vue 的页面，既然如此，就没法用这种检测兼容性的方式来测试是否支持 Vue.js 了，那就用原生 JS 写页面吧。
+
+#### 参考资料
+
+- [vue 兼容问题](https://segmentfault.com/q/1010000008190284)
+- [Support for android 5 ? #6567](https://github.com/vuejs/vue/issues/6567): issue 中尤雨溪有回复，Android 最低支持到 4.4
+- [How should I detect incompatible browsers? #770](https://github.com/vuejs/vue/issues/770)
+- [IOS render issue #4183](https://github.com/vuejs/vue/issues/4183)
+- [Vue does not render on older versions of IOS #6948](https://github.com/vuejs/vue/issues/6948)
