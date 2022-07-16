@@ -52,3 +52,9 @@ appearance: none;
 应用上面 CSS 后的效果如下图所示：
 
 ![image](./img/ios-safari-input-shadow-2.png)
+
+## iOS Safari 100vh 页面高度被遮挡
+
+写了一个移动 Web 页面，CSS 设置页面的高度为 100vh，结果发现在 iPhone 7 的 Safari 浏览器上，页面纵向高度会被浏览器本身的界面元素占据一部分，在 iPhone 11 上则没有这个问题。
+
+用 `iOS Safari 100vh covered by` 作为关键词搜索，发现的确存在这个问题。尝试了几种方法都不管用，最后干脆把高度设置为 `100%` 了，不折腾了。
