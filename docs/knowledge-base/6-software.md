@@ -45,7 +45,7 @@ $ ffmpeg -f concat -safe 0 -i mylist.txt -c copy output.mp4
 ffmpeg -i "concat:input1|input2" -codec copy output.mkv
 ```
 
-## 将 10-bit/12-bit HEVC 视频转换为 8-bit H.264
+### 将 10-bit/12-bit HEVC 视频转换为 8-bit H.264
 
 Google: `convert 10bit hevc to 8bit`。
 
