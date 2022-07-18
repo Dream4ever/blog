@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 title: CSS
 ---
 
@@ -30,3 +30,31 @@ Google `css cursor blink`。
 Google `html font size than 12px`，发现在 [Font-size <12px doesn't have effect in Google Chrome](https://stackoverflow.com/questions/2295095/font-size-12px-doesnt-have-effect-in-google-chrome) 这个回答里，有人说能解决，有人说不能解决。
 
 又换成中文搜索 `浏览器 字号 12px`，网上的解决方案其实和英语搜索结果一样，最后用 `transform: scale()` 属性解决了。
+
+## 移除旧版 iOS Safari input/textarea 控件上方的阴影效果
+
+在开发 Web 页面时，发现在 iOS 13 的 Safari 上，input/textarea 控件上方有阴影，如下图所示。
+
+![image](./img/ios-safari-input-shadow-1.png)
+
+用 `ios safari input shadow` 作为关键词进行查询，发现原来是旧版 iOS Safari 为 input/textarea 控件设置了 `appearance` 属性，把这个属性去掉就好了。
+
+解决方案：[Remove iOS input shadow](https://stackoverflow.com/questions/23211656/remove-ios-input-shadow)。
+
+关键代码：
+
+```css
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+```
+
+应用上面 CSS 后的效果如下图所示：
+
+![image](./img/ios-safari-input-shadow-2.png)
+
+## iOS Safari 100vh 页面高度被遮挡
+
+写了一个移动 Web 页面，CSS 设置页面的高度为 100vh，结果发现在 iPhone 7 的 Safari 浏览器上，页面纵向高度会被浏览器本身的界面元素占据一部分，在 iPhone 11 上则没有这个问题。
+
+用 `iOS Safari 100vh covered by` 作为关键词搜索，发现的确存在这个问题。尝试了几种方法都不管用，最后干脆把高度设置为 `100%` 了，不折腾了。
