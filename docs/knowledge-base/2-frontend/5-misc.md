@@ -36,3 +36,31 @@ title: 其他
 - [amazeui/amazeui](https://github.com/amazeui/amazeui)：Web 版本以 jQuery 为基础库，部分兼容 IE，使用 gulp 构建项目。Touch 版本以 React 为基础库，专用于移动端，对手机兼容性很好。官网导航做得不好，找示例找了半天才找到，而且 UI 设计也不好看。侧栏 ×，底栏 √
 - [OnsenUI/OnsenUI](https://github.com/OnsenUI/OnsenUI)：主打 PWA 和混合开发。感觉官网做得不够好，看示例也是找了半天才找到，不要它。侧栏 ×，底栏 √，搜索 √
 - [sdc-alibaba/SUI-Mobile](https://github.com/sdc-alibaba/SUI-Mobile)：有点小众，基于 Zepto/jQuery 风格的 API 开发，不能用 Vue 做组件化开发，不用。侧栏 ×，底栏 √，搜索 √
+
+## 将上传至页面中的图片显示出来
+
+> 前提：假设图片已通过 `type=file` 的 `input` 控件上传至页面中。
+
+关键词：`show uploaded image in html`。
+
+可用方案：[HTML - Display image after selecting filename [duplicate]](https://stackoverflow.com/questions/12368910/html-display-image-after-selecting-filename)。
+
+核心代码：
+
+```html
+<input type="file" onchange="readURL(this);" />
+```
+
+```js
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      $('#blah').attr('src', e.target.result).width(150).height(200);
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+```
