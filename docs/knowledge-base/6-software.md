@@ -124,3 +124,13 @@ ffmpeg -i input.mp4 -b:v 2000k -bufsize 2000k -maxrate 2500k output.mp4
 #### 未分类
 
 - [FFprobe使用指南](https://www.cnblogs.com/tinywan/p/6369104.html)
+
+## PowerRename
+
+### PowerRename 批量重命名时顺序乱了
+
+关键词：`powerrename sort order`。
+
+参考文章：[[PowerRename] files are not sorted alphabetically #9873](https://github.com/microsoft/PowerToys/issues/9873)。
+
+解决方法：选中了需要重命名的一批文件后，在第一个文件上点右键调用 PowerRename，弹出窗口中的文件顺序就正常了……
