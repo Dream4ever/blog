@@ -58,3 +58,20 @@ appearance: none;
 写了一个移动 Web 页面，CSS 设置页面的高度为 100vh，结果发现在 iPhone 7 的 Safari 浏览器上，页面纵向高度会被浏览器本身的界面元素占据一部分，在 iPhone 11 上则没有这个问题。
 
 用 `iOS Safari 100vh covered by` 作为关键词搜索，发现的确存在这个问题。尝试了几种方法都不管用，最后干脆把高度设置为 `100%` 了，不折腾了。
+
+## 使元素保持长宽比
+
+Google `css set element height same as width`。
+
+[Height equal to dynamic width (CSS fluid layout) [duplicate]](https://stackoverflow.com/questions/5445491/height-equal-to-dynamic-width-css-fluid-layout)
+
+只需要给元素本身设置 CSS 样式即可:
+
+```css
+.some_element {
+    position: relative;
+    width: 20%;
+    height: 0;
+    padding-bottom: 20%;
+}
+```
