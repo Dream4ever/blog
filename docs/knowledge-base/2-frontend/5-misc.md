@@ -64,3 +64,27 @@ function readURL(input) {
   }
 }
 ```
+
+## 实现虚拟展厅
+
+### 搜索方向
+
+- 前端 VR
+- 前端 展厅
+- three.js Gyroscope(陀螺仪)
+
+搜索引擎：Google、掘金
+
+### 参考资料
+
+- [2天赚了4个W，手把手教你用Threejs搭建一个Web3D汽车展厅！](https://juejin.cn/post/6981249521258856456)
+- [三种前端实现VR全景看房的方案！说不定哪天就用得上！](https://juejin.cn/post/6973865268426571784)
+
+### 技术方案
+
+- [babylonjs](https://www.babylonjs.com/)
+- [krpano](https://krpano.com/home/)
+- [Photo Sphere Viewer](https://photo-sphere-viewer.js.org/)
+- [720 云](https://720yun.com/find)
+- [Perspective tracking using gyroscope data](https://discourse.threejs.org/t/perspective-tracking-using-gyroscope-data/17101)
+- [CSS3DRenderer](https://threejs.org/docs/#examples/en/renderers/CSS3DRenderer)
