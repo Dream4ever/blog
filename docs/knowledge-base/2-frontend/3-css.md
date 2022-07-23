@@ -1,4 +1,4 @@
----
+f---
 sidebar_position: 3
 title: CSS
 ---
@@ -75,3 +75,12 @@ Google `css set element height same as width`。
     padding-bottom: 20%;
 }
 ```
+
+## 父元素 overflow hidden + 子元素正常滚动
+
+在开发一个页面的时候，需要让页面中的一个元素显示为固定高度，但其子元素又需要能够正常的上下滚动（高度超出父元素时）。
+
+在 [Overflow hidden with nested overflow scroll not working](https://stackoverflow.com/q/43539284/2667665) 这个帖子中，提问者自己就已经找到了解决方案，整体思路如下：
+
+1. 对于设置了 `overflow: hidden;` 属性的父元素，再为其添加 `display: flex;` 和 `flex-direction:column;` 属性。
+2. 父元素和子元素之间增加一个容器元素，CSS 属性设置为 `overflow: auto;` 和 `flex-grow:1;`，这样可以让容器元素和子元素的宽高相同，并且可以正常地滚动。
