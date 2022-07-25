@@ -36,3 +36,55 @@ title: 其他
 - [amazeui/amazeui](https://github.com/amazeui/amazeui)：Web 版本以 jQuery 为基础库，部分兼容 IE，使用 gulp 构建项目。Touch 版本以 React 为基础库，专用于移动端，对手机兼容性很好。官网导航做得不好，找示例找了半天才找到，而且 UI 设计也不好看。侧栏 ×，底栏 √
 - [OnsenUI/OnsenUI](https://github.com/OnsenUI/OnsenUI)：主打 PWA 和混合开发。感觉官网做得不够好，看示例也是找了半天才找到，不要它。侧栏 ×，底栏 √，搜索 √
 - [sdc-alibaba/SUI-Mobile](https://github.com/sdc-alibaba/SUI-Mobile)：有点小众，基于 Zepto/jQuery 风格的 API 开发，不能用 Vue 做组件化开发，不用。侧栏 ×，底栏 √，搜索 √
+
+## 将上传至页面中的图片显示出来
+
+> 前提：假设图片已通过 `type=file` 的 `input` 控件上传至页面中。
+
+关键词：`show uploaded image in html`。
+
+可用方案：[HTML - Display image after selecting filename [duplicate]](https://stackoverflow.com/questions/12368910/html-display-image-after-selecting-filename)。
+
+核心代码：
+
+```html
+<input type="file" onchange="readURL(this);" />
+```
+
+```js
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      $('#blah').attr('src', e.target.result).width(150).height(200);
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+```
+
+## 实现虚拟展厅
+
+### 搜索方向
+
+- 前端 VR
+- 前端 展厅
+- three.js Gyroscope(陀螺仪)
+
+搜索引擎：Google、掘金
+
+### 参考资料
+
+- [2天赚了4个W，手把手教你用Threejs搭建一个Web3D汽车展厅！](https://juejin.cn/post/6981249521258856456)
+- [三种前端实现VR全景看房的方案！说不定哪天就用得上！](https://juejin.cn/post/6973865268426571784)
+
+### 技术方案
+
+- [babylonjs](https://www.babylonjs.com/)
+- [krpano](https://krpano.com/home/)
+- [Photo Sphere Viewer](https://photo-sphere-viewer.js.org/)
+- [720 云](https://720yun.com/find)
+- [Perspective tracking using gyroscope data](https://discourse.threejs.org/t/perspective-tracking-using-gyroscope-data/17101)
+- [CSS3DRenderer](https://threejs.org/docs/#examples/en/renderers/CSS3DRenderer)
