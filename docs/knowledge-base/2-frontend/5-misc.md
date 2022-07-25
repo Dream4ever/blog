@@ -88,3 +88,13 @@ function readURL(input) {
 - [720 云](https://720yun.com/find)
 - [Perspective tracking using gyroscope data](https://discourse.threejs.org/t/perspective-tracking-using-gyroscope-data/17101)
 - [CSS3DRenderer](https://threejs.org/docs/#examples/en/renderers/CSS3DRenderer)
+
+## Skeleton Screen Loading
+
+应用骨架屏技术，提升页面加载时的用户体验。
+
+### 方案调研
+
+在 SegmentFault 上看到了这篇文章：[Vue页面骨架屏注入实践](https://segmentfault.com/a/1190000014832185)，了解到了现在普遍使用的一项技术：Skeleton Screen Loading。
+
+以 `skeleton screen vue` 作为关键字 Google，能在网上看到不少文章，后面需要的时候继续深入。
