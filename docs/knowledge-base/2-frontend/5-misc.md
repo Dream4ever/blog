@@ -163,3 +163,26 @@ if (clickedElement.getBoundingClientRect().top - (window.innerHeight / 2) > -40)
 ### 参考资料
 
 2019年4月25日又在 SegmentFault 上看到了这么一篇文章，可以参考：[可能这些是你想要的H5软键盘兼容方案](https://segmentfault.com/a/1190000018959389)。
+
+## 网页/微信小程序中显示数学公式
+
+需求：要将 Word 文档中的公式显示在网页端。
+
+关键词：
+
+- `show formula web page`
+- `microsoft word to latex converter`
+- `微信小程序显示数学公式`
+
+整体流程：
+
+1. 先将 Word 中的公式转换成 LaTeX 格式的公式。
+2. 用 [MathJax](http://docs.mathjax.org/en/latest/) 这个库在前端页面中渲染公式。
+
+参考资料：
+
+- [Is there a way to have math formulas look nice on a web page (as in LateX, for instance)](https://stackoverflow.com/questions/2324718/is-there-a-way-to-have-math-formulas-look-nice-on-a-web-page-as-in-latex-for-i)
+- [How to display maths formulas and equations in a webpage](https://codingislove.com/display-maths-formulas-webpage/)
+- [How can I convert from Microsoft Word to a LaTeX document](https://tex.stackexchange.com/questions/27731/how-can-i-convert-from-microsoft-word-to-a-latex-document)
+- [在掘金搜索 MathJax](https://juejin.cn/search?query=MathJax)
+- [使用MathJax 3 渲染数学公式及在Vue中的使用](https://juejin.cn/post/6986646914440085512)
