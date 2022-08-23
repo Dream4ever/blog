@@ -144,7 +144,7 @@ ffmpeg -i input.mp4 -b:v 2000k -bufsize 2000k -maxrate 2500k output.mp4
 ```
 robocopy `
 \\192.168.8.28\e\upcweb\ai ` // 源目录
-D:\upcweb ` // 目标目录
+D:\upcweb\ai ` // 目标目录
 /S /DCOPY:DAT ` // 不复制空目录，并复制目录的数据、属性、时间戳
 /XD .git ` // 不复制 .git 目录
 /R:1 // 失败后不重试
