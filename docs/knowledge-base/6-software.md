@@ -134,3 +134,20 @@ ffmpeg -i input.mp4 -b:v 2000k -bufsize 2000k -maxrate 2500k output.mp4
 参考文章：[[PowerRename] files are not sorted alphabetically #9873](https://github.com/microsoft/PowerToys/issues/9873)。
 
 解决方法：选中了需要重命名的一批文件后，在第一个文件上点右键调用 PowerRename，弹出窗口中的文件顺序就正常了……
+
+## Robocopy
+
+> 目的：用于实现两台 Windows 服务器之间的数据同步。
+
+### 用法示例
+
+```
+robocopy `
+\\192.168.8.28\e\upcweb\ai ` // 源目录
+D:\upcweb ` // 目标目录
+/S /DCOPY:DAT ` // 不复制空目录，并复制目录的数据、属性、时间戳
+/XD .git ` // 不复制 .git 目录
+/R:1 // 失败后不重试
+```
+
+
