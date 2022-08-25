@@ -146,9 +146,12 @@ mysql -u root -p < dump.sql
 - `mysql replication`
 - `mysql master slave replication`
 - `mysql master slave replication step by step windows`
+- [MySQL 5.6 Reference Manual / Chapter 17 Replication](https://dev.mysql.com/doc/refman/5.6/en/replication.html)：MySQL 5.6 版本关于主从复制的官方文档，其实这个最权威。
 - [Configuring MySQL Master/Slave Replication in Windows](https://www.rmurph.com/post/configuring-mysql-master-slave-replication-in-windows)：主要参考这篇文章的整体流程。
 - [7.4.2 Reloading SQL-Format Backups](https://dev.mysql.com/doc/refman/5.6/en/reloading-sql-format-dumps.html)：这里专门说了在 Windows 下用 PowerShell 执行 MySQL 恢复数据命令时的注意事项，刚好在这里卡住过。
-- [MySQL主从复制《主库已经有数据的解决方案》《几种复制模式》](https://segmentfault.com/a/1190000022440263)：配置参数给出了一些有用的建议
+- [MySQL主从复制《主库已经有数据的解决方案》《几种复制模式》](https://segmentfault.com/a/1190000022440263)：配置参数给出了一些有用的建议。
+- [Mysql主从复制原理及搭建](https://juejin.cn/post/6844903921677238285)：文章最后有一些故障排查相关的内容，可以参考。
+- [MySQL主从配置，原来这么简单？](https://www.modb.pro/db/55483)：文章最后有一些故障排查相关的内容，可以参考。
 - [24 | MySQL是怎么保证主备一致的？ | MySQL 实战 45 讲](https://time.geekbang.org/column/article/76446)：前后几篇文章都讲到了有关 MySQL 主从复制的，要仔细看看。
 - [21 | 数据备份：异常情况下，如何确保数据安全？ | MySQL 必知必会](https://time.geekbang.org/column/article/366307)：这篇文章讲的是用其他方式实现 MySQL 数据的备份/恢复，也可以了解一下。
 
