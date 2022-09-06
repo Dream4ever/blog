@@ -40,6 +40,12 @@ METRICS: Total users
 
 尽量将各项数据保存至本地。
 
+## 导出数据
+
+直接在 Google Analytics 界面导出数据的话，不是纯粹的数据，还会有一些附加的表头。
+
+官方接口的话，整体流程见 [Analytics Data API Overview](https://developers.google.com/analytics/devguides/reporting/data/v1) ，关键的具体流程见 [API Quickstart](https://developers.google.com/analytics/devguides/reporting/data/v1/quickstart-client-libraries#node.js)。
+
 ## 结合 Google Sheets 做数据统计分析
 
 搜索关键词 `google sheet import from google analytics`，发现的确提供了这项功能，但是在照着教程操作的时候，Google Sheets 却提示找不到 Report，后面还需要解决这块儿的问题，不然手动统计还是不够高效。
