@@ -3,7 +3,7 @@ sidebar_position: 2
 title: JavaScript
 ---
 
-## 将 button 元素设置为文件上传按钮
+## 点击 button 元素上传文件（不用 input 控件）
 
 关键词：`html5 button file upload`。
 
