@@ -3,6 +3,51 @@ sidebar_position: 2
 title: JavaScript
 ---
 
+## 将 button 元素设置为文件上传按钮
+
+关键词：`html5 button file upload`。
+
+参考方案：[Is it Possible to make a button as File upload Button?](https://stackoverflow.com/a/56607553/2667665)。
+
+关键代码：
+
+```html
+<img src="" id="out" />
+<button onClick="onClickHandler(event)">select an IMAGE</button>
+```
+
+```js
+function onClickHandler(ev) {
+  var el = window._protected_reference = document.createElement("INPUT");
+  el.type = "file";
+  el.accept = "image/*";
+  el.multiple = "multiple"; // remove to have a single file selection
+  
+  // (cancel will not trigger 'change')
+  el.addEventListener('change', function(ev2) {
+    // access el.files[] to do something with it (test its length!)
+    
+    // add first image, if available
+    if (el.files.length) {
+      document.getElementById('out').src = URL.createObjectURL(el.files[0]);
+    }
+
+
+    // test some async handling
+    new Promise(function(resolve) {
+      setTimeout(function() { console.log(el.files); resolve(); }, 1000);
+    })
+    .then(function() {
+      // clear / free reference
+      el = window._protected_reference = undefined;
+    });
+
+  });
+
+  el.click(); // open
+}
+```
+
 ## Web 端嵌入百度地图
 
 ### 调研过程
