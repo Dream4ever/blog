@@ -5,11 +5,21 @@ title: MySQL
 
 ## Windows Server 下实现 MySQL 主从复制
 
+> MySQL 5.5 主从复制官方文档：[Chapter 16. Replication](https://docs.oracle.com/cd/E19957-01/mysql-refman-5.5/replication.html)
+
+### 概述
+
+#### 复制方案对比
+
+- 主从复制：单向的、异步复制
+- [集群：同步复制](http://dev.mysql.com/doc/refman/5.1/en/mysql-cluster.html)
+- [半同步复制](https://docs.oracle.com/cd/E19957-01/mysql-refman-5.5/replication.html#replication-semisync)
+
 ### 服务器环境说明
 
 主数据库位于主服务器 ( 192.168.8.28 ) 上，MySQL 版本为 5.5.37 32位。
 
-从数据库位于备用服务器 ( 192.168.8.27 ) 上，MySQL 版本为 5.5.62 32位。
+从数据库位于备用服务器 ( 192.168.8.27 ) 上，MySQL 版本与主服务器相同。
 
 ### 编辑主库配置文件
 
