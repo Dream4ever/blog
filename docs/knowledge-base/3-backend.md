@@ -9,7 +9,7 @@ title: 后端开发
 
 1. 将 https://github.com/jessety/pm2-installer 这个项目的 release 压缩包下载并放到服务器上。
 2. 依次执行 `yarn run configure`、`yarn run configure-policy`、`yarn run setup`，来安装并配置 PM2 服务。
-3. 如果前面配置都成功了，但最后服务一直无法成功启动，可能是因为服务是用 Local Service 用户身份启动失败，改成用 `本地系统账户` 启动就行了。因为观察其他开机自启动的服务，很多都是用 `本地系统账户` 启动的。
+3. 如果前面配置都成功了，但最后服务一直无法成功启动，可能是因为服务是用 Local Service 用户身份启动失败，改成用 `本地系统账户`（Administrator） 启动就行了。因为观察其他开机自启动的服务，很多都是用 `本地系统账户` 启动的。
 
 旧版方案：[Windows: Auto start PM2 and node apps](https://stackoverflow.com/questions/42758985/windows-auto-start-pm2-and-node-apps)。
 
