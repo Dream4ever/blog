@@ -72,7 +72,6 @@ innodb_flush_log_at_trx_commit=1
 sync-binlog=1
 
 # 开启下面几项可尽量减少服务不可用时间
-relay-log="D:/Logs/MySQL/BinLogs/main-relay.log"
 log-slave-updates=1
 
 # 设置从库为只读，按需开启
