@@ -70,6 +70,10 @@ log-slave-updates=1
 # 设置从库为只读，按需开启
 # 如果被提升为主库，这一条一定要删掉
 read-only=1
+
+# 从库启动时，不自动开始主从同步
+# 只有手动执行 start slave 才行
+skip-slave-start
 ```
 
 确保 `my.ini` 文件中没有启用 `skip-networking` 字段。
@@ -109,8 +113,7 @@ mysql > SHOW MASTER STATUS;
 ```
 # -u 和 -p 后面直接输入用户名和密码，不要加空格
 # --lock-all-tables 参数是否要加？
-# --master-data 参数会自动在最后附加 CHANGE MASTER TO 语句
-mysqldump.exe -uabcd -p1234 --all-databases --master-data > dbdump.db
+mysqldump.exe -uabcd -p1234 --all-databases > dbdump.db
 ```
 
 然后执行下面的 PowerShell 命令，检查 MASTER_LOG_FILE 和 MASTER_LOG_POS 的值是否存在了上面导出的 SQL 文件中：
