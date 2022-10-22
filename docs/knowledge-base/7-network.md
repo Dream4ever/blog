@@ -3,10 +3,21 @@ sidebar_position: 7
 title: 网络
 ---
 
-## VPN
+## 域名解析
 
-### 【未解决】VPN 创建成功，连接时报错“不能建立到远程计算机的连接 你可能需要更改此连接的网络设置”
+### 概念科普
 
-先 Google `l2tp vpn 不能建立到远程计算机的连接 你可能需要更改此连接的网络设置`，参考 [解决Win10 vpn连接报错 "不能建立到远程计算机的连接。你可能需要更改此连接的网络设置](https://me.jinchuang.org/archives/369.html) 和 [vpn错误720：不能建立到远程计算机的连接。你可能需要更改此连接的网络设置](https://answers.microsoft.com/zh-hans/windows/forum/all/vpn%E9%94%99%E8%AF%AF720%E4%B8%8D%E8%83%BD/2b6b4edd-8d31-459b-b474-96ad4e3c57b0) 这两个链接，都未能解决问题。
+- 主机记录：在解析域名时，主机记录 `@` 是指一级域名的解析，如 abc.com。其他的主机记录，如 `www`，就是二级域名，如 www.abc.com 。
 
-在 Windows 的事件查看器中，可以看到该错误的错误代码为 720，于是又用关键词 `l2tp vpn error 720` 搜索，参考 ["Error 720: Can't connect to a VPN Connection" when you try to establish a VPN connection](https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/troubleshoot-error-720-when-establishing-a-vpn-connection)、[Error Message: Error 720: No PPP Control Protocols Configured](https://support.microsoft.com/en-us/topic/error-message-error-720-no-ppp-control-protocols-configured-aa71f6df-1765-82dd-9f70-eb00f2fe1b86) 和 [FIX: VPN error 720 on Windows 10/11 using 7 safe solutions](https://windowsreport.com/vpn-error-720-windows-10/)，也未能解决问题。
+最常用的 DNS 记录有以下两种：
+
+- A 记录：将域名指向 IP 地址。
+- CNAME 记录：将域名指向其他域名。
+
+### 常见需求
+
+访问指定域名（一级或二级）时，希望让用户看到的是另一个域名下的网站。
+
+比如访问个人域名的二级域名时，希望让用户看到部署在 GitHub Pages 上的网站，那么就可以给二级域名设置 CNAME 记录，记录值设置为 GitHub Pages 对应的网址。
+
+又比如访问个人域名的一级域名时，希望将请求重定向到个人域名的某个二级域名下，这时则可以使用域名服务商提供的转发服务，将一级域名的请求转发至指定的二级域名。
