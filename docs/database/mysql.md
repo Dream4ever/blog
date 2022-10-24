@@ -152,13 +152,20 @@ mysql> CHANGE MASTER TO
 
 ### 从库导入主库数据
 
-用 CMD 执行导入数据的命令（不要用 PowerShell，因为符号 `<` 是 PowerShell 的保留关键字。
+用 CMD 执行导入数据的命令（不要用 PowerShell，因为符号 `<` 是 PowerShell 的保留关键字）。
+
+不管是用下面的原生命令来导入数据，还是用 Navicat 的数据传输功能来导入数据，或者是直接把数据库文件（包含 ibdata 文件）复制到从库所在服务器的目录下，都会出现主库和从库同一个数据库的同一个表，数据行数不一样的情况。
 
 ```
-mysql -u root -p < dbdump.db
+# 进入 MySQL 命令行
+mysql -u root
+# 创建数据库
+mysql> CREATE DATABASE db1;
+# 完成后退出
+mysql> exit
+# 向数据库导入数据
+mysql -u root db1 < db1.sql
 ```
-
-不过在实际操作的时候，由于前面导出的 SQL 文件有 4G 之多，导致此处导入失败，后面可以尝试分成多个数据库来导入。
 
 ### 相关关键词及文章
 
