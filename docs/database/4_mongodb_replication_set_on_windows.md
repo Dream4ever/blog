@@ -1,6 +1,6 @@
 ---
 sidebar_position: 4
-title: 配置 MongoDB 复制集
+title: Windows Server 配置 MongoDB 复制集
 ---
 
 ## 配置流程
