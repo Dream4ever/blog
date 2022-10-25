@@ -1,15 +1,13 @@
 ---
 sidebar_position: 1
-title: MySQL
+title: Windows Server 下实现 MySQL 主从复制
 ---
-
-## Windows Server 下实现 MySQL 主从复制
 
 > MySQL 5.5 主从复制官方文档：[Chapter 16. Replication](https://docs.oracle.com/cd/E19957-01/mysql-refman-5.5/replication.html)
 
-### 概述
+## 概述
 
-#### 名词解释
+### 名词解释
 
 - binlog：主库用来记录所有数据库发生的所有更改的日志文件。
 - relay log：从库拿到主库 binlog 的更新后，保存在本地的 relay log 文件中，然后从该文件读取主库的变化，并在从库上同步执行。
@@ -17,19 +15,19 @@ title: MySQL
 - 从库 I/O 线程：从库用来接收主库更新的 binlog 的线程，接收到的更新就保存在从库本地的 relay log 文件中。
 - 从库 SQL 线程：从库用来从本地的 relay log 文件中读取 binlog 的更新并执行的线程。
 
-#### 复制方案对比
+### 复制方案对比
 
 - 主从复制：单向的、异步复制
 - [集群：同步复制](http://dev.mysql.com/doc/refman/5.1/en/mysql-cluster.html)
 - [半同步复制](https://docs.oracle.com/cd/E19957-01/mysql-refman-5.5/replication.html#replication-semisync)
 
-### 服务器环境说明
+## 服务器环境说明
 
 主数据库位于主服务器 ( 192.168.8.28 ) 上，MySQL 版本为 5.5.37 32位。
 
 从数据库位于备用服务器 ( 192.168.8.27 ) 上，MySQL 版本与主服务器相同。
 
-### 编辑主库配置文件
+## 编辑主库配置文件
 
 停止主库的服务。
 
@@ -55,7 +53,7 @@ sync_binlog=1
 
 启动主库的服务。
 
-### 编辑从库配置文件
+## 编辑从库配置文件
 
 停止从库的服务。
 
@@ -87,7 +85,7 @@ skip-slave-start
 
 启动从库的服务。
 
-### 主库创建专门用于主从复制的用户
+## 主库创建专门用于主从复制的用户
 
 进入主库的 MySQL 命令行，输入如下命令，每行命令输入完成后按回车。
 
@@ -100,7 +98,7 @@ mysql > CREATE USER 'srv-repl'@'%' IDENTIFIED BY 'slavepass';
 mysql > GRANT REPLICATION SLAVE ON *.* TO 'srv-repl'@'%';
 ```
 
-### 锁定主库并导出数据
+## 锁定主库并导出数据
 
 进入主数据库的 MySQL 命令行，输入如下命令，每行命令输入完成后按回车。
 
@@ -135,7 +133,7 @@ Get-Content C:\dbdump.db -TotalCount 50
 mysql > UNLOCK TABLES;
 ```
 
-### 从库配置到主库的连接
+## 从库配置到主库的连接
 
 > --skip-slave-start 参数可以让从库启动时不执行主从同步操作，该选项可写在命令行语句中，也可写在 MySQL 配置文件中。
 
@@ -150,7 +148,7 @@ mysql> CHANGE MASTER TO
 ->     MASTER_LOG_POS=13257;
 ```
 
-### 从库导入主库数据
+## 从库导入主库数据
 
 用 CMD 执行导入数据的命令（不要用 PowerShell，因为符号 `<` 是 PowerShell 的保留关键字）。
 
@@ -167,7 +165,7 @@ mysql> exit
 mysql -u root db1 < db1.sql
 ```
 
-### 相关关键词及文章
+## 相关关键词及文章
 
 - `mysql replication`
 - `mysql master slave replication`
@@ -181,106 +179,3 @@ mysql -u root db1 < db1.sql
 - [24 | MySQL是怎么保证主备一致的？ | MySQL 实战 45 讲](https://time.geekbang.org/column/article/76446)：前后几篇文章都讲到了有关 MySQL 主从复制的，要仔细看看。
 - [21 | 数据备份：异常情况下，如何确保数据安全？ | MySQL 必知必会](https://time.geekbang.org/column/article/366307)：这篇文章讲的是用其他方式实现 MySQL 数据的备份/恢复，也可以了解一下。
 - [MySQL生产环境复制故障修复](https://www.dounaite.com/article/62a403e6b80f116a578cb8a8.html)：讲了遇到问题时的排查思路。
-
-## Windows 下修改 MySQL 数据库文件保存位置
-
-关键词：`mysql change data directory windows`。
-
-解决方案：[Change existing datadir path](https://dba.stackexchange.com/questions/24403/change-existing-datadir-path)。
-
-关键流程：
-
-1. 停止 MySQL 服务：`net stop mysql`。
-2. 找到 MySQL 配置文件 `my.ini`，修改其中的 `datadir` 字段值，改成准备存放 MySQL 数据库文件的目标位置。
-3. 将整个数据库文件夹从原来的位置复制到新的地方，可以使用命令 `xcopy "C:\ProgramData\MySQL\MySQL Server 5.1\data" F:\naveen\data /s` 实现。
-4. 启动 MySQL 服务：`net start mysql`。
-5. 在命令行中登录 MySQL，然后执行命令 `show variables like 'datadir';`，如果显示的是修改后的目标文件夹，说明数据库配置修改成功。
-6. 检查各项使用 MySQL 的业务，如果没有问题，就可以把原来存放数据库的文件夹删除了。
-
-## 解决 MySQL 占用 CPU 过高的问题
-
-### 问题描述
-
-一项业务最近有不少用户打电话，说部分功能反应很慢，甚至慢到无法使用。
-
-登录阿里云，在云监控功能的主机监控部分，查看 1 小时内的 CPU 使用率，发现时不时地就会飙到 100%，切换指标后，发现主要是被 cpu_user 占用了，也就是被非系统进程所占用。
-
-同时查看内存占用，发现没有明显变化。
-
-再查看磁盘指标，发现读写字节数持续在 40MB/s 左右，平时这个指标则不到 20。读写请求数持续在 3000 左右，平时这个指标则不到 1000，说明磁盘读写频繁。
-
-再查看网络指标，发现在 CPU 占用高的时间段，各项网络指标也正常。
-
-然后查看进程监控部分，查看最近 7 天的数据，依次点击各个进程查看资源占用，发现 MySQL 占用 CPU 很高，它的 CPU 使用率和打开文件数如下所示。
-
-![image](https://user-images.githubusercontent.com/2596367/119521756-032a6000-bdae-11eb-8db1-ac6cb958bf3b.png)
-
-![image](https://user-images.githubusercontent.com/2596367/119521810-0f162200-bdae-11eb-91ca-bfc72bb628fe.png)
-
-然后远程桌面登录阿里云服务器，对任务管理器中的进程按 CPU 使用率从高到低排列，持续观察一段时间之后，进一步确定是 mysqld.exe 这个进程占用了大量的 CPU。
-
-### 解决过程
-
-#### 尝试限制 CPU 占用
-
-最开始想的是能不能先限制 MySQL 的 CPU 占用，然后再慢慢解决问题。
-
-Google 了 `limit mysql cpu usage`，参照着搜索结果中的第一个链接 [Mysql process goes over 400% of CPU usage](https://stackoverflow.com/questions/43443807/mysql-process-goes-over-400-of-cpu-usage) 的最高票回答，检查了一下 MySQL 的配置文件，发现配置是没有问题的，那就说明是使用 MySQL 的方法不正确。
-
-除此之外，没有看到有什么方法可以从系统或软件层面直接限制 MySQL 的 CPU 占用，这条路走不通，那就换个思路。
-
-#### 列出 MySQL 当前查询
-
-再 Google `mysql high cpu usage`，几篇文章都提到了可以执行 `show processlist` 来查看 MySQL 当前正在执行的查询，从而找出是哪些查询大量占用 CPU。
-
-进入 MySQL 安装目录下的 bin 子文件夹，执行：
-
-`.\mysqladmin.exe -uroot -p**** processlist`，就可以看到 MySQL 中当前正在执行的 SQL 语句及语句用时。
-
-因为不知道 MySQL 中各个用户的密码，所以参考 [查看Navicat已保存数据库密码](https://blog.yinaun.com/posts/29259.html) 中的方法，先拿到了 root 用户的密码。
-
-`show processlist` 命令的说明见文章 [MySQL CPU占用超过100%](https://blog.51cto.com/vickyzhang/1913054) 及 [MySQL high CPU usage](https://stackoverflow.com/questions/1282232/mysql-high-cpu-usage)。
-
-多次执行该命令，发现语句都显著超过了 1 秒钟（输出结果中的 Time 列的单位为秒），普遍十几秒到几十秒，有的还达到了几分钟之久，难怪用户纷纷打电话投诉。
-
-#### 查看数据库设计
-
-查看了业务相关的数据库，用下面两行代码来查看每张表的行数和索引情况。
-
-```
-SELECT COUNT(*) FROM db.table;
-SHOW INDEX FROM db.table;
-```
-
-查询之后，确认有 5 张表的数据是十万级的，还有 5 张表的数据是万级的，剩下几张表，最多的也就是一两千行数据，更少的像是临时表，只有几条或十来条数据。
-
-以上这些表，都是只给主键添加了索引，但是业务中绝大多数查询并不是查主键，所以导致查询效率低。
-
-经过对业务代码进行梳理，并测试了各部分 SQL 语句的用时之后，确定了其中几张最常用也是数据量最大的表，是必须加索引的，而且对各类 SQL 语句的执行结果用时进行了截图保存，以便对比。
-
-然后给这些数据表加上了索引，再执行之前那些比较耗时的 SQL 语句，果然飞快！基本上都是 0.0X 秒，更快的则是 0.00 秒。体验了一下相关的业务，的确也快多了，很棒啊！
-
-#### （后续）开启慢查询
-
-按照文章 [MySQL慢查询&分析SQL执行效率浅谈](https://www.jianshu.com/p/43091bfa8aa7) 中的方法，在阿里云服务器上通过 Navicat 运行 MySQL 的命令行界面（可以窗口最大化，比 MySQL 自带的好用），然后依次输入如下命令，开启并设置 MySQL 的慢查询日志功能。
-
-```
-set long_query_time=1;
-set global slow_query_log='ON';
-set global log_queries_not_using_indexes=’ON’;
-```
-
-第一行的命令将慢查询的标准设置为 1 秒，超过该时长的查询都视为慢查询进行记录。
-第二行的命令很简单，全局开启 MySQL 的慢查询日志功能。
-第三行命令则对于未使用索引的查询也进行记录，至于是记录所有查询，还是只记录时长超过 long_query_time 的查询，还需要进一步确认。
-
-而下面两行命令，则可以查询更新后的慢查询相关设置，包括日志文件的物理位置。
-
-```
-show variables like 'long%';
-show variables like 'slow%';
-```
-
-重启服务器之后，发现以上设置又恢复到了默认状态，看来需要把这些设置写入 MySQL 的配置文件 my.ini 中才行。
-
-TODO: 具体的操作，参考官方文档的 [5.4.5 The Slow Query Log](https://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html) 这一节来做就行。后续需要继续优化业务的话，开启慢查询日志即可。
