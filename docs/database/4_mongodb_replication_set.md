@@ -5,6 +5,8 @@ title: 配置 MongoDB 复制集
 
 ## 配置 MongoDB 复制集
 
+### 配置流程
+
 1. 停止默认的 MongoDB 服务，并将其设置为手动启动。
 
 2. 执行下面的命令，用指定的配置文件将 mongod 安装为服务。
@@ -55,7 +57,7 @@ rs.add({ _id: 2, host: "192.168.8.27:27018" })
 rs.status()
 ```
 
-5. 设置固定主节点
+### 设置固定主节点
 
 如需保证主节点始终为某个节点，则需进行如下配置。
 
@@ -67,7 +69,7 @@ conf.members[0].priority = 10
 rs.reconfig(conf)
 ```
 
-5. 访问复制集
+### 访问复制集
 
 按如下流程操作，即可访问复制集中的从节点。
 
@@ -79,3 +81,10 @@ rs.secondaryOk()
 # 访问从节点的库和表
 ……
 ```
+
+### 参考资料
+
+- [实验：搭建复制集](https://gitee.com/geektime-geekbang/geektime-mongodb-course/blob/master/replicaset/lab-script.md)：极客时间 MongoDB 课程，搭建复制集的基本流程。
+- [Deploy a Replica Set](https://www.mongodb.com/docs/v4.2/tutorial/deploy-replica-set/)：MongoDB 4.2 官方文档，部署复制集的流程。
+- [mongodb复制集windows server部署](https://juejin.cn/post/7082211534260142116)：Windows 下部署 MongoDB 复制集的流程，参考了文章中将 MongoDB 用指定配置文件安装为服务的方法，来将 MongoDB 持久化。
+- [mongodb, replicates and error: { "$err" : "not master and slaveOk=false", "code" : 13435 }](https://stackoverflow.com/questions/8990158/mongodb-replicates-and-error-err-not-master-and-slaveok-false-code)：解决 MongoDB 默认无法读取复制集从库的问题。
