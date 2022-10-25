@@ -3,9 +3,7 @@ sidebar_position: 4
 title: 配置 MongoDB 复制集
 ---
 
-## 配置 MongoDB 复制集
-
-### 配置流程
+## 配置流程
 
 1. 停止默认的 MongoDB 服务，并将其设置为手动启动。
 
@@ -57,7 +55,7 @@ rs.add({ _id: 2, host: "192.168.8.27:27018" })
 rs.status()
 ```
 
-### 设置固定主节点
+## 设置固定主节点
 
 如需保证主节点始终为某个节点，则需进行如下配置。
 
@@ -69,7 +67,7 @@ conf.members[0].priority = 10
 rs.reconfig(conf)
 ```
 
-### 访问复制集
+## 访问复制集
 
 按如下流程操作，即可访问复制集中的从节点。
 
@@ -82,7 +80,7 @@ rs.secondaryOk()
 ……
 ```
 
-### 参考资料
+## 参考资料
 
 - [实验：搭建复制集](https://gitee.com/geektime-geekbang/geektime-mongodb-course/blob/master/replicaset/lab-script.md)：极客时间 MongoDB 课程，搭建复制集的基本流程。
 - [Deploy a Replica Set](https://www.mongodb.com/docs/v4.2/tutorial/deploy-replica-set/)：MongoDB 4.2 官方文档，部署复制集的流程。
