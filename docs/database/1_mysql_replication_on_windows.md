@@ -35,8 +35,6 @@ title: Windows Server 下实现 MySQL 主从复制
 
 第一行用于设置 binlog 文件的路径，第二行用于设置主库的 ID。主库和所有从库的 ID 应当互不相同。
 
-TODO: binlog 是否需要忽略 mysql 等数据库？见官方文档
-
 ```
 log-bin="D:/Logs/MySQL/BinLogs/main-bin.log"
 server-id=1
@@ -69,21 +67,17 @@ server-id=2
 innodb_flush_log_at_trx_commit=1
 sync-binlog=1
 
-# 开启下面几项可尽量减少服务不可用时间
-log-slave-updates=1
-
 # 设置从库为只读，按需开启
 # 如果被提升为主库，这一条一定要删掉
 read-only=1
 
-# 从库启动时，不自动开始主从同步
+# 从库启动时，不自动开始主从复制
 # 只有手动执行 start slave 才行
+# 配置完主从复制后禁用该项即可
 skip-slave-start
 ```
 
 确保 `my.ini` 文件中没有启用 `skip-networking` 字段。
-
-启动从库的服务。
 
 ## 主库创建专门用于主从复制的用户
 
@@ -98,7 +92,7 @@ mysql > CREATE USER 'srv-repl'@'%' IDENTIFIED BY 'slavepass';
 mysql > GRANT REPLICATION SLAVE ON *.* TO 'srv-repl'@'%';
 ```
 
-## 锁定主库并导出数据
+## 锁定主库
 
 进入主数据库的 MySQL 命令行，输入如下命令，每行命令输入完成后按回车。
 
@@ -109,61 +103,50 @@ mysql > FLUSH TABLES WITH READ LOCK;
 mysql > SHOW MASTER STATUS;
 ```
 
-记下这里 File 字段 ( main-bin.000005 ) 和 Position 字段的值 ( 13257 )，后面要用。
+记下这里 File 字段 ( main-bin.000001 ) 和 Position 字段的值 ( 1325 )，后面要用。
 
 如果这两个字段为空，则在后面用到这两个字段的地方，前者用空字符串 ''，后者用 4。
 
-在主服务器命令行中执行下面的命令，备份整个数据库。
-
-```
-# -u 和 -p 后面直接输入用户名和密码，不要加空格
-# --lock-all-tables 参数是否要加？
-mysqldump.exe -uabcd -p1234 --all-databases > dbdump.db
-```
-
-然后执行下面的 PowerShell 命令，检查 MASTER_LOG_FILE 和 MASTER_LOG_POS 的值是否存在了上面导出的 SQL 文件中：
-
-```
-Get-Content C:\dbdump.db -TotalCount 50
-```
-
-数据导出完成后，再执行下面的操作，解锁数据库，恢复写操作的权限。
-
-```
-mysql > UNLOCK TABLES;
-```
-
-## 从库配置到主库的连接
-
-> --skip-slave-start 参数可以让从库启动时不执行主从同步操作，该选项可写在命令行语句中，也可写在 MySQL 配置文件中。
-
-进入从库的 MySQL 命令行，输入如下命令，每行命令输入完成后按回车。
-
-```
-mysql> CHANGE MASTER TO
-->     MASTER_HOST='192.168.8.28',
-->     MASTER_USER='srv-repl',
-->     MASTER_PASSWORD='slavepass',
-->     MASTER_LOG_FILE='main-bin.000005',
-->     MASTER_LOG_POS=13257;
-```
-
 ## 从库导入主库数据
 
-用 CMD 执行导入数据的命令（不要用 PowerShell，因为符号 `<` 是 PowerShell 的保留关键字）。
+记得先停止从库的服务，然后将主库的数据库文件，包括 data 目录下以数据库为名的文件夹，以及 ibdata1 文件，复制到从库的 data 目录下。
 
-不管是用下面的原生命令来导入数据，还是用 Navicat 的数据传输功能来导入数据，或者是直接把数据库文件（包含 ibdata 文件）复制到从库所在服务器的目录下，都会出现主库和从库同一个数据库的同一个表，数据行数不一样的情况。
+由于主库的数据体积很大，所以没有采用从主库导出整个数据库、再导入到从库的方式。
+
+不过为了备忘，还是在这里记录一下主库导出、从库导入的流程。
 
 ```
+# 用 CMD 执行导入数据的命令（不要用 PowerShell，因为符号 `<` 是 PowerShell 的保留关键字）。
 # 进入 MySQL 命令行
 mysql -u root
 # 创建数据库
 mysql> CREATE DATABASE db1;
 # 完成后退出
 mysql> exit
-# 向数据库导入数据
+# 向数据库导入数据，不创建数据库的话，导入时会报错
 mysql -u root db1 < db1.sql
 ```
+
+## 从库配置到主库的连接
+
+执行如下命令进行配置。
+
+```
+# 登录 MySQL Shell
+mysql -uroot -p
+# 输入 root 用户的密码
+……
+# 配置主从复制相关参数
+mysql> CHANGE MASTER TO MASTER_HOST='192.168.8.28', MASTER_USER='srv-repl', MASTER_PASSWORD='slavepass', MASTER_LOG_FILE='main-bin.000001', MASTER_LOG_POS=1325;
+# 启动从库
+mysql> START SLAVE;
+# 查看主从复制状态
+mysql> SHOW SLAVE STATUS\G
+```
+
+如果 `Slave_IO_Running` 和 `Slave_SQL_Running` 这两个字段的值是 `YES`，则说明主从复制已经配置成功。
+
+如果还不放心，可以手动执行命令查询主库和从库上，各库各表的行数。
 
 ## 相关关键词及文章
 
