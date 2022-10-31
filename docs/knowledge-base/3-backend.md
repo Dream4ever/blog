@@ -11,10 +11,11 @@ title: 后端开发
 
 ### 参考链接
 
-- [expressjs/serve-static](https://github.com/expressjs/serve-static)
-- [paulwalker/connect-static-expiry](https://github.com/paulwalker/connect-static-expiry)
-- https://github.com/expressjs
-- [res.sendFile](https://expressjs.com/en/api.html#res.sendFile)
+- [res.sendFile](https://expressjs.com/en/api.html#res.sendFile)：后端实现文件下载功能
+- [pillarjs / send](https://github.com/pillarjs/send)：sendFile 实际调用的功能
+- [expressjs](https://github.com/expressjs)：Express.js 的 ORG
+- [expressjs/serve-static](https://github.com/expressjs/serve-static)：备选方案
+- [paulwalker/connect-static-expiry](https://github.com/paulwalker/connect-static-expiry)：备选方案
 
 ## Windows 下 PM2 实现持久化运行
 
