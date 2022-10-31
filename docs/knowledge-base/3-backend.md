@@ -16,6 +16,7 @@ title: 后端开发
 - [expressjs](https://github.com/expressjs)：Express.js 的 ORG
 - [expressjs/serve-static](https://github.com/expressjs/serve-static)：备选方案
 - [paulwalker/connect-static-expiry](https://github.com/paulwalker/connect-static-expiry)：备选方案
+- [如何实现付费下载功能？](https://v2ex.com/t/891301)：在 V2EX 上的求助帖
 
 ## Windows 下 PM2 实现持久化运行
 
