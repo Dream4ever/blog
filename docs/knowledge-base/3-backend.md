@@ -3,6 +3,19 @@ sidebar_position: 3
 title: 后端开发
 ---
 
+## Express.js 实现文件下载功能
+
+### 搜索关键词
+
+- `serve file`
+
+### 参考链接
+
+- [expressjs/serve-static](https://github.com/expressjs/serve-static)
+- [paulwalker/connect-static-expiry](https://github.com/paulwalker/connect-static-expiry)
+- https://github.com/expressjs
+- [res.sendFile](https://expressjs.com/en/api.html#res.sendFile)
+
 ## Windows 下 PM2 实现持久化运行
 
 新版方案：
