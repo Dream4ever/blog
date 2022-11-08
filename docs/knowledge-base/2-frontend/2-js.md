@@ -3,6 +3,36 @@ sidebar_position: 2
 title: JavaScript
 ---
 
+## 用 axios 下载后端传来的文件
+
+关键词：`axios download file`。
+
+参考方案：[How to download files using axios](https://stackoverflow.com/a/53230807/2667665)。
+
+关键代码：
+
+```js
+axios({
+    url: 'http://api.dev/file-download', //your url
+    method: 'GET',
+    responseType: 'blob', // important
+}).then((response) => {
+    // create file link in browser's memory
+    const href = URL.createObjectURL(response.data);
+
+    // create "a" HTML element with href to file & click
+    const link = document.createElement('a');
+    link.href = href;
+    link.setAttribute('download', 'file.pdf'); //or any other extension
+    document.body.appendChild(link);
+    link.click();
+
+    // clean up "a" element & remove ObjectURL
+    document.body.removeChild(link);
+    URL.revokeObjectURL(href);
+});
+```
+
 ## 点击 button 元素上传文件（不用 input 控件）
 
 关键词：`html5 button file upload`。
