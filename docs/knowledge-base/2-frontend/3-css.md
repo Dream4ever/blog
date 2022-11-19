@@ -3,6 +3,31 @@ sidebar_position: 3
 title: CSS
 ---
 
+## Variable Font/可变字体显示不同字号
+
+搜索关键词：`Variable font weight`。
+
+参考链接：
+
+- [Support font weight for variable fonts #3225](https://github.com/tailwindlabs/tailwindcss/discussions/3225)。
+- [Introduction to variable fonts on the web](https://web.dev/variable-fonts/#font-variation-settings-inheritance)。
+- [CSS font-weight numbers: how do they work?](https://stackoverflow.com/questions/35471486/css-font-weight-numbers-how-do-they-work)。
+
+代码如下，关键有几点：
+
+1. 引入可变字体，如 woff2 格式的；
+2. 设置字号范围，即下面的 `font-weight: 100 900`。
+
+```css
+@font-face {
+  font-family: 'ClashDisplay-Variable';
+  src: url('@/assets/fonts/ClashDisplay-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+```
+
 ## 文字渐变效果
 
 搜索关键词：`css text background linear gradient`。
