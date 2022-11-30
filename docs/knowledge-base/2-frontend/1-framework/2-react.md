@@ -5,7 +5,54 @@ title: React.js 相关
 
 ## React
 
+### 组件化开发
 
+#### 向被调用组件传值
+
+对于如下的 React 组件：
+
+```js
+const KanbanCard = ({ title, status }) => {
+  return (
+    <li className="kanban-card">
+      <div className="card-title">{title}</div>
+      <div className="card-status">{status}</div>
+    </li>
+  );
+};
+```
+
+可以通过下面的方式，向组件中传值：
+
+
+```js
+{ todoList.map(props => <KanbanCard {...props} />) }
+```
+
+PS：如果用 TypeScript 写 React 代码的话，就需要定义好传入组件的数据结构了。
+
+#### 子组件调动父组件
+
+对于如下定义的组件：
+
+
+```js
+const SomeComponent = ({ onEvent }) => {
+  const doSomething = () => {
+    onEvent(var1)
+  }
+}
+```
+
+在调用它的组件中，可通过如下方式触发 `onEvent` 事件：
+
+```js
+const handleEvent = (var1) => {
+  // 这里可以处理子组件传来的值，或者执行特定的操作
+}
+
+<SomeComponent onEvent={handleEvent} />
+```
 
 ## UmiJS
 
