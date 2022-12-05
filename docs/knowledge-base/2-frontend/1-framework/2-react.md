@@ -207,8 +207,33 @@ setVar1(oldValue => {
 
 在组件挂载阶段，组件内会为每一条 useState 函数的语句创建一个 state，并根据传入的值对其进行初始化。
 
-而在组件每次更新的渲染阶段，useState 函数会被再次调用，但不会再重新初始化 state，而是保证返回值的第一个变量是最新的。
+**在组件每次更新的渲染阶段，useState 函数会被再次调用**，但不会再重新初始化 state，而是保证返回值的第一个变量是最新的。
 
 ### 性能
 
-每次组件更新都会调用 useState，这样就会产生性能隐患。传入 useState 的参数是简单的内容还好，如果传入复杂的表达式，比如计算斐波那契数列的函数，那么在每次组件更新时，即使表达式的值不会被 useState 使用，但表达式本身还是会被执行的。
+每次组件更新都会调用 useState，这样就会产生性能隐患。传入 useState 的参数是简单的内容还好，如果传入复杂的表达式，比如计算斐波那契数列的函数 `useState(fibonacci(40))`，那么在每次组件更新时，即使表达式的值不会被 useState 使用，但表达式本身还是会被执行的。
+
+不过这种问题有解决办法：给 useState 传入一个函数即可：`useState(() => fibonacci(40))`，这样 useState **只在组件挂载时执行一次这个函数**，组件更新时不会再执行。
+
+### 自动批处理
+
+调用 state 更新函数后（setXXX），组件的更新是 **异步** 的，不会立刻执行。而在 React 18 中则为更新 state 加入了 **自动批处理** 功能，多个 state 更新函数的调用会被合并到一次重新渲染中。
+
+这样虽然保证了 state 变化触发渲染时的性能，但也可能导致 state 的更新函数用的不是最新的值，比如下面的代码：
+
+```js
+setShowAdd(!showAdd);
+setTodoList([...todoList, aNewTodoItem]);
+```
+
+此时如果改为传入函数参数，那就能保证 state 更新函数使用最新的 state 来计算新的 state：
+
+```js
+setShowAdd(prevState => !prevState);
+setTodoList(prevState => {
+  return [
+    ...prevState,
+    aNewTodoItem,
+  ];
+});
+```
