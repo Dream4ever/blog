@@ -203,6 +203,12 @@ setVar1(oldValue => {
 
 前者每次在渲染阶段都会执行，提交阶段如果没有变化就不会执行。而后者是一个主要用于性能优化的独立 API PureComponent：**当组件的 props 和 state 没有变化时，将跳过这次渲染，直接用上次渲染的结果**。
 
+#### useState
+
+在组件挂载阶段，组件内会为每一条 useState 函数的语句创建一个 state，并根据传入的值对其进行初始化。
+
+而在组件每次更新的渲染阶段，useState 函数会被再次调用，但不会再重新初始化 state，而是保证返回值的第一个变量是最新的。
+
 ## UmiJS
 
 ### 项目运行时报错 `AssertionError [ERR_ASSERTION]: filePath not found`
