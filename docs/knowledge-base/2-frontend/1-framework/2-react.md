@@ -44,9 +44,9 @@ HTML 元素全部小写，以便和自定义组件区分。
 ```js
 const [var1, setVar1] = useState({...})
 
-setVar1(var1 => {
+setVar1(oldValue => {
   return {
-    ...var1,
+    ...oldValue,
     newValue,
   }
 })
