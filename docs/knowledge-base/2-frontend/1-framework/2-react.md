@@ -15,7 +15,7 @@ title: React.js 相关
 
 #### 语法糖的本质
 
-在 React 中，JSX 是 `React.createElement(component, props, ...children)` 的语法糖。
+在 React 中，JSX 是 `React.createElement(type, props, ...children)` 的语法糖。
 
 比如对于代码 `<div className="card-title">{title}</div>`，`div` 就是 `type`，`className="card-title"` 就是一组 prop 的名称和值，`div` 元素里的所有内容都是 `children`。
 
