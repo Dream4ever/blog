@@ -107,7 +107,11 @@ const handleEvent = (var1) => {
 
 ### 子组件
 
-React 只有 **元素树**（FiberNode），没有 **组件树** （TODO：[这块儿没看懂](https://time.geekbang.org/column/article/561203)）。
+React 只有 **元素树**（FiberNode/Element Tree），没有 **组件树**（Component Tree） （TODO：[这块儿没看懂](https://time.geekbang.org/column/article/561203)）。
+
+这里的元素，可以是 React 组件渲染的元素，也可以是 HTML 元素，还可以是字符串。
+
+React 16 引入新的协调引擎 Fiber 之后，已经逐渐不再依赖以类（Class）为中心的实现了。元素只是节点的 POJO 描述，非常轻量，元素本身并不负责实例化类组件或调用 render 方法。在类组件的实例上，也没有 `addChild()`、`getParent()` 这样描述组件间父子关系的方法或属性，函数组件更是如此。
 
 ### 协调
 
