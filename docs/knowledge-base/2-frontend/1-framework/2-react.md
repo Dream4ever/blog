@@ -226,3 +226,11 @@ setTodoList(prevState => {
   ];
 });
 ```
+
+### useRef
+
+调用 useRef 会返回一个可变的 ref 对象。组件每次重新渲染时，同一个 useRef 返回的可变 ref 对象也会是同一个对象（和 useState 一样嘛）。
+
+可变 ref 对象有一个可读可写的 current 属性，组件重新渲染不会影响该属性，该属性的变化也不会导致组件重新渲染。
+
+而当 HTML 元素的 ref 属性值是一个可变 ref 对象时，在组件挂载阶段，HTML 元素对应的真实 DOM 创建之后，DOM 会被赋值给可变 ref 对象的 current 属性，即下面示例代码中的 `inputElem.current`；而在组件卸载，真实 DOM 销毁之前，current 属性会被设置为 null。
