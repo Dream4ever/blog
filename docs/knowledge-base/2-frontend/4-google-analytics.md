@@ -59,3 +59,13 @@ METRICS: Total users
 Google `google content group` 这组关键词，显示的文章都是基于旧版 Google 统计的，把时间范围限制为最近一年，就能够找到基于最新的 GA4 写的文章了。
 
 [How to Implement Content Group in Google Analytics 4](https://dataenthusiast.it/english-version/how-to-implement-content-group-in-google-analytics-4/) 这篇文章看起来讲得比较详细，也是搜索结果的第一条，找时间仔细研究一下，应用到出版社的各个网站上。
+
+## 统计自定义事件
+
+官方文档：
+
+- [[GA4] 自定义事件](https://support.google.com/analytics/answer/12229021?hl=zh-Hans&ref_topic=9756175)
+- [设置自定义事件](https://developers.google.com/analytics/devguides/collection/ga4/events?client_type=gtag)
+- [设置事件参数](https://developers.google.com/analytics/devguides/collection/ga4/event-parameters?client_type=gtag)
+- [[GA4] 自定义维度和指标](https://support.google.com/analytics/answer/10075209)
+- [[GA4] Google Analytics（分析）维度和指标](https://support.google.com/analytics/answer/9143382)
