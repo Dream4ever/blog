@@ -251,8 +251,68 @@ useEffect 的调用格式为：`useEffect(() => {}, [])`，第一个参数为 **
 
 **注意**：useEffect 本身是在组件每次渲染时都会被调用的。
 
+#### 依赖值数组
+
 第二个参数为 **依赖值数组**（Dependencies），React 每次渲染组件时，会记下当时的依赖值数组，下次渲染会和前一次的做 **浅对比**（Shallow Compare），如果有不同，才在提交阶段执行副作用回调函数。
 
 依赖值数组里可以加入 props、state、contenxt，一般来说，只要副作用回调函数中用到了自己范围之外的变量，都应该加入到这个数组里，这样 React 才能知道应用状态变化和副作用之间的因果关系。
 
 **空数组 [] 也是一个有效的依赖值数组**，由于它在组件生命周期中不会变化，因此只会在组件挂载时执行一次，所以可以用来执行一些初始化操作，比如调用后端接口获取数据。
+
+#### 清除函数
+
+```js
+useEffect(() => {
+  return function () {}
+  // or
+  return () => {}
+}, [])
+```
+
+useEffect 中 return 语句后面的函数为 **清除函数**，在组件于下一次提交阶段执行同一个副作用回调函数之前，或者组件即将卸载之前，会执行这个清除函数。
+
+useLayoutEffect 与 useEffect 类似，但前者是同步函数而不是异步函数，可能会导致阻塞，建议尽量使用 useEffect。
+
+### 性能优化 hooks
+
+#### 记忆化 Memoization
+
+定义：对于计算量大的函数，通过缓存它的返回值来节省计算时间，提升程序执行速度。
+
+对于记忆化函数的调用者而言，存入缓存这件事本身就是一种副作用。useMemo 和 useCallback 做性能优化的原理就是记忆化，所以它们和 useEffect 一样，都是在处理副作用。
+
+#### useMemo
+
+```js
+const memorized = useMemo(() => heavyComputingFunction(a, b), [a, b])
+```
+
+useMemo 接收的第一个参数为工厂函数，第二个参数和 useEffect 一样为依赖值数组，返回值也是 useMemo 本身的用处：缓存工厂函数当前的计算结果。
+
+只有当依赖值数组中的值发生变化时，useMemo 才会重新计算。
+
+对于工厂函数执行成本比较高的情况，比如计算斐波那契数列，就很适合用 useMemo 来缓存每一次的计算结果。
+
+#### useCallback
+
+```js
+const memorizedFunction = useCallback(() => {}, [a, b])
+```
+
+作为 useCallback 第一个参数的回调函数会被返回给组件，只要第二个参数依赖值数组不发生变化，就会始终返回同一个回调函数（闭包）。
+
+其实 useCallback 是 useMemo 的马甲，用 useMemo 重写上面 useCallback 的格式如下：
+
+```js
+const memorizedFunction = useMemo(() => () => {}, [a, b])
+```
+
+上面的 `() => () => {}` 就是 useMemo 的工厂函数。如果这样看的话，工厂函数直接返回另一个函数的操作也不算重，那么 useCallback 又是如何优化性能的呢？
+
+想想之前提到的纯组件：props 和 state 没有变化时不会重新渲染。而在函数组件中声明的事件处理函数，在每次渲染时都会创建一个新函数。
+
+如果把这个函数作为 props 传给作为子组件的纯组件的话，就会导致纯组件的优化无效。而此时如果合理使用 useCallback 的话，就能够避免纯组件频繁渲染，从而实现优化性能的目的。
+
+### Hooks 使用规则
+
+只能在函数组件中调用 Hooks，只有“勾”住了 React 的虚拟 DOM，Hooks 才能生效。
