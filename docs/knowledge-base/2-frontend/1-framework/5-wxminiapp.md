@@ -3,6 +3,10 @@ sidebar_position: 5
 title: 微信小程序开发
 ---
 
+## reachBottom 事件无法触发
+
+只有页面根元素高度大于屏幕高度（100vh）时，才能触发 reachBottom 事件。否则页面和屏幕一样高，是无法触发该事件的。
+
 ## 拦截物理返回
 
 参考链接：[如何实现小程序物理返回拦截？](https://developers.weixin.qq.com/community/develop/doc/0006ec3db6cc98e9367a4f67751800)。
