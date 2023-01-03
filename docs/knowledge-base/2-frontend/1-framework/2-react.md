@@ -326,3 +326,23 @@ const memorizedFunction = useMemo(() => () => {}, [a, b])
 这也说明了为什么一个 useState 每次渲染返回的 state 更新函数都是同一个函数（引用），useEffect 也是通过这个 Hook 状态来比对依赖值数组在两次渲染之间是否有更改。
 
 如果没有这个限制，如果没有记录 Hooks 状态的单向链表，那么在函数组件每次渲染时，就难以确定每个 Hook 是否有变化了。
+
+## 事件处理
+
+### React 合成事件
+
+合成事件是原生 DOM 事件的一种包装，它**和原生事件的接口相同**，并且 React 内部**规范（normalize）了这些接口在不同浏览器中的行为**。
+
+1. React 合成事件属性要用驼峰格式（camelCase）来写，比如 `onClick`、`onKeyDown`。
+2. 在 JSX 中使用合成事件时，要传入函数，而不是字符串，比如 `onClick={handleClick}`、`onKeyDown={evt => handleKeyDown(evt)}`。
+3. 如果要以捕获方式监听事件的话，需要在事件属性后加上 `Capture`，比如 `onClickCapture={handleClick}`。
+4. `onChange` 之类的事件（`onBeforeInput`、`onMouseEnter`、`onMouseLeave`、`onSelect`），React 在不会导致显示抖动的前提下，表单元素值的改变会尽可能及时地触发这一事件。
+5. **事件代理模式**：React 在创建根的时候（createRoot），会在根容器上监听所有自己支持的原生 DOM 事件。当原生事件被触发时，React 会根据事件的类型和目标元素，找到对应的 FiberNode 和事件处理函数，创建相应的合成事件并调用事件处理函数。如果查看某个子元素上合成事件的 `evt.nativeEvent.currentTarget` 属性，就会发现它的值是 React 的根元素 `<div id="root"></div>`。
+
+### 受控组件与表单
+
+在 React 中处理表单输入时，比如 `input` 元素，一般是在 `onChange` 合成事件相关联的 `handleChange(evt)` 函数中对输入内容（`evt.target.value`）进行处理，然后将其保存在组件 state `text` 中，并将 `input` 元素的 `value` 属性绑定到 `text` 上。这样 state 一变化就会让组件重新渲染，`input` 元素的当前值就会更新成 `text` 的值。
+
+这种**以 React state 为单一事实来源（Single Source of Truth），并用 React 合成事件处理用户交互的组件，被称为“受控组件”**。
+
+大部分表单元素，包括单选框、多选框、下拉框等，都可以做成受控组件。
