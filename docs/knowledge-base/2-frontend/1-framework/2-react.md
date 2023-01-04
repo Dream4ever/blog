@@ -346,3 +346,20 @@ const memorizedFunction = useMemo(() => () => {}, [a, b])
 这种**以 React state 为单一事实来源（Single Source of Truth），并用 React 合成事件处理用户交互的组件，被称为“受控组件”**。
 
 大部分表单元素，包括单选框、多选框、下拉框等，都可以做成受控组件。
+
+### 需要使用原生 DOM 事件的场景
+
+1. 需要监听 React 组件树之外的 DOM 节点的事件时，包括 window 和 document 对象的事件。
+
+**注意**：在 React 组件里监听原生 DOM 事件，属于典型的副作用，所以务必要在 useEffect 中监听，并在其清除函数中及时取消监听，示例代码如下。
+
+```js
+useEffect(() => {
+  window.addEventListener('resize', handleResize)
+
+  return function cleanUp() {
+    window.removeEventListener('resize', handleResize)
+  }
+}, [])
+```
+2. 第三方框架，尤其是与 React 异构的框架，在运行时会生成额外的 DOM 节点。在 React 应用中整合这类框架时，常会有非 React 的 DOM 侵入 React 渲染的 DOM 树。需要监听这类框架的事件时，也需要监听原生 DOM 事件。这同样也需要在 useEffect 或者 useLayoutEffect 中进行处理。
