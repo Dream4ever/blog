@@ -429,3 +429,41 @@ Props 是从父组件传给子组件的数据，而一个组件也可以拥有 *
 对于对象、数组、函数而言，判断的是引用是否相同，而不是值是否相同。所以在 React 中更新这类数据时，需要新建对象或数组，才能让组件认为 state 发生了变化。
 
 **注意**：如果希望由子组件或后代组件修改 state，需要将对应的 state 更新函数包在另一个函数中，然后将函数以 props 或 context 的形式传给子组件或后代组件。
+
+#### Context
+
+Context 用于跨越多个组件层次结构，向后代组件传递和共享“全局”数据。
+
+其具体用法如下：
+
+```js
+// 1. 创建 Context 对象
+const MyContext = React.createContext(defaultValue);
+
+// 2. 在父级组件中使用 Provider 组件，将数据传递给后代组件
+<MyContext.Provider value={/* some value */}>
+  {children}
+</MyContext.Provider>
+
+// 3. 在后代组件中使用 useContext() hook，读取数据
+const value = useContext(MyContext);
+```
+
+`MyContext.Provider` 是可以嵌套使用的，也就是说，可以在一个组件中使用多个 `MyContext.Provider`，后代组件则是读取祖先节点中最近的 `MyContext.Provider` 中的数据。
+
+`MyContext.Provider` 的 `value` 属性可以传入对象，但要避免在组件重新渲染时反复创建新的对象。要想避免这个问题，可以用 `useState` 或 `useMemo` 来解决。
+
+```js
+// 1. useState 写法
+const [obj, setObj] = useState({ key: 'value' });
+
+return (
+  <MyContext.Provider value={obj}>
+    {children}
+  </MyContext.Provider>
+);
+
+// 2. useMemo 写法
+const [state1, setState1] = useState('value1');
+const obj = useMemo(() => ({ key: state1 }), [state1]);
+```
