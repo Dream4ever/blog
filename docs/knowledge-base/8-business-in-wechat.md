@@ -3,6 +3,29 @@ sidebar_position: 8
 title: 微信内业务开发
 ---
 
+## 微信内网页
+
+### 阻止微信内置浏览器（webview）缩放字体
+
+iOS 中需要通过 CSS 实现该需求：
+
+```css
+body {
+  -webkit-text-size-adjust: none !important;
+  text-size-adjust: none !important;
+}
+```
+
+Android 中则需要通过 JS 实现该需求：
+
+```js
+document.addEventListener("WeixinJSBridgeReady", function () {
+  WeixinJSBridge.invoke("setFontSizeCallback", {
+    fontSize: '2'
+  })
+}, false)
+```
+
 ## 微信公众号
 
 ### 编程方式实现公众号菜单
