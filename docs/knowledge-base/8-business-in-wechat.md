@@ -5,6 +5,88 @@ title: 微信内业务开发
 
 ## 微信内网页
 
+### 自定义微信和QQ分享链接的卡片样式
+
+#### 代码
+
+在 HTML 中引入微信和 QQ 的 JS-SDK。
+
+```html
+<script src="//res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+<script src="//qzonestyle.gtimg.cn/qzone/qzact/common/share/share.js"></script>
+```
+
+然后执行下面两个函数，就可以自定义 QQ 和微信的分享卡片的样式了。
+
+注意，下面的 `wxApi` 是后端用于对微信 API 进行签名的接口，相关信息见 [附录1-JS-SDK使用权限签名算法](https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html#62)。
+
+```js
+// 自定义 QQ 分享卡片样式
+function setQQShareCard(shareData) {
+  setShareInfo({
+    title: shareData.msgShareTitle,
+    summary: shareData.desc,
+    pic: shareData.imgUrl,
+    url: window.location.href.split('#')[0],
+  })
+}
+
+// 自定义微信分享卡片样式
+function setWXShareCard(shareData) {
+  var wxApi = 'https://generate.wechat.jssdk.signature'
+
+  axios.post(wxApi, {
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded',
+      'Accept': 'application/json'
+    },
+    data: {
+      url: encodeURIComponent(window.location.href),
+    },
+  })
+    .then(function (res) {
+      // 注入权限验证配置
+      wx.config({
+        debug: false,
+        appId: res.data.appId,
+        timestamp: res.data.timestamp,
+        nonceStr: res.data.nonceStr,
+        signature: res.data.signature,
+        jsApiList: [
+          'updateAppMessageShareData',
+          'updateTimelineShareData',
+        ],
+      })
+      wx.ready(function () {
+        // 自定义分享给微信/QQ 好友的卡片样式
+        // 但是 QQ 好友卡片样式好像不受此设置影响
+        wx.updateAppMessageShareData({
+          title: shareData.msgShareTitle,
+          desc: shareData.desc,
+          link: shareData.link,
+          imgUrl: shareData.imgUrl,
+        })
+        // 自定义分享到朋友圈/QQ 空间的卡片样式
+        // 但是 QQ 空间卡片样式好像不受此设置影响
+        wx.updateTimelineShareData({
+          title: shareData.tlShareTitle,
+          link: shareData.link,
+          imgUrl: shareData.imgUrl,
+        })
+      })
+      wx.error(function (res) {})
+    })
+    .catch(function (error) {})
+}
+```
+
+#### 参考链接
+
+- [微信网页开发 /JS-SDK说明文档](https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html)：介绍微信中分享给朋友/朋友圈所需的 JS-SDK 的引入、权限验证配置及分享卡片的自定义
+- [自定义QQ和微信分享卡片](https://juejin.cn/post/6905961701514936334)：微信分享在官方文档中已解决，这篇文章所说的自定义 QQ 分享的方法只有部分字段起作用
+- [setShareInfo | 手机 QQ 接口文档](https://open.mobile.qq.com/api/mqq/index#api:setShareInfo)：腾讯官方文档，从自己在石墨文档中一篇比较老的笔记里翻出来的，也是只有部分字段起作用
+- [对外分享组件接口文档 | 手机 QQ](https://open.mobile.qq.com/api/component/share)：这篇文档是可以完全起作用的
+
 ### 阻止微信内置浏览器（webview）缩放字体
 
 iOS 中需要通过 CSS 实现该需求：
