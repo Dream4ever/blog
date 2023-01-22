@@ -108,7 +108,7 @@ document.addEventListener("WeixinJSBridgeReady", function () {
 }, false)
 ```
 
-### 参考资料
+#### 参考资料
 
 - [移动端字体放大问题的研究](https://juejin.cn/post/6844903507061932040)：介绍了 iOS 系统、Android 系统和 Android 微信分别是如何修改默认字号的，以及该如何解决。
 - [关于微信安卓端网页字体适配的通知](https://developers.weixin.qq.com/community/develop/doc/000a26b86948f8743cb9a6da951409)：微信官方通知，给出了用户该如何设置网页为默认字号的示例代码。
