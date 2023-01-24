@@ -116,6 +116,95 @@ document.addEventListener("WeixinJSBridgeReady", function () {
 
 ## 微信公众号
 
+### 微信内网页授权获取用户信息
+
+#### 注意
+
+> 对于已关注公众号的用户，如果用户从公众号的会话或者自定义菜单进入本公众号的网页授权页，即使是 scope 为 snsapi_userinfo，也是静默授权，用户无感知。
+
+经过实际测试，对于已关注公众号的用户，通过公众号会话或自定义菜单，进入该公众号的网页授权页时，会短暂显示一个“正在登录中”的 toast，然后就能获取到下面所列出的用户基本信息了。
+
+#### 功能说明
+
+官方文档：[网页授权 | 微信网页开发](https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html)。
+
+该功能用于获取微信用户的昵称、性别、国家、省份、城市、头像 URL 等信息。
+
+#### 整体流程
+
+##### 前端获取用户授权
+
+公众号内的前端页面将用户定向至微信 URL：
+
+`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${encodedURIComponent(REDIRECT_URI)}&response_type=code&scope=snsapi_userinfo&state=${CUSTOM_STATE}#wechat_redirect`
+
+注意，是直接让用户 **在浏览器的前端页面中** 访问该 URL，不要用 axios 之类的库将该 URL 作为 API 调用，不管是在前端还是在后端调用都不行，会出错。
+
+然后微信会给用户展示如下内容，告知用户当前网页申请获取用户基本信息。
+
+![image](https://user-images.githubusercontent.com/2596367/123397349-e6fc2780-d5d4-11eb-9eeb-7a9c09886068.png)
+
+如用户允许获取，微信就会将用户定向至开发者所指定的重定向 URL：
+
+`${REDIRECT_URI}/?code=${CODE}&state=${CUSTOM_STATE}`
+
+##### 后端用 code 换 openid、access_token
+
+**后端**根据重定向 URL 中的 code，调用下面的 API，换取 openid、网页授权 access_token 及其他信息：
+
+`https://api.weixin.qq.com/sns/oauth2/access_token?appid=${APPID}&secret=${SECRET}&code=${CODE}&grant_type=authorization_code`
+
+该 API 不能在前端调用，不然会泄露 `secret`。
+
+请求成功时，响应结果如下：
+
+```json
+{
+  "access_token":"ACCESS_TOKEN",
+  "expires_in":7200,
+  "refresh_token":"REFRESH_TOKEN",
+  "openid":"OPENID",
+  "scope":"snsapi_base"
+}
+```
+
+##### 获取用户基本信息
+
+上一步拿到用户的 openid 和 access_token 之后，**后端**就可以用它们来获取用户基本信息了：
+
+`https://api.weixin.qq.com/sns/userinfo?access_token=${ACCESS_TOKEN}&openid=${OPENID}&lang=zh_CN`
+
+请求成功时，响应结果格式如下：
+
+```json
+{   
+  "openid": "OPENID",
+  "nickname": "NICKNAME",
+  "sex": 1,
+  "province":"PROVINCE",
+  "city":"CITY",
+  "country":"COUNTRY",
+  "headimgurl":"https://thirdwx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46",
+  "privilege":[ "PRIVILEGE1" "PRIVILEGE2"     ],
+  "unionid": "o6_bmasdasdsad6_2sgVt7hMZOPfL"
+}
+```
+
+拿到用户基本信息之后，就可以将必要的信息保存在数据库中，同时返回给前端，以便使用。
+
+#### 类似功能
+
+[微信内网页静默获取 OpenID](https://github.com/Dream4ever/Knowledge-Base/issues/156)：两者整体流程相同，主要区别有下面几点：
+
+1. 调用微信服务时所传的参数不同。微信内网页静默获取 OpenID 时，`scope` 字段的值为 `snsapi_base`。而在获取用户基本信息时，`scope` 字段的值则为 `snsapi_userinfo`。
+2. 用 `code` 拿到用户的 OpenID 之后，如果需要获取用户信息，则还需要再调用微信的一个 API。不需要的话，就可以结束了。
+
+#### 可能要踩的坑
+
+- [微信网页授权+分享踩过的坑](https://segmentfault.com/a/1190000019031655)
+- [网页授权，当用户进入一个已经授权过的页面如何能不提示“近期已授权“直接进入回调](https://developers.weixin.qq.com/community/develop/doc/00024277d8c04888aa583bba256c00)
+
+
 ### 微信内网页静默获取 OpenID
 
 在将公司业务接入微信支付，调用微信支付 API 的统一下单接口时，需要用户的 OpenID 来生成预支付订单信息。而只是获取 OpenID 的话，不需要用户主动授权，直接静默授权就可以，具体流程如下。
