@@ -116,6 +116,64 @@ document.addEventListener("WeixinJSBridgeReady", function () {
 
 ## 微信公众号
 
+### 微信内网页静默获取 OpenID
+
+在将公司业务接入微信支付，调用微信支付 API 的统一下单接口时，需要用户的 OpenID 来生成预支付订单信息。而只是获取 OpenID 的话，不需要用户主动授权，直接静默授权就可以，具体流程如下。
+
+#### 流程梳理
+
+官方文档：[微信网页开发 - 网页授权](https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html)
+
+关键流程如下：
+
+#### 访问微信 URL
+
+公众号内的**前端**页面将用户定向至微信 URL：
+`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${encodedURIComponent(REDIRECT_URI)}&response_type=code&scope=snsapi_base&state=${CUSTOM_STATE}#wechat_redirect`
+
+注意，是直接让用户 **在浏览器的前端页面中** 访问该 URL，不要用 axios 之类的库将该 URL 作为 API 调用，不管是在前端还是在后端调用都不行，会出错。
+
+然后微信会将用户定向至开发者所指定的重定向 URL：
+`${REDIRECT_URI}/?code=${CODE}&state=${CUSTOM_STATE}`
+
+#### 用 code 换 openid、access_token
+
+**后端**根据重定向 URL 中的 code，调用下面的 API，换取 openid、网页授权 access_token 及其他信息：
+
+`https://api.weixin.qq.com/sns/oauth2/access_token?appid=${APPID}&secret=${SECRET}&code=${CODE}&grant_type=authorization_code`
+
+该 API 不能在前端调用，不然会泄露 `secret`。
+
+请求成功时，响应结果如下：
+
+```json
+{
+  "access_token":"ACCESS_TOKEN",
+  "expires_in":7200,
+  "refresh_token":"REFRESH_TOKEN",
+  "openid":"OPENID",
+  "scope":"snsapi_base"
+}
+```
+
+#### 调用脚手架实现
+
+TNWX 文档链接：[授权获取用户信息](https://javen205.gitee.io/tnwx/guide/wxmp/oauth.html)
+
+需要用户发起支付请求的前端页面，调用脚手架 API `toAuth`，会将用户定向至 API `auth`，该 API 会返回 `access_token`、`openid` 等信息。
+
+但是在实际操作中，调用脚手架未成功，查看后台报错信息，似乎跟代码逻辑不完善有关，于是手动通过 axios 来获取 OpenID，代码也很简单。
+
+#### 已关注用户 vs 未关注用户
+
+用自己的微信账号测试，未关注公众号时，按照上面流程所获取到的 OpenID，和关注公众号之后，按照同样流程获取到的 OpenID 是相同的。
+
+如果这是微信默认的行为的话，那就先不用管用户是否关注公众号了，因为是同一个 OpenID。
+
+#### 类似功能
+
+[微信内网页授权获取用户信息](https://github.com/Dream4ever/Knowledge-Base/issues/157)
+
 ### 编程方式实现公众号菜单
 
 #### 实现“点击菜单跳转至 URL”功能
