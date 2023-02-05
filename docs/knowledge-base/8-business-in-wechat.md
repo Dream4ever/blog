@@ -1,6 +1,6 @@
 ---
 sidebar_position: 8
-title: 微信内业务开发
+title: 微信/QQ内业务开发
 ---
 
 ## 公司接入微信支付功能
@@ -473,6 +473,23 @@ document.addEventListener("WeixinJSBridgeReady", function () {
 - [移动端字体放大问题的研究](https://juejin.cn/post/6844903507061932040)：介绍了 iOS 系统、Android 系统和 Android 微信分别是如何修改默认字号的，以及该如何解决。
 - [关于微信安卓端网页字体适配的通知](https://developers.weixin.qq.com/community/develop/doc/000a26b86948f8743cb9a6da951409)：微信官方通知，给出了用户该如何设置网页为默认字号的示例代码。
 - [Wechat Dev Notes #30](https://github.com/leoyoung07/blog/issues/30)：介绍了 Android 设置 Webview 默认字号时可能出现的问题。
+
+### 禁止 X5 浏览器（手Q/微信）播放完视频后推荐相关内容
+
+#### 解决方法
+
+在 video 标签中加上这么一条参数即可：
+
+```
+mtt-playsinline="true"
+```
+
+#### 信息来源
+
+《[复杂帧动画之移动端video采坑实现](https://juejin.im/post/5d513623e51d453b72147600)》提到了解决方法：
+
+> 这个 video 我是设置了循环播放的，硬生生 QQ 浏览器就在视频播放完毕后展示推荐视频，并且停止了我的循环播放，这让我的页面显的有点 low， 这明显是不仁道的，尝试无果之后，于是我咨询 QQ 浏览器的同事帮忙这个问题， 他让我在 video 标签上加上这个属性，即可使用系统播放器，而拒绝被拦截植入推荐视屏， 感谢@eddiecmchen 提供的意见
+> mtt-playsinline="true"
 
 ## 微信公众号
 
