@@ -3,7 +3,11 @@ sidebar_position: 6
 title: Nuxt.js 相关
 ---
 
+## 配置环境变量
+
 ## 配置项目基础路径
+
+> 参考资料：[base - The router property](https://nuxtjs.org/docs/configuration-glossary/configuration-router#base)
 
 在默认配置下，Nuxt.js 的基础路由路径是 `/`，假设其部署在 `www.abc.com` 域名下，则 URL 就是 `www.abc.com/`。
 
