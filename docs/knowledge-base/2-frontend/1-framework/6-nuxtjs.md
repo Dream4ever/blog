@@ -3,6 +3,18 @@ sidebar_position: 6
 title: Nuxt.js 相关
 ---
 
+## 配置项目基础路径
+
+在默认配置下，Nuxt.js 的基础路由路径是 `/`，假设其部署在 `www.abc.com` 域名下，则 URL 就是 `www.abc.com/`。
+
+如果要设置为子路径，比如 `app2`，则需要在 `nuxt.config.js` 中添加下面几行，这样就可以用URL `www.abc.com/app2` 来访问。
+
+```js
+router: {
+  base: '/tspt_v2/',
+},
+```
+
 ## 项目初始化后运行报错
 
 报错信息为：`Nuxt Fatal Error TypeError: Cannot destructure property 'nuxt' of 'this' as it is undefined.`。
