@@ -30,9 +30,11 @@ export default {
 ```js
 // nuxt.config.js
 
-router: {
-  base: '/tspt_v2/',
-},
+export default {
+  router: {
+    base: '/app/'
+  }
+}
 ```
 
 ## 项目初始化后运行报错
