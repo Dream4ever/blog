@@ -3,7 +3,9 @@ sidebar_position: 3
 title: Nuxt.js 相关
 ---
 
-## 配置环境变量
+## 环境配置
+
+### 配置环境变量
 
 > 参考资料：[The env property](https://nuxtjs.org/docs/configuration-glossary/configuration-env#the-env-property)
 
@@ -19,7 +21,7 @@ export default {
 }
 ```
 
-## 配置项目基础路径
+### 配置项目基础路径
 
 > 参考资料：[base - The router property](https://nuxtjs.org/docs/configuration-glossary/configuration-router#base)
 
@@ -37,7 +39,15 @@ export default {
 }
 ```
 
-## 项目初始化后运行报错
+## 错误排查
+
+### 项目 dev 时 build 报错 EPERM: operation not permitted, mkdir '**\.nuxt\components'
+
+解决方案：['EPERM: operation not permitted' error when building Nuxt app](https://stackoverflow.com/questions/56448815/eperm-operation-not-permitted-error-when-building-nuxt-app)。
+
+具体操作：先停止 dev 状态，然后再 build，就不会报错了。
+
+### 项目初始化后运行报错 TypeError: Cannot destructure property 'nuxt' of 'this' as it is undefined
 
 报错信息为：`Nuxt Fatal Error TypeError: Cannot destructure property 'nuxt' of 'this' as it is undefined.`。
 
