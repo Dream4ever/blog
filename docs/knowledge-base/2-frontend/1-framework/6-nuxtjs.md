@@ -5,15 +5,31 @@ title: Nuxt.js 相关
 
 ## 配置环境变量
 
+> 参考资料：[The env property](https://nuxtjs.org/docs/configuration-glossary/configuration-env#the-env-property)
+
+如果需要添加一些项目中通用的环境变量，比如 CDN 文件的通用基础 URL，按照如下方式进行配置即可：
+
+```js
+// nuxt.config.js
+
+export default {
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+  }
+}
+```
+
 ## 配置项目基础路径
 
 > 参考资料：[base - The router property](https://nuxtjs.org/docs/configuration-glossary/configuration-router#base)
 
 在默认配置下，Nuxt.js 的基础路由路径是 `/`，假设其部署在 `www.abc.com` 域名下，则 URL 就是 `www.abc.com/`。
 
-如果要设置为子路径，比如 `app2`，则需要在 `nuxt.config.js` 中添加下面几行，这样就可以用URL `www.abc.com/app2` 来访问。
+如果要设置为子路径，比如 `app2`，则按照下面的方式配置，就可以用 URL `www.abc.com/app2` 来访问。
 
 ```js
+// nuxt.config.js
+
 router: {
   base: '/tspt_v2/',
 },
