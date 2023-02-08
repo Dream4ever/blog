@@ -16,6 +16,6 @@ title: PDF.js 相关
 
 搜索上面问题，也没找到解决方案。
 
-然后用 `iOS+QQ+pdf.js` 搜索，发现在微信开发者社区有用户反映同样的问题，并且将 PDF.js 版本降低至 v2.x（x 为个位数）时问题解决。
+然后用 `iOS+QQ+pdf.js` 搜索，发现在微信开发者社区有用户反映同样的问题：[使用pdfjs插件预览文件显示空白？](https://developers.weixin.qq.com/community/develop/doc/000cc8990307780f4d9bf2a3b51000)，并且将 PDF.js 版本降低至 v2.x（x 为个位数）时问题解决。
 
 于是下载了 PDF.js v2.x各个版本，发现等于或低于 v2.9.359 版本的 PDF.js 都不会有上面所说的问题。
