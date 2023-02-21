@@ -21,7 +21,9 @@ title: Docker 网络
 
 关键词：`nginx in docker proxy_pass network`。
 
-参考链接：[How to NGINX Reverse Proxy outside of Docker to proxy_pass to docker containers](https://stackoverflow.com/questions/52823279/how-to-nginx-reverse-proxy-outside-of-docker-to-proxy-pass-to-docker-containers)。
+参考链接：
+
+- [How to NGINX Reverse Proxy outside of Docker to proxy_pass to docker containers](https://stackoverflow.com/questions/52823279/how-to-nginx-reverse-proxy-outside-of-docker-to-proxy-pass-to-docker-containers)。
 
 步骤：
 
@@ -71,7 +73,10 @@ server {
   ...
 
   location /seafile {
-     proxy_pass http://外网IP:服务端口;
+      proxy_pass http://外网IP:服务端口;
+      proxy_set_header  Host  $http_host;
+      proxy_set_header  X-Real-IP  $remote_addr;
+      proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
   }
 }
 ```
