@@ -23,7 +23,8 @@ title: Docker 网络
 
 参考链接：
 
-- [How to NGINX Reverse Proxy outside of Docker to proxy_pass to docker containers](https://stackoverflow.com/questions/52823279/how-to-nginx-reverse-proxy-outside-of-docker-to-proxy-pass-to-docker-containers)。
+- [How to NGINX Reverse Proxy outside of Docker to proxy_pass to docker containers](https://stackoverflow.com/questions/52823279/how-to-nginx-reverse-proxy-outside-of-docker-to-proxy-pass-to-docker-containers)
+- [使用 nginx 反向代理多个 docker 容器](https://segmentfault.com/a/1190000019004994)
 
 步骤：
 
