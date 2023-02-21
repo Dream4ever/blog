@@ -16,3 +16,62 @@ title: Docker 网络
 ## 容器互联
 
 查看官方文档可知，该功能未来将会从 Docker 中被移除，因此官方建议不要再使用该功能。
+
+## 容器中的 NGINX 将外部请求反代至其他容器
+
+关键词：`nginx in docker proxy_pass network`。
+
+参考链接：[How to NGINX Reverse Proxy outside of Docker to proxy_pass to docker containers](https://stackoverflow.com/questions/52823279/how-to-nginx-reverse-proxy-outside-of-docker-to-proxy-pass-to-docker-containers)。
+
+步骤：
+
+1. 创建 docker 内的网络 nginx.docker：
+
+```sh
+docker network create --driver=bridge --subnet=192.168.100.0/24 nginx.docker
+```
+
+2. 在各个容器的 `docker-compose.yml` 文件中设置容器网络。
+
+nginx 的 `docker-compose.yml`：
+
+```
+services:
+nginx:
+  ...
+  networks:
+    - nginx.docker
+
+networks:
+  nginx.docker:
+    name: nginx.docker
+    external: true
+```
+
+其他容器的 `docker-compose.yml`：
+
+```
+services:
+seafile:
+  ...
+  networks:
+    - nginx.docker
+
+networks:
+  nginx.docker:
+    name: nginx.docker
+    external: true
+```
+
+3. 在 nginx 的配置文件中设置反向代理：
+
+```
+server {
+  listen 80;
+  ...
+
+  location /seafile {
+     proxy_pass http://外网IP:服务端口;
+  }
+}
+```
