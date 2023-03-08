@@ -3,7 +3,7 @@ sidebar_position: 10
 title: 在 VSCode 中使用 Vim
 ---
 
-## 关键知识
+## 移动光标
 
 ### Nouns (Motions)
 
@@ -53,6 +53,30 @@ T    在本行内，从光标处往前定位至指定字符的前一个字符
 ,    以相反的方向，重复上一次定位
 ```
 
+### VSCode Vim 扩展中的 Easymotion 插件
+
+有了 Easymotion 插件，就可以快速定位到文件中任意单词的开头/结尾处，也可以快速定位到文件中指定字符的任意位置。
+
+下面的 `<leader>` 表示 `\` 按键。
+
+```
+<leader><leader>w       单词的开头，向后查找
+<leader><leader>b       单词的开头，向前查找
+<leader><leader>bdw     单词的开头，全文查找，但是实际使用时该快捷键不起作用
+<leader><leader>e       单词的结尾，向后查找
+<leader><leader>ge      单词的结尾，向前查找
+<leader><leader>bdw     单词的结尾，全文查找，但是实际使用时该快捷键不起作用
+<leader><leader>j       行首，向后查找
+<leader><leader>k       行首，向前查找
+<leader><leader>f{char}	指定字符，向后查找
+<leader><leader>F{char}	指定字符，向前查找
+<leader><leader>t{char}	指定字符的前一个字符，向后查找
+<leader><leader>T{char}	指定字符的前一个字符，向前查找
+<leader><leader>s{char}	指定字符的前一个字符，全文查找
+```
+
+## 编辑文本
+
 ### Verbs (Operators)
 
 ```
@@ -81,6 +105,14 @@ t         XML 标签
 '         一对单引号 ' '
 `         一对 ` `
 ```
+
+### 在 VSCode 和其他程序之间复制文本
+
+如果在 VSCode 扩展 Vim 中启用了 `Use System Clipboard` 这个选项，那么在 Vim 中复制的内容就会进入操作系统的剪贴板，这样在其他程序中就可以直接粘贴了；并且在其他程序中复制的内容也可以直接在 VSCode 里面粘贴了。
+
+如果没有开启上面的选项，那么在执行操作时，需要加上 `"*` 或者 `"+` 前缀。比如在 VSCode 中复制一行内容时，执行 `"*yy` 命令，在其他程序中就可以粘贴了；而在其他程序中复制时，在 VSCode 中执行 `"*p` 命令，就可以把复制的内容粘贴过来了。
+
+## 其他
 
 ### 相对行号
 
