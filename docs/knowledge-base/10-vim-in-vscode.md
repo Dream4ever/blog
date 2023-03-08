@@ -75,6 +75,8 @@ T    在本行内，从光标处往前定位至指定字符的前一个字符
 <leader><leader>s{char}	指定字符的前一个字符，全文查找
 ```
 
+- 参考：[MOVING EVEN FASTER WITH VIM SURROUND AND EASYMOTION](https://www.barbarianmeetscoding.com/boost-your-coding-fu-with-vscode-and-vim/moving-even-faster-with-vim-sneak-and-easymotion/)
+
 ## 编辑文本
 
 ### Verbs (Operators)
