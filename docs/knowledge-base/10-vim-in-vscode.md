@@ -7,8 +7,6 @@ title: 在 VSCode 中使用 Vim
 
 ### Nouns (Motions)
 
-移动光标的操作：
-
 ```
 h    向左一个字符
 l    向右一个字符
@@ -21,9 +19,20 @@ w    移动到下一个单词的开头
 $    移动到行末
 ```
 
-### Verbs (Operators)
+### Word Navigation
 
-操作符：
+```
+w     移动到下一个 word 的开头
+W     移动到下一个 WORD 的开头
+e     移动到下一个 word 的结尾
+E     移动到下一个 WORD 的结尾
+b     移动到上一个 word 的开头
+B     移动到上一个 WORD 的开头
+ge    移动到上一个 word 的结尾
+gE    移动到上一个 WORD 的结尾
+```
+
+### Verbs (Operators)
 
 ```
 y    复制文字
