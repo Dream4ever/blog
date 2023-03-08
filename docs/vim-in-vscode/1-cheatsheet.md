@@ -41,6 +41,8 @@ ge    移动到上一个 word 的结尾
 gE    移动到上一个 WORD 的结尾
 ```
 
+- [ch05_moving_in_file.md#word-navigation](https://github.com/iggredible/Learn-Vim/blob/master/ch05_moving_in_file.md#word-navigation)
+
 ### Current Line Navigation | 行内的移动
 
 ```
@@ -59,6 +61,8 @@ T    在本行内，从光标处往前定位至指定字符的前一个字符
 ;    以相同的方向，重复上一次定位
 ,    以相反的方向，重复上一次定位
 ```
+
+- [ch05_moving_in_file.md#current-line-navigation](https://github.com/iggredible/Learn-Vim/blob/master/ch05_moving_in_file.md#current-line-navigation)
 
 ### Easymotion
 
@@ -132,3 +136,5 @@ t         XML 标签
 注意：在 VSCode 中首次打开某个文件时，需要先进入一次 Insert 模式再退出到普通模式，在该文件中的相对行号功能才会启用。
 
 对于每个文件，都需要做一次这样的操作，才能开启相对行号功能。
+
+- [ch05_moving_in_file.md#relative-numbering](https://github.com/iggredible/Learn-Vim/blob/master/ch05_moving_in_file.md#relative-numbering)
