@@ -21,6 +21,8 @@ $    移动到行末
 
 ### Word Navigation
 
+word 与 WORD 的区别：word 只包含 `a-zA-Z0-9_` 这些最常见的字符，WORD 则包含空白字符以外的所有字符。
+
 ```
 w     移动到下一个 word 的开头
 W     移动到下一个 WORD 的开头
