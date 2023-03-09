@@ -19,9 +19,12 @@ j    向下一行
 k    向上一行
 gj   移动至软换行的下一行
 gk   移动至软换行的上一行
-w    移动到下一个单词的开头
+
 }    移动到下一个段落（两个不连续的空行之间的所有非空行为一个段落）
-$    移动到行末
+
+H     移动到屏幕顶部（High）
+M     移动到屏幕中间（Middle）
+L     移动到屏幕底部（Low）
 ```
 
 - [ch04_vim_grammar.md#nouns-motions](https://github.com/iggredible/Learn-Vim/blob/master/ch04_vim_grammar.md#nouns-motions)
@@ -64,6 +67,18 @@ T    在本行内，从光标处往前定位至指定字符的前一个字符
 
 - [ch05_moving_in_file.md#current-line-navigation](https://github.com/iggredible/Learn-Vim/blob/master/ch05_moving_in_file.md#current-line-navigation)
 
+### Scroll Screen | 移动屏幕
+
+```
+<C-E> 屏幕向下滚动一行，即当前行向上
+<C-Y> 屏幕向上滚动一行，即当前行向下
+zt    将当前行滚动到屏幕顶部
+zz    将当前行滚动到屏幕中部
+zb    将当前行滚动到屏幕底部
+```
+
+- [更快地移动 | 03｜更多常用命令：应对稍复杂的编辑任务](https://time.geekbang.org/column/article/266754)
+
 ### Easymotion
 
 这个插件可以快速定位到文件中任意单词的开头/结尾处，也可以快速定位到文件中指定字符的任意位置。
@@ -103,6 +118,7 @@ C    删除文字到行尾，将被删除的文字保存至 register，并进入
 单行的操作，可以通过连按两下操作符实现：yy、dd、cc 都是直接对光标所在行进行操作。
 
 - [ch04_vim_grammar.md#verbs-operators](https://github.com/iggredible/Learn-Vim/blob/master/ch04_vim_grammar.md#verbs-operators)
+- [文本修改 | 03｜更多常用命令：应对稍复杂的编辑任务](https://time.geekbang.org/column/article/266754)
 
 ### More Nouns (Text Objects) | 文本对象
 
