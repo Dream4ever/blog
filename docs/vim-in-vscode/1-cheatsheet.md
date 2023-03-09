@@ -6,7 +6,7 @@ title: 在 VSCode 中使用 Vim
 ## Preface | 前言
 
 1. 在参考 [iggredible / Learn-Vim](https://github.com/iggredible/Learn-Vim) 这一教程学习 Vim 时，有了这篇笔记，特此说明，以表感谢。
-1. 上面所说教程中的部分章节或具体内容，不适用于在 VSCode 中使用 Vim 的场景，故未在此处列出。
+1. 上面所说教程中的部分章节或具体内容，不适用于在 VSCode 中使用 Vim 的场景，这样的内容就未在此处列出。
 
 ## Navigation | 移动光标
 
@@ -102,6 +102,8 @@ C    删除文字到行尾，将被删除的文字保存至 register，并进入
 
 单行的操作，可以通过连按两下操作符实现：yy、dd、cc 都是直接对光标所在行进行操作。
 
+- [ch04_vim_grammar.md#verbs-operators](https://github.com/iggredible/Learn-Vim/blob/master/ch04_vim_grammar.md#verbs-operators)
+
 ### More Nouns (Text Objects) | 文本对象
 
 `<operator>i<object>` 可对 Text Object 内的字符进行操作，比如 `di(` 就是**只删除一对括号 `()` 里的内容**，但不删除这一对括号。
@@ -128,6 +130,8 @@ t         XML 标签
 如果在 VSCode 扩展 Vim 中启用了 `Use System Clipboard` 这个选项，那么在 Vim 中复制的内容就会进入操作系统的剪贴板，这样在其他程序中就可以直接粘贴了；并且在其他程序中复制的内容也可以直接在 VSCode 里面粘贴了。
 
 如果没有开启上面的选项，那么在执行操作时，需要加上 `"*` 或者 `"+` 前缀。比如在 VSCode 中复制一行内容时，执行 `"*yy` 命令，在其他程序中就可以粘贴了；而在其他程序中复制时，在 VSCode 中执行 `"*p` 命令，就可以把复制的内容粘贴过来了。
+
+- [ch08_registers.md#the-selection-registers](https://github.com/iggredible/Learn-Vim/blob/master/ch08_registers.md#the-selection-registers)
 
 ## 其他
 
