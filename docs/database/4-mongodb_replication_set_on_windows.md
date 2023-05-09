@@ -80,9 +80,35 @@ rs.secondaryOk()
 ……
 ```
 
+## 清理失效的复制集
+
+从节点的复制集失效后，需在主节点中手动清理，否则整个数据库服务将不可用。
+
+以下两种方式均可清理失效的复制集，按需使用即可。
+
+```sh
+# 方法一
+rs.remove({ _id: 1, host: "192.168.8.27:27017" })
+
+# 方法二
+# 将现在的的配置赋值给 cfg
+cfg = rs.conf()
+# 修改 cfg 来移除节点
+cfg.members.splice(1, 2)
+# 通过如下命令将新的配置覆盖应用在复制集用
+rs.reconfig(cfg)
+# 或者
+rs.reconfig(cfg, { force: true })
+
+# 确认新的配置是否生效
+rs.conf()
+```
+
+
 ## 参考资料
 
 - [实验：搭建复制集](https://gitee.com/geektime-geekbang/geektime-mongodb-course/blob/master/replicaset/lab-script.md)：极客时间 MongoDB 课程，搭建复制集的基本流程。
 - [Deploy a Replica Set](https://www.mongodb.com/docs/v4.2/tutorial/deploy-replica-set/)：MongoDB 4.2 官方文档，部署复制集的流程。
 - [mongodb复制集windows server部署](https://juejin.cn/post/7082211534260142116)：Windows 下部署 MongoDB 复制集的流程，参考了文章中将 MongoDB 用指定配置文件安装为服务的方法，来将 MongoDB 持久化。
 - [mongodb, replicates and error: { "$err" : "not master and slaveOk=false", "code" : 13435 }](https://stackoverflow.com/questions/8990158/mongodb-replicates-and-error-err-not-master-and-slaveok-false-code)：解决 MongoDB 默认无法读取复制集从库的问题。
+- [Form a new replica set with removed members](https://stackoverflow.com/questions/56405568/form-a-new-replica-set-with-removed-members)：通过 `force` 参数使 `re.reconfig()` 指令生效。
