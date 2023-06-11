@@ -17,7 +17,8 @@ services:
 
   db:
     # 官方文档 https://docs.strapi.io/dev-docs/installation/docker 用的是 v12 版本
-    # 这里用的就是 v12 的最新版（2023-06-11）
+    # 但是另一个官方文档 https://docs.strapi.io/dev-docs/installation/cli 又推荐 v14 版本
+    # 最后需要统一一下
     image: postgres:12.15
     restart: always
     environment:
@@ -37,4 +38,5 @@ services:
 参考资料：
 
 - 关键词：`install strapi docker`
+- 官方文档：[Running Strapi in a Docker container](https://docs.strapi.io/dev-docs/installation/docker)
 - 文章：[A Comprehensive Tutorial: Setting Up Strapi, Next.js, and Docker for Seamless Web Development](https://blog.devgenius.io/a-comprehensive-tutorial-setting-up-strapi-next-js-and-docker-for-seamless-web-development-48a145db06fb)
