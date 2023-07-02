@@ -39,3 +39,13 @@ const goToSection = (section) => {
   })
 }
 ```
+
+## 可逆动画
+
+### 调研路径
+
+1. Google 搜索：`gsap reversable`
+2. 看到一个貌似有用的链接 [Reversing animations on ScrollTrigger](https://greensock.com/forums/topic/29433-reversing-animations-on-scrolltrigger/)
+3. to do...
+
+
