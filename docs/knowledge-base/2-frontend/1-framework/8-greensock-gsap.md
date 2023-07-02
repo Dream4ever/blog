@@ -15,6 +15,7 @@ title: GreenSock(GSAP) 相关
 1. Google 搜索：`gsap exactly scroll 100vh`
 2. 翻了几个搜索结果之后，发现 [Full screen sections](https://greensock.com/forums/topic/25479-full-screen-sections/) 这篇问答符合自己的需求
 3. 二楼提到了另一篇问答 [Full page site](https://greensock.com/forums/topic/24978-full-page-site/)，看了 CodePen 示例之后确认是自己需要的效果
+4. 加餐：[Full page scrolling and pinning](https://greensock.com/forums/topic/30702-full-page-scrolling-and-pinning/) 这篇问答里，二楼给出了各种整屏滚动效果的代码示例
 
 ### 关键代码
 
