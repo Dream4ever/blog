@@ -12,9 +12,9 @@ title: GreenSock(GSAP) 相关
 
 ### 调研路径
 
-1. Google 搜索：``
-2. 查看链接 [Full screen sections](https://greensock.com/forums/topic/25479-full-screen-sections/)
-3. 上面链接的二楼提到了另一个链接：[Full page site](https://greensock.com/forums/topic/24978-full-page-site/)，看了 CodePen 示例之后确认是自己需要的效果
+1. Google 搜索：`gsap exactly scroll 100vh`
+2. 翻了几个搜索结果之后，发现 [Full screen sections](https://greensock.com/forums/topic/25479-full-screen-sections/) 这篇问答符合自己的需求
+3. 二楼提到了另一篇问答 [Full page site](https://greensock.com/forums/topic/24978-full-page-site/)，看了 CodePen 示例之后确认是自己需要的效果
 
 ### 关键代码
 
