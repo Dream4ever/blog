@@ -41,6 +41,12 @@ const goToSection = (section) => {
 }
 ```
 
+## 水平滚动
+
+实现效果：到达页面指定区域后，鼠标滚轮上下滚动时，页面内容左右滚动。
+
+参考链接：[ScrollTrigger: Horizontal Scroll pin-spacer height issue](https://greensock.com/forums/topic/31255-scrolltrigger-horizontal-scroll-pin-spacer-height-issue/)
+
 ## 可逆动画
 
 ### 调研路径
