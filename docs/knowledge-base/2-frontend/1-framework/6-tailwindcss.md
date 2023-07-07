@@ -43,3 +43,8 @@ Google `tailwind arbitrary value not working react`，看到 [Problem with arbit
 这样正方形不仅在父元素（也是正方形）中在水平和垂直方向上都居中，并且子元素在水平和垂直方向上的长度刚好和父元素相等。
 
 另外等腰直角三角形的斜边和直角边之比为 1.414，用这个值结合 CSS 的 `calc` 来设置子元素正方形的边长，就能让子元素在水平和垂直方向上的长度刚好和父元素相等。
+
+## gap 属性在旧手机上不生效
+
+Google 关键词 `tailwind gap polyfill`，在 https://stackoverflow.com/a/64636818/2667665 中提到，说是这个属性只在新的浏览器上才支持，可以用 `space-*` 来代替，测试之后的确管用。
+
