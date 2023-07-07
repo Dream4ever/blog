@@ -54,3 +54,56 @@ export default {
 Google 之后看到项目官方仓库就有人提了 issue：https://github.com/nuxt/nuxt/issues/10840 ，自己的报错信息正如提问者截图所示，原来是 Nuxt.js 默认关于 tailwindcss 的配置有问题。
 
 解决方法也很简单，按照回帖中很多人所说的方法，去 tailwindcss 官网，按照 [Install Tailwind CSS with Nuxt.js](https://tailwindcss.com/docs/guides/nuxtjs) 一文所说的方法，对 Nuxt.js 进行重新配置即可。
+
+## 用 pinia 实现状态管理
+
+### 状态定义
+
+```js
+// /stores/audio.ts
+import { defineStore } from 'pinia'
+
+export const useAudioStore = defineStore({
+  id: 'audio',
+
+  state: () => ({
+    show: false,
+  }),
+
+  actions: {
+    showAudioControl () {
+      this.$patch({
+        show: true,
+      })
+    },
+  },
+})
+```
+
+### 状态使用
+
+```js
+import { storeToRefs } from 'pinia'
+import { useAudioStore } from '~/stores/audio'
+
+// 1. 初始化
+const audioStore = useAudioStore()
+
+// 2. 使用值
+const { doPause } = storeToRefs(audioStore)
+
+// 3. 调用方法
+audioStore.showAudioControl()
+```
+
+### 状态监听
+
+```js
+watch(doPause, () => {
+  if (doPause.value) {
+    // do something
+  } else {
+    // do something
+  }
+})
+```
