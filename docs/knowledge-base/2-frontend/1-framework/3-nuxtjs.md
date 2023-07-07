@@ -103,6 +103,13 @@ audioStore.showAudioControl()
 > 参考资料：[How to Watch Pinia State Inside Vue 3 Components](https://runthatline.com/pinia-watch-state-getters-inside-vue-components/)
 
 ```js
+import { storeToRefs } from 'pinia'
+import { useAudioStore } from '~/stores/audio'
+
+const audioStore = useAudioStore()
+
+const { doPause } = storeToRefs(audioStore)
+
 watch(doPause, () => {
   if (doPause.value) {
     // do something
