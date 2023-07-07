@@ -57,6 +57,8 @@ Google 之后看到项目官方仓库就有人提了 issue：https://github.com/
 
 ## 用 pinia 实现状态管理
 
+> 参考项目：https://github.dev/piniajs/example-nuxt-2
+
 ### 状态定义
 
 ```js
@@ -97,6 +99,8 @@ audioStore.showAudioControl()
 ```
 
 ### 状态监听
+
+> 参考资料：[How to Watch Pinia State Inside Vue 3 Components](https://runthatline.com/pinia-watch-state-getters-inside-vue-components/)
 
 ```js
 watch(doPause, () => {
