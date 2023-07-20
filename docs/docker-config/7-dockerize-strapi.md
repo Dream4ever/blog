@@ -13,11 +13,15 @@ title: 配置容器化的 Strapi
 
 ```yml
 // docker-compose.yml
+
 version: '3'
+
 services:
   strapi:
     container_name: strapi
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
     image: strapi:latest
     restart: unless-stopped
     env_file: .env
@@ -48,8 +52,6 @@ services:
 
   strapiDB:
     container_name: strapiDB
-    platform: linux/amd64 #for platform error on Apple M1 chips
-    restart: unless-stopped
     env_file: .env
     image: mysql:8.0.33 # 指定 MySQL 具体版本
     command: --default-authentication-plugin=mysql_native_password
@@ -58,14 +60,14 @@ services:
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
       MYSQL_PASSWORD: ${DATABASE_PASSWORD}
       MYSQL_DATABASE: ${DATABASE_NAME}
-      MYSQL_ROOT_HOST: '%'
     volumes:
-      -  /mnt/diskd/data/mysql:/var/lib/mysql/ # MySQL 挂载数据卷至宿主机
+      - ./mysql_data:/var/lib/mysql # MySQL 挂载数据卷至宿主机，记得创建对应目录
     ports:
       - '3306:3306'
     networks:
       - strapi
 
+  # 可选
   strapiAdminer:
     container_name: strapiAdminer
     image: adminer
@@ -82,13 +84,14 @@ services:
 // 配置几个容器在同一个网络中，否则互相之间无法通信
 networks:
   strapi:
-    external: true
+    name: Strapi
+    driver: bridge
 ```
 
 ```
-# Dockerfile
+# Dockerfile.prod
 # Creating multi-stage build for production
-FROM node:18-alpine as build
+FROM node:16-alpine as build
 # apk add 时使用阿里源
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev vips-dev > /dev/null 2>&1
 ARG NODE_ENV=production
@@ -104,8 +107,8 @@ COPY . .
 RUN yarn build
 
 # Creating final production image
-FROM node:18-alpine
-# apk add 时切换阿里源
+FROM node:16-alpine
+# apk add 时使用阿里源
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && apk add --no-cache vips-dev
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
