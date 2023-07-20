@@ -19,6 +19,7 @@ version: '3'
 services:
   strapi:
     container_name: strapi
+    # 使用当前目录下的 Dockerfile.prod 文件的配置生成镜像
     build:
       context: .
       dockerfile: Dockerfile.prod
