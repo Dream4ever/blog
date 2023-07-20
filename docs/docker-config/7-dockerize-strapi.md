@@ -3,40 +3,120 @@ sidebar_position: 7
 title: 配置容器化的 Strapi
 ---
 
-## 配置数据库 Postgres
+## 参考资料
 
-`docker-compose.yml` 文件如下：
+用到了开源项目 [strapi-community / strapi-tool-dockerize](https://github.com/strapi-community/strapi-tool-dockerize)，用于在已生成 strapi 项目的情况下，再生成对应的 dockerfile 和 docker-compose.yml 等相关文件，以便部署至 Docker 中。
 
-> 参考了官方示例 https://hub.docker.com/_/postgres
+又参考了国内文章 [快速体验 Strapi CMS（基于 docker 部署）](https://juejin.cn/post/7196869815596761144)，对 docker compose 过程中需要从国外下载的情况，配置了国内源，实现加速下载。
+
+## 最终文件
 
 ```yml
-# Use postgres/example user/password credentials
-version: '3.1'
-
+// docker-compose.yml
+version: '3'
 services:
-
-  db:
-    # 官方文档 https://docs.strapi.io/dev-docs/installation/docker 用的是 v12 版本
-    # 但是另一个官方文档 https://docs.strapi.io/dev-docs/installation/cli 又推荐 v14 版本
-    # 最后需要统一一下
-    image: postgres:12.15
-    restart: always
+  strapi:
+    container_name: strapi
+    build: .
+    image: strapi:latest
+    restart: unless-stopped
+    env_file: .env
     environment:
-      # 明确设置默认用户名
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ****
-      # 明确设置数据库，Strapi 项目要用到
-      POSTGRES_DB: db-name
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: strapiDB
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PORT: ${DATABASE_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      NODE_ENV: ${NODE_ENV}
+    volumes:
+      - ./config:/opt/app/config
+      - ./src:/opt/app/src
+      - ./package.json:/opt/package.json
+      - ./yarn.lock:/opt/yarn.lock
+
+      - ./.env:/opt/app/.env
+      - ./public/uploads:/opt/app/public/uploads
     ports:
-      - 5432:5432
+      - '1337:1337'
+    networks:
+      - strapi
+    depends_on:
+      - strapiDB
+
+  strapiDB:
+    container_name: strapiDB
+    platform: linux/amd64 #for platform error on Apple M1 chips
+    restart: unless-stopped
+    env_file: .env
+    image: mysql:8.0.33 # 指定 MySQL 具体版本
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_USER: ${DATABASE_USERNAME}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      -  /mnt/diskd/data/mysql:/var/lib/mysql/ # MySQL 挂载数据卷至宿主机
+    ports:
+      - '3306:3306'
+    networks:
+      - strapi
+
+  strapiAdminer:
+    container_name: strapiAdminer
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - '9090:8080'
+    environment:
+      - ADMINER_DEFAULT_SERVER=strapiDB
+    networks:
+      - strapi
+    depends_on:
+      - strapiDB
+
+// 配置几个容器在同一个网络中，否则互相之间无法通信
+networks:
+  strapi:
+    external: true
 ```
 
-创建该文件之后，在目录下执行 `docker-compose up -d`，Docker 就会自动下载镜像，并按照上面的配置创建容器。
+```
+# Dockerfile
+# Creating multi-stage build for production
+FROM node:18-alpine as build
+# apk add 时使用阿里源
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev vips-dev > /dev/null 2>&1
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
 
-## 容器化 Strpi
+WORKDIR /opt/
+COPY package.json yarn.lock ./
+# yarn install 时使用阿里源
+RUN yarn config set network-timeout 600000 -g && yarn config set registry https://registry.npmmirror.com && yarn install --production
+ENV PATH /opt/node_modules/.bin:$PATH
+WORKDIR /opt/app
+COPY . .
+RUN yarn build
 
-参考资料：
+# Creating final production image
+FROM node:18-alpine
+# apk add 时切换阿里源
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && apk add --no-cache vips-dev
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+WORKDIR /opt/
+COPY --from=build /opt/node_modules ./node_modules
+WORKDIR /opt/app
+COPY --from=build /opt/app ./
+ENV PATH /opt/node_modules/.bin:$PATH
 
-- 关键词：`install strapi docker`
-- 官方文档：[Running Strapi in a Docker container](https://docs.strapi.io/dev-docs/installation/docker)
-- 文章：[A Comprehensive Tutorial: Setting Up Strapi, Next.js, and Docker for Seamless Web Development](https://blog.devgenius.io/a-comprehensive-tutorial-setting-up-strapi-next-js-and-docker-for-seamless-web-development-48a145db06fb)
+RUN chown -R node:node /opt/app
+USER node
+EXPOSE 1337
+CMD ["yarn", "start"]
+```
