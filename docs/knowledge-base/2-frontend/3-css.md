@@ -3,6 +3,22 @@ sidebar_position: 3
 title: CSS
 ---
 
+## 响应式设计的常见断点尺寸
+
+关键词：`common breakpoints for responsive design`。
+
+结果：
+
+- Mobile devices – 320px — 480px.
+- iPads, Tablets – 481px — 768px.
+- Small screens, laptops – 769px — 1024px.
+- Desktops, large screens – 1025px — 1200px.
+- Extra large screens, TV – 1201px, and more.
+
+合理方案：
+
+如果要为移动端和 PC 端分别设置不同的样式，就以 768px 为区分，屏幕宽度小于等于该尺寸的都用移动端设计稿，大于的都用 PC 端设计稿。
+
 ## Variable Font/可变字体显示不同字号
 
 搜索关键词：`Variable font weight`。
