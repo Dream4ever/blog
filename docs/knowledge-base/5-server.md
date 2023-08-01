@@ -3,6 +3,8 @@ sidebar_position: 5
 title: 服务端
 ---
 
+## 访问 IIS URL 重写的 URL 偶尔报错
+
 访问 IIS URL 重写模块重写后的 URL，有时会报错“Server error in '/' application. Runtime Error.”。
 
 Google 了一下，发现在系统的 `事件查看器` 的 `应用程序` 分类下，会看到下面这类错误。
