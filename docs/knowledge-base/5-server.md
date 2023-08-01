@@ -72,3 +72,5 @@ Thread information:
     <httpRuntime requestValidationMode="2.0" />
 </system.web>
 ```
+
+按照上面说的进行操作了，观察几天看看是否还会报这样的错误。
