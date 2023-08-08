@@ -124,3 +124,22 @@ USER node
 EXPOSE 1337
 CMD ["yarn", "start"]
 ```
+
+## 用指定的 YML 文件启动容器
+
+```sh
+# 用 compose-dev.yml 启动容器
+$ docker compose -f compose-dev.yml up
+```
+
+`compose-dev.yml` 文件与 `compose.yml` 文件的区别只在下面一段：
+
+```yml
+# compose-dev.yml
+services:
+  strapi:
+    container_name: strapi
+    build:
+      context: .
+      dockerfile: Dockerfile.prod # 生产环境执行另一个 Dockerfile 文件
+```
