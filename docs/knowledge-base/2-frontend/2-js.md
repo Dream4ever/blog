@@ -3,6 +3,32 @@ sidebar_position: 2
 title: JavaScript
 ---
 
+## 用 FileSaver 库保存 DOCX 库生成的 Word 文档
+
+关键词：`docx+file-saver`。
+
+参考方案：[Create dynamic word documents using DOCX Js, file-saver and data from an EXCEL or JSON](https://medium.com/geekculture/create-dynamic-word-documents-using-docx-js-file-saver-and-data-from-an-excel-or-json-dbd5e4ec823f)。
+
+关键代码：
+
+```js
+// 创建文档并添加内容
+let doc = new Document();
+doc.createParagraph("This paragraph will be in my new document");
+
+//  设置相关参数
+const packer = new Packer();
+const mimeType =
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+// 保存文件
+const fileName = "example.docx";
+packer.toBlob(doc).then((blob) => {
+  const docblob = blob.slice(0, blob.size, mimeType);
+  saveAs(docblob, fileName);
+});
+```
+
 ## 用 axios 下载后端传来的文件
 
 关键词：`axios download file`。
@@ -13,23 +39,23 @@ title: JavaScript
 
 ```js
 axios({
-    url: 'http://api.dev/file-download', //your url
-    method: 'GET',
-    responseType: 'blob', // important
+  url: "http://api.dev/file-download", //your url
+  method: "GET",
+  responseType: "blob", // important
 }).then((response) => {
-    // create file link in browser's memory
-    const href = URL.createObjectURL(response.data);
+  // create file link in browser's memory
+  const href = URL.createObjectURL(response.data);
 
-    // create "a" HTML element with href to file & click
-    const link = document.createElement('a');
-    link.href = href;
-    link.setAttribute('download', 'file.pdf'); //or any other extension
-    document.body.appendChild(link);
-    link.click();
+  // create "a" HTML element with href to file & click
+  const link = document.createElement("a");
+  link.href = href;
+  link.setAttribute("download", "file.pdf"); //or any other extension
+  document.body.appendChild(link);
+  link.click();
 
-    // clean up "a" element & remove ObjectURL
-    document.body.removeChild(link);
-    URL.revokeObjectURL(href);
+  // clean up "a" element & remove ObjectURL
+  document.body.removeChild(link);
+  URL.revokeObjectURL(href);
 });
 ```
 
@@ -48,30 +74,30 @@ axios({
 
 ```js
 function onClickHandler(ev) {
-  var el = window._protected_reference = document.createElement("INPUT");
+  var el = (window._protected_reference = document.createElement("INPUT"));
   el.type = "file";
   el.accept = "image/*";
   el.multiple = "multiple"; // remove to have a single file selection
-  
+
   // (cancel will not trigger 'change')
-  el.addEventListener('change', function(ev2) {
+  el.addEventListener("change", function (ev2) {
     // access el.files[] to do something with it (test its length!)
-    
+
     // add first image, if available
     if (el.files.length) {
-      document.getElementById('out').src = URL.createObjectURL(el.files[0]);
+      document.getElementById("out").src = URL.createObjectURL(el.files[0]);
     }
 
-
     // test some async handling
-    new Promise(function(resolve) {
-      setTimeout(function() { console.log(el.files); resolve(); }, 1000);
-    })
-    .then(function() {
+    new Promise(function (resolve) {
+      setTimeout(function () {
+        console.log(el.files);
+        resolve();
+      }, 1000);
+    }).then(function () {
       // clear / free reference
       el = window._protected_reference = undefined;
     });
-
   });
 
   el.click(); // open
@@ -96,7 +122,7 @@ function onClickHandler(ev) {
 ### 应用过程
 
 - 要使用开放平台的各项功能功能，需要先申请调用百度地图 API 的 key：进入开放平台的[控制台](http://lbsyun.baidu.com/apiconsole/key)，选择“创建应用”，应用类型选择“浏览器端”，启用服务默认全选，应用名称和 Referer 白名单可按需设置，设置完成后点击提交。
-- 示例代码中的坐标需要改成目标地点的经纬度，通过百度地图的“[拾取坐标系统](http://api.map.baidu.com/lbsapi/getpoint/index.html)”，用关键字进行搜索，得到搜索结果之后，点击地图中标记的点A，在页面右上方会显示当前坐标点 `xxx.xxxxxx, xx.xxxxxx`，将坐标复制下来之后，粘贴到示例代码中，按照示例代码中数字的格式，精确到小数点后三位即可 `xxx.xxx, xx.xxx`。
+- 示例代码中的坐标需要改成目标地点的经纬度，通过百度地图的“[拾取坐标系统](http://api.map.baidu.com/lbsapi/getpoint/index.html)”，用关键字进行搜索，得到搜索结果之后，点击地图中标记的点 A，在页面右上方会显示当前坐标点 `xxx.xxxxxx, xx.xxxxxx`，将坐标复制下来之后，粘贴到示例代码中，按照示例代码中数字的格式，精确到小数点后三位即可 `xxx.xxx, xx.xxx`。
 - 将示例代码复制到项目中之后，ESLint 会报错（用的 `vue-cli`，通过 `vue init webpack project` 指令初始化项目）。上网搜索一番，在[百度地图开发实例番外篇--实用方法（持续更新）](https://segmentfault.com/a/1190000012889136#articleHeader6)中找到了解决方法，原来是需要针对 ESLint 进行单独配置：
 
 ```js
