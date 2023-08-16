@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 10
 title: Tailwind.css 相关
 ---
 
@@ -11,7 +11,7 @@ title: Tailwind.css 相关
 
 ```js
 const style = {
- transform: 'rotate(180deg)', 
+ transform: 'rotate(180deg)',
 }
 
 <div style={style}><div>
@@ -34,9 +34,12 @@ Google `tailwind arbitrary value not working react`，看到 [Problem with arbit
 基于 tailwindcss 的伪代码如下所示：
 
 ```html
-<div class="wrapper shrink-0 flex justify-center items-center w-[100px] h-[100px]">
-  <div class="cube shrink-0 w-[calc(100%_/_1.414)] h-[calc(100%_/_1.414)]">
-  </div>
+<div
+  class="wrapper shrink-0 flex justify-center items-center w-[100px] h-[100px]"
+>
+  <div
+    class="cube shrink-0 w-[calc(100%_/_1.414)] h-[calc(100%_/_1.414)]"
+  ></div>
 </div>
 ```
 
@@ -47,4 +50,3 @@ Google `tailwind arbitrary value not working react`，看到 [Problem with arbit
 ## gap 属性在旧手机上不生效
 
 Google 关键词 `tailwind gap polyfill`，在 https://stackoverflow.com/a/64636818/2667665 中提到，说是这个属性只在新的浏览器上才支持，可以用 `space-*` 来代替，测试之后的确管用。
-
