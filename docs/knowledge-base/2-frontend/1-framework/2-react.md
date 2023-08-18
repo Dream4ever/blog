@@ -232,8 +232,6 @@ setTodoList((prevState) => {
 ```js
 const inputElem = useRef(null);
 
-...
-
 useEffect(() => {
   inputElem.current.focus();
 }, []);
