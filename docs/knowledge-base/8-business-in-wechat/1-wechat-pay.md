@@ -291,3 +291,40 @@ GitHub 上的一个用 TypeScript 写的微信平台开发脚手架：[Javen205 
 
 - GitHub 上有个用 TS 写的项目：[klover2 / wechatpay-node-v3-ts](https://github.com/klover2/wechatpay-node-v3-ts)，是用于微信支付 API v3 版本的，看看代码，可以的话就直接应用到项目里。
 - Gitee 上有个两年没更新的项目，也是用 TS 写的，同时支持微信支付和支付宝支付，也可以借鉴：[Notadd / nt-addon-pay](https://gitee.com/notadd/nt-addon-pay)。
+
+## 关键名词
+
+### 商户 API 证书
+
+#### 用途
+
+商户调用微信支付所有接口都需要用到该证书，比如下单接口、订单查询接口等。微信支付后台用于识别商户真实身份。
+
+#### 证书更新
+
+商户 API 证书有效期为 5 年，可访问 [该页面](https://myssl.com/cert_decode.html) 查看证书的有效期。
+
+证书更新流程可查看 [该页面](https://kf.qq.com/faq/1808302quyqi180830EjANrq.html)，新证书申请并部署成功后，记得作废旧证书。
+
+目前商户 API 证书只能通过 **网页端 + 单机软件** 更新，不支持 API 更新。
+
+### 平台证书
+
+#### 用途
+
+- 微信支付验证商户的请求签名正确后，会在应答的HTTP头部中包括 **应答签名**。
+- 微信支付会在回调的 HTTP 头部中带上 **回调报文的签名**。
+
+对于微信返回的这两类签名，商户需要用 **微信支付平台证书** 中的公钥来验证签名的正确性。
+
+#### 证书更新
+
+平台证书有效期为 5 年，可调用 [获取平台证书](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/wechatpay5_1.shtml) 这个接口查看证书的有效期。
+
+[获取平台证书](https://pay.weixin.qq.com/wiki/doc/apiv3/apis/wechatpay5_1.shtml) 这个接口同时也可以用来下载证书。
+
+### 商户 API 证书 vs. 平台证书
+
+简而言之，**商户 API 证书** 是微信用来验证商户身份的，**微信支付平台证书** 是商户用来验证微信身份的。
+
+也可以查看 [私钥和证书](https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay3_1.shtml) 这篇官方文档。
