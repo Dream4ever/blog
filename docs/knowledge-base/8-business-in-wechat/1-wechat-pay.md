@@ -328,3 +328,7 @@ GitHub 上的一个用 TypeScript 写的微信平台开发脚手架：[Javen205 
 简而言之，**商户 API 证书** 是微信用来验证商户身份的，**微信支付平台证书** 是商户用来验证微信身份的。
 
 也可以查看 [私钥和证书](https://pay.weixin.qq.com/wiki/doc/apiv3/wechatpay/wechatpay3_1.shtml) 这篇官方文档。
+
+## 参考资料
+
+- [微信支付 API v3 接口文档](https://wechatpay-api.gitbook.io/wechatpay-api-v3/)
