@@ -574,7 +574,7 @@ git update-index --no-skip-worktree <file>
 
 由于云服务器在国内，访问 GitHub 的话还得配置代理，这样不安全。
 
-可以在本机先配置好云服务器的 SSH 访问环境，比如在配置文件中加上下面这一段：
+可以在本机先配置好云服务器的 SSH 访问环境，比如在配置文件 `c:\Users\You\.ssh\config` 中加上下面这一段：
 
 ```
 Host ecs
