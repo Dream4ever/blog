@@ -89,8 +89,13 @@ networks:
     driver: bridge
 ```
 
-```
+```dockerfile
 # Dockerfile.prod
+
+# 下面两行能保证 Docker 中输出的日志用的是东八区的时间
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Creating multi-stage build for production
 FROM node:16-alpine as build
 # apk add 时使用阿里源
@@ -129,7 +134,7 @@ CMD ["yarn", "start"]
 
 ```sh
 # 用 compose-dev.yml 启动容器
-$ docker compose -f compose-dev.yml up
+$ docker compose -f compose-dev.yml up -d
 ```
 
 `compose-dev.yml` 文件与 `compose.yml` 文件的区别只在下面一段：
