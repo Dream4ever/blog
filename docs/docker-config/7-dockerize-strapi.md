@@ -130,6 +130,10 @@ EXPOSE 1337
 CMD ["yarn", "start"]
 ```
 
+### 参考资料
+
+- [Docker Container time & timezone (will not reflect changes)](https://serverfault.com/a/683651/551094)
+
 ## 用指定的 YML 文件启动容器
 
 ```sh
