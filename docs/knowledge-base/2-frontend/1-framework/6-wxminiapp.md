@@ -3,6 +3,29 @@ sidebar_position: 6
 title: 微信小程序开发
 ---
 
+## 小程序更新
+
+- 官方文档：[UpdateManager 对象](https://developers.weixin.qq.com/miniprogram/dev/api/base/update/UpdateManager.html)用来管理小程序的更新。
+- 掘金文章 [小程序版本更新管理器wx.getUpdateManager()](https://juejin.cn/post/6994358193312759821) 给出了具体的示例代码。
+- 知乎文章 [微信小程序发布新版本时自动提示用户更新的方法](https://zhuanlan.zhihu.com/p/556249196) 则有更全面的代码，也可以参考。
+- [开放接口 /账号信息 /wx.getAccountInfoSync](https://developers.weixin.qq.com/miniprogram/dev/api/open-api/account-info/wx.getAccountInfoSync.html) 可在正式版环境中获取小程序版本号。
+- [小程序运行时 /更新机制](https://developers.weixin.qq.com/miniprogram/dev/framework/runtime/update-mechanism.html) 可用来排查小程序更新相关问题。
+
+注意：
+
+1. 微信开发者工具上可以通过「编译模式」下的「下次编译模拟更新」开关来调试小程序的更新功能。
+2. 小程序开发版/体验版没有「版本」概念，所以无法在开发版/体验版上测试版本更新情况。
+
+### 社区相关讨论
+
+- [你们UpdateManager 都是放在onLaunch去执行吗？](https://developers.weixin.qq.com/community/develop/doc/000008d99c060825e2cd9d79251c00)
+- [updateManager.onUpdateReady在正式环境无反应，怎么解决？](https://developers.weixin.qq.com/community/develop/doc/00022eb71b0e10df264a7cd6d50000)
+
+## 小程序基础库
+
+- [基础库 /版本分布](https://developers.weixin.qq.com/miniprogram/dev/framework/client-lib/version.html)：列出了微信统计的目前小程序基础库的版本分布情况。
+- [设置最低基础库版本](https://developers.weixin.qq.com/miniprogram/dev/framework/compatibility.html#%E8%AE%BE%E7%BD%AE%E6%9C%80%E4%BD%8E%E5%9F%BA%E7%A1%80%E5%BA%93%E7%89%88%E6%9C%AC)：可查看近 30 天内访问当前小程序的用户所使用的基础库版本占比。2023-09-01 查看版本占比情况，低于 2.25.0 版本的基础库 UV 占比为 0，可以不考虑这类用户的兼容需求了，因此设置最低基础库版本为 2.25.0。
+
 ## reachBottom 事件无法触发
 
 只有页面根元素高度大于屏幕高度（100vh）时，才能触发 reachBottom 事件。否则页面和屏幕一样高，是无法触发该事件的。
