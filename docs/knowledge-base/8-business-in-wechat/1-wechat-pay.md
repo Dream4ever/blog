@@ -5,10 +5,6 @@ title: 微信支付
 
 ## 微信支付接入流程
 
-### 需求描述
-
-公司最近规划中的一项付费业务，需要在公众号里的网页中使用微信支付功能，也就是 JSAPI 支付。
-
 ### 商户号申请
 
 入口：[公众号接入支付](https://pay.weixin.qq.com/static/applyment_guide/applyment_detail_public.shtml)
