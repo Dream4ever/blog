@@ -3,6 +3,56 @@ sidebar_position: 2
 title: JavaScript
 ---
 
+## 以组件化的方式使用 SVG 图标
+
+参考资料：[(Next.js) How can I change the color of SVG in next/image?](https://stackoverflow.com/a/65685418/2667665)
+
+具体方案：
+
+在网站 [transform.tools](https://transform.tools/) 中，将 SVG 内容粘贴进去，网站会自动转换成 JSX 组件。
+
+比如有以下的 SVG 文件：
+
+```html
+<svg
+  style="flex:1;"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+>
+  <rect
+    x="10"
+    y="10"
+    height="100"
+    width="100"
+    style="stroke:#ff0000; fill: #0000ff"
+  />
+</svg>
+```
+
+网站会输出下面的组件：
+
+```js
+import * as React from "react";
+
+function SvgComponent(props) {
+  return (
+    <svg
+      style={{
+        flex: 1,
+      }}
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path stroke="red" fill="#00f" d="M10 10H110V110H10z" />
+    </svg>
+  );
+}
+
+export default SvgComponent;
+```
+
+再将 JSX 组件中 `path` 属性里的 `fill` 字段的值改为 `currentColor`，就可以配合 tailwind.css，实现自定义 SVG 图标的颜色及其他样式了。
+
 ## 用 FileSaver 库保存 DOCX 库生成的 Word 文档
 
 关键词：`docx+file-saver`。
