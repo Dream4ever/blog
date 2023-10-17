@@ -3,6 +3,18 @@ sidebar_position: 5
 title: 服务端
 ---
 
+## fail2ban 解禁 IP
+
+有一天在用 SSH 方式连接服务器的时候，突然发现连不上去了。
+
+执行 `ssh -vvvv`，显示报错信息：`finish_connect - ERROR: async io completed with error: 10060`。
+
+Google 了一下，说有可能是服务器阻止了连接。
+
+想起来以前配置过 fail2ban，于是用另一台服务器 SSH 连过去，发现可以正常连，再查看 fail2ban 已屏蔽的 IP，发现本机 IP 赫然在列。
+
+于是执行了 `sudo fail2ban-client set <jailname> unbanip x.x.x.x` 把本机 IP 解禁了，但是不敢把这个 IP 加入白名单，因为这个 IP 是随机分配的，别人也有可能分配到。
+
 ## 访问 IIS URL 重写的 URL 偶尔报错
 
 访问 IIS URL 重写模块重写后的 URL，有时会报错“Server error in '/' application. Runtime Error.”。
