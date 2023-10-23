@@ -5,6 +5,17 @@ title: 软件
 
 ## FFMpeg
 
+### 循环播放视频作为推流
+
+```sh
+for((;;)); do \
+    ffmpeg -re -i ./source.flv \
+    -c copy \
+    -f flv rtmp://localhost/live/livestream; \
+    sleep 1; \
+done
+```
+
 ### main profile 不支持 4:4:4
 
 关键词：`ffmpeg main profile doesn't support 4:4:4`。
