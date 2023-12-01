@@ -3,7 +3,34 @@ sidebar_position: 6
 title: 软件
 ---
 
-## FFMpeg
+## FFmpeg
+
+### 处理带黑边视频时报错
+
+在用 FFmpeg 处理带黑边的视频时，报错信息如下所示：
+
+```
+[h264 @ 0000026d3d1bbe40] no frame!
+
+[NULL @ 0000026d3cd92200] missing picture in access unit with size 100
+
+[vist#0:0/h264 @ 0000026d3ce4ea00] Error submitting packet to decoder: Invalid data found when processing input
+```
+
+上网查了查，也没查到什么相关的信息，但是在处理同一批视频的时候，对于那些没有黑边的视频就不会报错，因此猜测与视频左右两侧的黑边有关。
+
+于是用 Handbrake 这个软件先把视频的黑边裁掉了，然后再用 FFmpeg 处理，终于不报错了。
+
+### 循环播放视频作为推流
+
+```sh
+for((;;)); do \
+    ffmpeg -re -i ./source.flv \
+    -c copy \
+    -f flv rtmp://localhost/live/livestream; \
+    sleep 1; \
+done
+```
 
 ### main profile 不支持 4:4:4
 
