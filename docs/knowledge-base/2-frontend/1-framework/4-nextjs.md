@@ -3,6 +3,28 @@ sidebar_position: 4
 title: Next.js 相关
 ---
 
+## 离开页面前执行特定操作
+
+关键词：`nextjc on route change`
+
+参考资料：[Next.js Router - Listen to route (location) change with useRouter](https://jasonwatmore.com/nextjs-router-listen-to-route-location-change-with-userouter)
+
+关键代码：
+
+```js
+import { useRouter } from "next/router";
+const router = useRouter();
+
+useEffect(() => {
+  const onLeave = () => {};
+  router.events.on("routeChangeStart", onLeave);
+
+  return () => {
+    router.events.off("routeChangeStart", onLeave);
+  };
+}, []);
+```
+
 ## 使用 Google 可变字体并指定字号
 
 关键词：`nextjs import variable font set font weight`
