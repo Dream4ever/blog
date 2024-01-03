@@ -3,6 +3,12 @@ sidebar_position: 2
 title: JavaScript
 ---
 
+## 安卓 WebView 中 writeText 方法不能复制文本
+
+Google 搜索 `writetext write permission denied not allowed error`，在 StackOverflow 的讨论 [Clipboard API call throws NotAllowedError without invoking onPermissionRequest()](https://stackoverflow.com/questions/61243646/clipboard-api-call-throws-notallowederror-without-invoking-onpermissionrequest) 中，看到下面的答案说 `writeText` 需要 `Permissions` 相关的 API 来获取 `clipboard-write` 权限。但是安卓的 WebView 没有 `navigator.permissions` 这个 API。
+
+下面另一个回答也提到了 VueUse 这个库也是对这种情况进行了兼容处理，没有权限的安卓 WebView 就用 `execCommand('copy')` 的方式实现复制文本的操作。
+
 ## 以组件化的方式使用 SVG 图标
 
 参考资料：[(Next.js) How can I change the color of SVG in next/image?](https://stackoverflow.com/a/65685418/2667665)
