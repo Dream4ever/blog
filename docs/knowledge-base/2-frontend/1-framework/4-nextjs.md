@@ -25,6 +25,11 @@ useEffect(() => {
 }, []);
 ```
 
+## 使用 Google 字体的另一种方案
+
+- [How to add google fonts to Tailwind CSS custom config (NextJS example)](https://www.mailslurp.com/blog/how-to-use-google-fonts-with-tailwind-css/)
+- [Using Google Fonts in Next.js 13 with Tailwind CSS](https://blog.devgenius.io/using-google-fonts-in-next-js-13-with-tailwind-css-8fe966e31a39)
+
 ## 使用 Google 可变字体并指定字号
 
 关键词：`nextjs import variable font set font weight`
