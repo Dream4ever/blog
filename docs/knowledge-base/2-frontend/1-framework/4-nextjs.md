@@ -3,6 +3,45 @@ sidebar_position: 4
 title: Next.js 相关
 ---
 
+## 结合 tailwindcss 实现深色/浅色模式的切换
+
+参考资料：[TailwindCSS Dark Mode in Next.js with Tailwind Typography Prose Classes](https://egghead.io/blog/tailwindcss-dark-mode-nextjs-typography-prose)
+
+关键代码：
+
+```js
+// tailwind.config.js
+export const darkMode = "class";
+```
+
+```ts
+// _app.tsx
+import { ThemeProvider } from "next-themes";
+
+...
+  <ThemeProvider attribute="class">
+    <main>
+     ...
+    </main>
+  </ThemeProvider>
+...
+```
+
+```ts
+// 实现切换颜色模式的文件
+import { useTheme } from "next-themes";
+
+export const ToggleDarkModeButton = () => {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <div onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+    </div>
+  )
+```
+
+然后在其他地方正常地用 `dark:` 设置深色模式的样式即可。
+
 ## 离开页面前执行特定操作
 
 关键词：`nextjc on route change`
