@@ -3,6 +3,22 @@ sidebar_position: 3
 title: CSS
 ---
 
+## 渐变边框
+
+示例代码（React）：
+
+```jsx
+// 容器元素
+<div className="relative flex items-center justify-center h-10 overflow-hidden font-semibold rounded-full">
+  // 渐变背景，被后面设置了透明边框的元素遮挡，实现渐变边框效果
+  <div className="absolute top-0 bottom-0 left-0 right-0 bg-gradient-to-r from-gradFrom to-gradTo"></div>
+  // 设置背景色和透明边框,bg-clip-padding 属性确保透明边框的效果
+  <div className="box-border z-10 flex items-center justify-center h-full px-8 border-2 border-transparent rounded-full bg-clip-padding bg-light">
+    {btnText}
+  </div>
+</div>
+```
+
 ## 响应式设计的常见断点尺寸
 
 关键词：`common breakpoints for responsive design`。
