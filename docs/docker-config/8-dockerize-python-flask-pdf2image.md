@@ -3,9 +3,7 @@ sidebar_position: 8
 title: 配置容器化的 Python Flask pdf2image 项目
 ---
 
-## 关键内容
-
-### 配置 Debian apt 使用国内源
+## 配置 Debian apt 使用国内源
 
 首先是 Python 的容器化，查看 Docker Hub 上每个具体版本的 Python 镜像的话，就会发现 Python 是基于 Debian 的镜像来构建的。
 
@@ -15,7 +13,7 @@ title: 配置容器化的 Python Flask pdf2image 项目
 
 如果不确定的话，可以先只是用指定版本的 Python 镜像启动一个容器，然后进入容器的 `/etc/apt` 目录。在 Debian 12 上，配置 apt 源的文件在该目录下的 `sources.list.d/debian.sources` 文件中，而在低版本的 Debian 中，则是该目录下的 `sources.list` 文件，这一点要注意。
 
-### 配置 pip 使用国内源
+## 配置 pip 使用国内源
 
 配置 pip 的源就很简单了，`RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple` 一条命令足矣。
 
