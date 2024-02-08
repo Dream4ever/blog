@@ -5,7 +5,7 @@ title: 配置容器化的 Python Flask pdf2image 项目
 
 ## 配置 Debian apt 使用国内源
 
-查看 Docker Hub 上每个具体版本的 Python 镜像的话，会发现 Python 是基于 Debian 的镜像来构建的。
+查看 Docker Hub 上每个具体版本的 [Python 镜像](https://hub.docker.com/layers/library/python/3.12.2/images/sha256-eae24db48035197c7c6a521d5263e125cfba1d59b2d03bdc63ce11655af1695b?context=explore)的话，会发现 Python 是基于 Debian 的镜像来构建的。
 
 要在国内环境使用，就需要修改 Debian apt 的源和 pip 的源。
 
