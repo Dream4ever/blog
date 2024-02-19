@@ -3,6 +3,62 @@ sidebar_position: 2
 title: 调整 MySQL 相关配置
 ---
 
+## 设置 MySQL Shell 连接时的编码设置
+
+用 `mysql -uroot -p` 命令连接 MySQL Shell，不作任何额外设置时，部分字符集的值是 `latin1` 系列。
+
+```sh
+mysql> SHOW VARIABLES LIKE 'collation\_%';
++----------------------+--------------------+
+| Variable_name        | Value              |
++----------------------+--------------------+
+| collation_connection | latin1_swedish_ci  |
+| collation_database   | utf8mb4_0900_ai_ci |
+| collation_server     | utf8mb4_0900_ai_ci |
++----------------------+--------------------+
+
+mysql> SHOW VARIABLES LIKE 'character\_set\_%';
++--------------------------+---------+
+| Variable_name            | Value   |
++--------------------------+---------+
+| character_set_client     | latin1  |
+| character_set_connection | latin1  |
+| character_set_database   | utf8mb4 |
+| character_set_filesystem | binary  |
+| character_set_results    | latin1  |
+| character_set_server     | utf8mb4 |
+| character_set_system     | utf8mb3 |
++--------------------------+---------+
+```
+
+如果设置连接时的字符集为 `utf8mb4`，则输出结果如下所示：
+
+```sh
+mysql> SHOW VARIABLES LIKE 'collation\_%';
++----------------------+--------------------+
+| Variable_name        | Value              |
++----------------------+--------------------+
+| collation_connection | utf8mb4_0900_ai_ci |
+| collation_database   | utf8mb4_0900_ai_ci |
+| collation_server     | utf8mb4_0900_ai_ci |
++----------------------+--------------------+
+
+mysql> SHOW VARIABLES LIKE 'character\_set\_%';
++--------------------------+---------+
+| Variable_name            | Value   |
++--------------------------+---------+
+| character_set_client     | utf8mb4 |
+| character_set_connection | utf8mb4 |
+| character_set_database   | utf8mb4 |
+| character_set_filesystem | binary  |
+| character_set_results    | utf8mb4 |
+| character_set_server     | utf8mb4 |
+| character_set_system     | utf8mb3 |
++--------------------------+---------+
+```
+
+可以看到，`collation_connection`、`character_set_client`、`character_set_connection` 和 `character_set_results` 的值都是 `utf8mb4`，查询结果中的汉字就可以正常显示了，而不是若干个半角问号 ? 了。
+
 ## Windows 下修改 MySQL 数据库文件保存位置
 
 关键词：`mysql change data directory windows`。
