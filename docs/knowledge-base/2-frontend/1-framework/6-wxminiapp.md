@@ -3,6 +3,15 @@ sidebar_position: 6
 title: 微信小程序开发
 ---
 
+## [ WXSS 文件编译错误] ./app.wxss unexpected token "*"
+
+用标题的报错信息，和 `微信小程序 tailwind unexpected token "*"` 这样的报错信息搜索，发现是微信小程序的 CSS 不支持 `*` 这个选择器。
+
+### 参考资料
+
+- [WeAppTailwind / 使用](https://github.com/mrleidesen/WeAppTailwind?tab=readme-ov-file#%E4%BD%BF%E7%94%A8)
+- [编译报错 ./app.wxss(1:1): unexpected token `*`？](https://developers.weixin.qq.com/community/develop/doc/000a4c7bd34368f74c40698b463400)
+
 ## 小程序更新
 
 - 官方文档：[UpdateManager 对象](https://developers.weixin.qq.com/miniprogram/dev/api/base/update/UpdateManager.html)用来管理小程序的更新。
