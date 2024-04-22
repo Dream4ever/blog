@@ -51,3 +51,9 @@ tags: [acme, win-acme, powershell, waf, aliyun]
 4. 配置阿里云 Cli 的时候，如果配置的各种凭证方式都不管用，可以尝试把旧的配置都删除，包括 Cli 里的配置和阿里云网页端控制台的配置，然后重新来一遍。
 5. PowerShell `Get-Content` 命令拿到的证书和私钥的文本会丢失换行符，可以参考 https://stackoverflow.com/a/15041925/2667665 这里的方法来解决。
 6. 上传证书和私钥调用的是 WAF 中的 `CreateCertificate` 这个 API，将证书关联至 WAF 中接入域名是 `CreateCertificateByCertificateId` API。
+
+## 背景知识
+
+- [证书、证书链、CA 的那些事](https://xie.infoq.cn/article/48ee67170b9bfb0b4a6039b68)：介绍了根证书、中间证书之类的概念。
+- [What is the purpose of chain.pem files?](https://superuser.com/questions/1642520/what-is-the-purpose-of-chain-pem-files)：也讲了有关证书链的知识。
+- [SSL Server Test](https://www.ssllabs.com/ssltest/)：检查域名的 SSL 证书是否配置正确的工具。上传到阿里云的证书如果没有中间证书，域名用这个工具扫描后会报告缺少中间证书。
