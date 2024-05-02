@@ -3,6 +3,32 @@ sidebar_position: 4
 title: Next.js 相关
 ---
 
+## react-markdown 渲染 mermaid
+
+1. 用 yarn 或者 pnpm 安装 mermaid 这个库。
+
+2. 在 Next.js 项目的入口文件（通常是 pages/_app.js）中初始化 Mermaid。
+
+```js
+import { useEffect } from 'react';
+import mermaid from 'mermaid';
+
+function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    mermaid.initialize({
+      theme: 'default',
+      startOnLoad: false,
+    });
+  }, []);
+}
+```
+
+3. 在页面文件中渲染 Mermaid。
+
+```js
+mermaid.init(undefined, '.language-mermaid');
+```
+
 ## 结合 tailwindcss 实现深色/浅色模式的切换
 
 参考资料：[TailwindCSS Dark Mode in Next.js with Tailwind Typography Prose Classes](https://egghead.io/blog/tailwindcss-dark-mode-nextjs-typography-prose)
