@@ -34,3 +34,10 @@ tags: [git, github, ssh, ssh-key]
 按 [Testing your SSH connection](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/testing-your-ssh-connection) 这里的步骤操作即可。
 
 如果报错，可以先在官方文档的 [Troubleshooting SSH](https://docs.github.com/en/authentication/troubleshooting-ssh) 这一节查找对应报错信息。
+
+有时候因为众所周知的网络原因，执行测试命令失败，可以按照 [这里](https://github.com/orgs/community/discussions/55269#discussioncomment-6106315) 的方法配置一下 SSH，然后再测试，应当就 OK 了。
+
+## 注意
+
+有时候将一台电脑上生成的 SSH key 复制到另一台电脑上，再按照上面的流程配置，发现不能用。那就按照上面的流程重新生成新的 SSH key，再把公钥添加到 GitHub 即可。
+
