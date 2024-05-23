@@ -3,6 +3,34 @@ sidebar_position: 3
 title: Nuxt.js 相关
 ---
 
+## 定义全局可用的 TypeScript Interface
+
+关键词：`how to define interface type in nuxt`。
+
+参考链接：[How to add global interfaces to Nuxt project](https://stackoverflow.com/a/73237686/2667665)。
+
+示例代码：
+
+```ts
+// ~/types/index.ts
+
+export { };
+
+declare global {
+  type SomeType = [boolean, string, number]; 
+
+  interface MyFancyInterface {
+    ...
+  }
+
+  const enum GlobalConstEnum {
+    ...
+  }
+
+  ....
+}
+```
+
 ## 环境配置
 
 ### 配置运行时环境变量（Nuxt v3）
