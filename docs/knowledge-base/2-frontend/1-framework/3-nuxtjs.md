@@ -5,6 +5,30 @@ title: Nuxt.js 相关
 
 ## 环境配置
 
+### 配置运行时环境变量（Nuxt v3）
+
+> 参考资料：[useRuntimeConfig](https://nuxt.com/docs/api/composables/use-runtime-config)
+
+先在 `.env` 文件中定义环境变量，比如 `API_SECRET`。
+
+然后在 `nuxt.config.ts` 文件中，添加下面的内容：
+
+```ts
+export default defineNuxtConfig({
+  // ...
+  runtimeConfig: {
+    REG_TOKEN: process.env.REG_TOKEN,
+  },
+})
+```
+
+在其他文件中，就可以用下面的方式，访问到上面定义的环境变量了。
+
+```js
+const config = useRuntimeConfig()
+console.log(config.REG_TOKEN)
+```
+
 ### 配置环境变量
 
 > 参考资料：[The env property](https://nuxtjs.org/docs/configuration-glossary/configuration-env#the-env-property)
