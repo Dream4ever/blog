@@ -3,11 +3,76 @@ sidebar_position: 7
 title: 配置容器化的 Strapi
 ---
 
-## 参考资料
+## 更新项目依赖
 
-用到了开源项目 [strapi-community / strapi-tool-dockerize](https://github.com/strapi-community/strapi-tool-dockerize)，用于在已生成 strapi 项目的情况下，再生成对应的 dockerfile 和 docker-compose.yml 等相关文件，以便部署至 Docker 中。
+将 `package.json` 中 strapi 相关的依赖更新到最新版本或次新版本。如果最新版本是安全更新，那就用最新版，如果是功能更新，为了避免出问题，就用次新版本。
 
-又参考了国内文章 [快速体验 Strapi CMS（基于 docker 部署）](https://juejin.cn/post/7196869815596761144)，对 docker compose 过程中需要从国外下载的情况，配置了国内源，实现加速下载。
+因为之前在某版本发布之后，出现了一个影响程序运行的问题，所以为了避免最新版有问题，在没有安全更新的情况下，优先使用次新版本。
+
+## 构建 Docker 镜像
+
+### 构建基础镜像
+
+由于 Strapi 所需的 Node.js 环境平时并不变化，所以将不变的部分编译成基础镜像，这样可以显著提升最终镜像的构建速度。
+
+基础镜像的 Dockerfile 如下。
+
+```Dockerfile
+FROM node:18-alpine as strapi.node-base
+
+# 设置时区为东八区，这样在查看日志时才能显示正确的时间
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Installing libvips-dev for sharp Compatibility
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
+  && apk update \
+  && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev nasm bash vips-dev git
+ARG NODE_ENV=development
+ENV NODE_ENV=${NODE_ENV}
+
+WORKDIR /opt/
+COPY package.json yarn.lock ./
+```
+
+假设这个 Dockerfile 的文件名为 `Dockerfile.node-base`，那么用下面的命令即可构建基础镜像。
+
+注意 `-t` 参数后面的镜像名称，要和 Dockerfile 中第一行 `FROM` 语句 `as` 后面的名称相一致，不然在构建最终镜像时会找不到这个镜像。
+
+```sh
+docker build -t strapi.node-base -f ./Dockerfile.node-base .
+```
+
+### 构建最终镜像
+
+有了上面的基础镜像，再结合下面的 Dockerfile，就可以构建出最终的 Strapi 镜像。
+
+注意第一行 `FROM` 语句，这里使用了上面构建的基础镜像 `strapi.node-base`。
+
+另外在执行 `yarn build` 之前，先执行了 `yarn strapi ts:generate-types`，这是为了生成 TypeScript 类型文件，以便在开发时使用，不然启动容器后就会 [报错](https://www.google.com.hk/search?q=Argument+of+type+is+not+assignable+to+parameter+of+type+%27ContentType%27&oq=Argument+of+type+is+not+assignable+to+parameter+of+type+%27ContentType%27&gs_lcrp=EgZjaHJvbWUyBggAEEUYOdIBCDU1NTVqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8)。
+
+```Dockerfile
+FROM strapi.node-base as build
+
+RUN yarn config set network-timeout 600000 -g && yarn config set registry https://registry.npmmirror.com && yarn global add node-gyp && yarn install && yarn cache clean
+
+ENV PATH /opt/node_modules/.bin:$PATH
+WORKDIR /opt/app
+
+COPY --chown=node:node . .
+USER node
+
+RUN ["yarn", "strapi", "ts:generate-types"]
+RUN ["yarn", "build"]
+EXPOSE 1337
+CMD ["yarn", "develop"]
+```
+
+用下面的命令来构建最终镜像。
+
+```sh
+docker build -t strapi.final -f .\Dockerfile.final .
+```
 
 ## 最终文件
 
@@ -89,51 +154,6 @@ networks:
     driver: bridge
 ```
 
-```dockerfile
-# Dockerfile.prod
-
-# 下面两行能保证 Docker 中输出的日志用的是东八区的时间
-ENV TZ=Asia/Shanghai
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-# Creating multi-stage build for production
-FROM node:16-alpine as build
-# apk add 时使用阿里源
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev vips-dev > /dev/null 2>&1
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-
-WORKDIR /opt/
-COPY package.json yarn.lock ./
-# yarn install 时使用阿里源
-RUN yarn config set network-timeout 600000 -g && yarn config set registry https://registry.npmmirror.com && yarn install --production
-ENV PATH /opt/node_modules/.bin:$PATH
-WORKDIR /opt/app
-COPY . .
-RUN yarn build
-
-# Creating final production image
-FROM node:16-alpine
-# apk add 时使用阿里源
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && apk add --no-cache vips-dev
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-WORKDIR /opt/
-COPY --from=build /opt/node_modules ./node_modules
-WORKDIR /opt/app
-COPY --from=build /opt/app ./
-ENV PATH /opt/node_modules/.bin:$PATH
-
-RUN chown -R node:node /opt/app
-USER node
-EXPOSE 1337
-CMD ["yarn", "start"]
-```
-
-### 参考资料
-
-- [Docker Container time & timezone (will not reflect changes)](https://serverfault.com/a/683651/551094)
-
 ## 用指定的 YML 文件启动容器
 
 ```sh
@@ -152,3 +172,11 @@ services:
       context: .
       dockerfile: Dockerfile.prod # 生产环境执行另一个 Dockerfile 文件
 ```
+
+## 参考资料
+
+用到了开源项目 [strapi-community / strapi-tool-dockerize](https://github.com/strapi-community/strapi-tool-dockerize)，用于在已生成 strapi 项目的情况下，再生成对应的 dockerfile 和 docker-compose.yml 等相关文件，以便部署至 Docker 中。
+
+又参考了国内文章 [快速体验 Strapi CMS（基于 docker 部署）](https://juejin.cn/post/7196869815596761144)，对 docker compose 过程中需要从国外下载的情况，配置了国内源，实现加速下载。
+
+这篇文章 [Docker Container time & timezone (will not reflect changes)](https://serverfault.com/a/683651/551094) 介绍了怎样在 Docker 容器中设置时区，如果用默认时区，容器中的日志时间会是 UTC 时间，不方便查看。
