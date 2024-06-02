@@ -7,9 +7,9 @@ tags: [acme, win-acme, powershell, waf, aliyun]
 
 ## 前情提要
 
-之前在 V2EX 咨询过阿里云免费 SSL 证书的替代方案（https://v2ex.com/t/999627），考虑到阿里云服务器目前的操作系统是 Windows Server 2012，所以基于 Linux 或者 Docker 的方案就都 pass 了。
+之前在 V2EX 咨询过 [阿里云免费 SSL 证书的替代方案](https://v2ex.com/t/999627)，考虑到阿里云服务器目前的操作系统是 Windows Server 2012，所以基于 Linux 或者 Docker 的方案就都 pass 了。
 
-再考虑到自动化更新 SSL 证书的需求，所以在经过一番调研之后，最终确定使用 win-acme（https://www.win-acme.com/）来完成这一工作。因为虽然 Caddy 也能完成这项工作，但是还需要把在 IIS 中配置好的网站再重新配置一遍，还不知道会有什么新问题。本着尽量不要增加复杂度的理念，所以就没有采用 Caddy。
+再考虑到自动化更新 SSL 证书的需求，所以在经过一番调研之后，最终确定使用 [win-acme](https://www.win-acme.com/) 来完成这一工作。因为虽然 Caddy 也能完成这项工作，但是还需要把在 IIS 中配置好的网站再重新配置一遍，还不知道会有什么新问题。本着尽量不要增加复杂度的理念，所以就没有采用 Caddy。
 
 由于网站前面还有一层阿里云 WAF（Web 应用防火墙），各网站的流量都是先由 WAF 检查一遍，过滤掉非法请求之后，才能最终到达服务器。而要使用 WAF 的话，各域名的 DNS 都是解析到 WAF 的地址上的，这也给后面的工作和问题排查带来了一些问题，不过这是后话了。
 
