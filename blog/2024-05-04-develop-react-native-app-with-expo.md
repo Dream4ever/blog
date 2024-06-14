@@ -48,3 +48,30 @@ tags: [react,React Native,expo,Android,iOS,Android Studio]
 因为这次是在模拟器上调试，所以用 `a` 命令启动 Android 模拟器，模拟器上会自动打开 Expo Go APP，并且加载项目。
 
 在加载项目的过程中，还会下载一些依赖，所以 Android Studio 的 Proxy 配置不要关掉，保持开启即可。
+
+## 功能开发
+
+### 页面跳转
+
+一开始照着现有的代码，新增了一个跳转语句，想着用户在点击按钮之后，直接跳转到自己要开发的页面。结果控制台报下面的错误：
+
+```
+The action 'NAVIGATE' with payload {"name":"Reward"} was not handled by any navigator.
+
+Do you have a screen named 'Reward'?
+```
+
+又看了一下 [React Native 基于Expo开发（三）路由，跳转](https://juejin.cn/post/7105415240472330270) 这篇文章，发现 `MainStackScreen.js` 这个文件里有 `import stacks from './index'` 这么一条语句，从 `index` 文件里引入了项目用到的所有页面。
+
+再查看自己本地的项目，`index.js` 里下面两句应该是注册了整个程序，类似于 Vue 的初始化。
+
+```js
+import App from "./App";
+registerRootComponent(App);
+```
+
+再打开 `App.tsx` 文件，发现 `import Navigations from './src/navigations/Navigations';` 这句引入了 `Navigations` 文件。
+
+再打开 `Navigations.tsx` 文件，发现这里面引入了所有页面，然后用 `createStackNavigator` 创建了一个 `Stack`，在 Stack 里注册了所有页面，包括页面的名称和一些其他参数。
+
+比如有 `<Stack.Screen name="EmailLogin" options={{ headerShown: false }}>` 这么一个页面定义，那么就可以用 `navigation.navigate('EmailLogin')` 来跳转到这个页面了。
