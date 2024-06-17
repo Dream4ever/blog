@@ -173,6 +173,66 @@ services:
       dockerfile: Dockerfile.prod # 生产环境执行另一个 Dockerfile 文件
 ```
 
+## 日志持久化
+
+<!-- TODO -->
+
+## 相关报错
+
+### 编译镜像时报错 2
+
+在解决了下面的问题后，再次编译镜像时，又报了下面的错误。
+
+```
+=> CANCELED [internal] load build context
+
+...
+
+ERROR: failed to solve: Canceled: context canceled
+```
+
+上网查了一下，[这里](https://stackoverflow.com/a/77653196/2667665) 说得把 `node_modules` 文件夹添加到 `Dockerignore` 文件中。但是我看了一下，`node_modules` 已经在 `.dockerignore` 文件中了，不过还有个 `mysql_data` 文件夹没添加，这个文件夹是用来存放 MySQL 数据的。
+
+添加了 `mysql_data` 文件夹后，再次编译镜像，就成功了。看来就是得不断地尝试啊。
+
+### 编译镜像时报错 1
+
+在用命令 `docker build -t strapi.node-base -f ./Dockerfile.node-base .` 编译基础镜像时，报下面的错误。GitHub 上 Docker Desktop Windows 版本的 [issue](https://github.com/docker/for-win/issues/13611) 里有人提到了这个问题，可以看到一年前就有人在问这个问题，自己看了一圈，没看到什么解决方案。
+
+```
+http2: server: error reading preface from client //./pipe/docker_engine: file has already been closed
+```
+
+没有管上面的错误，再用命令 `docker build -t strapi.final -f .\Dockerfile.final .` 编译最终镜像，结果又报下面的错误。
+
+```
+=> ERROR [internal] load build context
+
+...
+
+ERROR: failed to solve: archive/tar: unknown file mode ?rwxr-xr-x
+```
+
+上网查了查，看了几篇文章，最后用了 [这里](https://github.com/docker/for-win/issues/14083#issuecomment-2135283995) 的方法，把文件夹和文件的 `存档` 属性去掉，但是编译还是会出错。
+
+然后尝试把 Docker 版本从 4.30.0 降到了 4.29.0，再次编译镜像，总算成功了。
+
+### 数据库连接断开
+
+有一天在查看 Strapi Docker 容器的日志时，发现了下面的报错信息。
+
+```
+Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:217:20)
+    at TCP.callbackTrampoline (node:internal/async_hooks:128:17)
+```
+
+去项目的官方 GitHub issue 里搜索，看到了这个帖子 [Error: read ECONNRESET Strapi container #20311](https://github.com/strapi/strapi/issues/20311)。
+
+看了里面的回复，发现原来是因为 [Docker 会自动清除空闲连接](https://docs.strapi.io/dev-docs/configurations/database#database-pooling-options)，导致 Strapi 与数据库的连接被断开，所以 Strapi 才会报错。
+
+解决方法也很简单，把 `./config/database.ts|js` 文件中 `pool.min` 的值从默认的 2 改成 0 就行。
+
 ## 参考资料
 
 用到了开源项目 [strapi-community / strapi-tool-dockerize](https://github.com/strapi-community/strapi-tool-dockerize)，用于在已生成 strapi 项目的情况下，再生成对应的 dockerfile 和 docker-compose.yml 等相关文件，以便部署至 Docker 中。
