@@ -87,6 +87,8 @@ sudo nginx -t
 
 sudo systemctl reload nginx
 
+sudo mkdir /var/www/your_domain
+
 sudo nano /var/www/your_domain/index.html
 
 ```html
@@ -112,6 +114,8 @@ sudo nano /var/www/your_domain/info.php
 <?php
 phpinfo();
 ```
+
+access http://server_domain_or_IP/info.php
 
 sudo rm /var/www/your_domain/info.php
 
@@ -234,6 +238,16 @@ sudo chown -R www-data:www-data /var/www/your_domain/wp-content/uploads
 由于 ecs-user 账户权限有限，所以先上传到 /home/ecs-user，然后再用 sudo mv 命令移动到 /var/www/your_domain/wp-content/themes。
 
 接着用 sudo unzip 解压到压缩包所在目录下。
+
+## 导出/导入数据库
+
+```bash
+# 导出数据库
+sudo mysqldump -u wordpress_admin -p --databases wordpress > ~/wordpress.sql
+
+# 导入数据库
+sudo mysql -u wordpress_admin -p < ~/wordpress.sql
+```
 
 ## 问题记录
 
