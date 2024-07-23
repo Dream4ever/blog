@@ -3,6 +3,12 @@ sidebar_position: 2
 title: JavaScript
 ---
 
+## 前端获取后端返回的自定义 header
+
+搜索关键词：`axios get custom response header`。
+参考链接：https://github.com/axios/axios/issues/1946#issuecomment-958790245 和 https://stackoverflow.com/a/37931084/2667665 。
+要让前端能够获取到自定义 header，需要在服务端配置响应 header: `Access-Control-Expose-Headers: CUSTOMIZED-HEADER`。
+
 ## 安卓 WebView 中 writeText 方法不能复制文本
 
 Google 搜索 `writetext write permission denied not allowed error`，在 StackOverflow 的讨论 [Clipboard API call throws NotAllowedError without invoking onPermissionRequest()](https://stackoverflow.com/questions/61243646/clipboard-api-call-throws-notallowederror-without-invoking-onpermissionrequest) 中，看到下面的答案说 `writeText` 需要 `Permissions` 相关的 API 来获取 `clipboard-write` 权限。但是安卓的 WebView 没有 `navigator.permissions` 这个 API。
