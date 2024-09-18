@@ -3,6 +3,35 @@ sidebar_position: 3
 title: CSS
 ---
 
+## 渐变边框 v2
+
+搜索关键词：`css gradient border before class`。
+
+参考文章：[How to create rounded gradient borders with any background in CSS](https://benfrain.com/how-to-create-rounded-gradient-borders-with-any-background-in-css/)。
+
+关键代码：
+
+```html
+<div className="gradient-border-card relative before:rounded-xl before:border-2">
+  <p>Some text here</p>
+</div>
+``` 
+
+```css
+.gradient-border-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-color: transparent;
+  /* 下面这行设置渐变边框的颜色 */
+  background: linear-gradient(180deg, #FFFFFF 0%, #999999 100%) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+}
+```
+
 ## 渐变边框
 
 示例代码（React）：
