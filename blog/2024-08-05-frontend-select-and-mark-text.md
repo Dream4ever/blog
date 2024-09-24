@@ -19,3 +19,5 @@ tags: [js, select, mark, text]
 - [window.getSelection() gives me the selected text, but I want the HTML](https://stackoverflow.com/questions/2139616/window-getselection-gives-me-the-selected-text-but-i-want-the-html)
 - https://chatgpt.com/c/23dfc8a0-c00f-4efa-987a-12008a68a81c
 - https://kimi.moonshot.cn/chat/cqo2gr9hmfr4cv3o7he0
+
+最终用的库：[alienzhou / web-highlighter](https://github.com/alienzhou/web-highlighter)，解决了很多底层问题。
