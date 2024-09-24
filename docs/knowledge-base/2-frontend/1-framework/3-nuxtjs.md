@@ -91,6 +91,22 @@ export default {
 }
 ```
 
+### 配置接口请求代理
+
+> 参考资料：[Nuxt.js — How to handle CORS error](https://mookypoo.medium.com/nuxt-js-how-to-handle-cors-error-a4c5022611d0)
+> 接口文档：[routeRules | Config - Nitro](https://nitro.unjs.io/config#routerules)
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig((){
+  routeRules: {
+      '/web/v1/**': {
+          proxy: { to: "httpw://api.abc.com/web/v1/**", },
+      }
+    }
+})
+```
+
 ## 错误排查
 
 ### 项目 dev 时 build 报错 EPERM: operation not permitted, mkdir '**\.nuxt\components'
