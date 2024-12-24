@@ -1,0 +1,8 @@
+{
+  "label": "Docker 配置笔记",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Note about docker configuration on development and production."
+  }
+}
