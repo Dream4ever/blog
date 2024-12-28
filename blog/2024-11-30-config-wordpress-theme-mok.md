@@ -82,6 +82,18 @@ sudo chown -R www-data:www-data /var/www/powertidal.com/wp-content/uploads
 2. 管理后台 - Appearance - MOK 主题设置 - 页面中，开启 `合作页面`，并按照需求填写或开启所需功能。
 3. 管理后台 - Appearance - MOK 主题设置 - 联系方式中，创建一个 `自定义` 类型的`联系方式`，链接填第一步新建的 Page 的链接，`账号/号码/地址` 填 `点击留言`。
 
+### 配置邮箱插件
+
+参考文章 [使用WP Mail SMTP插件解决WordPress注册和评论邮件无法发送的问题](https://themebetter.com/wordpress-smtp.html)，先安装 `WP Mail SMTP` 插件。
+
+然后设置 `From Email`，开启 `Force From Email` 和 `Return Path`。
+
+`Mailer` 选择 Other，`SMTP Host` 填 `smtp.feishu.cn`，`Encryption` 选 `SSL`，`SMTP Port` 填 `465`，启用 `Auto TLS` 和 `Authentication`，下面的 `SMTP Username` 和 `SMTP Password` 填飞书邮箱的账号和密码，最后点击 `Save Settings` 保存设置。
+
+接着在 `WP Mail SMTP` 插件的 `Tools` 页面中，填写用于接收邮件的邮箱地址，点击 `Send Email`，如果收到邮件，则说明配置成功。
+
+PS: 建议按照 [Option 2: Generate a DMARC Record (Cloudflare Only)](https://wpmailsmtp.com/how-to-create-dmarc-record/) 链接中的建议，给发邮件的邮箱所在域名生成一个 DMARC 记录，以防止邮箱被标记为垃圾邮件。
+
 ## 其他配置
 
 MOK 主题设置
