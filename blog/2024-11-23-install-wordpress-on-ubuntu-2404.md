@@ -383,6 +383,14 @@ sudo chown -R www-data:www-data /var/www/your.domain/wp-content/uploads
 sudo chown -R www-data:www-data /var/www/your.domain/en/wp-content/uploads
 ```
 
+## 放宽上传文件体积限制
+
+WordPress 本身基于 PHP，PHP 默认会限制上传文件的体积。而网站通过 Nginx 提供服务，Nginx 也会限制上传文件的体积。所以在这两处都需要进行修改。
+
+Nginx 修改 `/etc/nginx/nginx.conf` 文件中的 `http` 块，将 `client_max_body_size` 参数改为 `1024m` 之类的值，然后执行 `sudo systemctl restart nginx`，重启 Nginx，使修改生效。
+
+PHP 修改 `/etc/php/8.3/fpm/php.ini`，将 `upload_max_filesize` 和 `post_max_size` 的值都改为 `1024M`，然后执行 `sudo systemctl restart php8.3-fpm`，重启 PHP，使修改生效。
+
 ## 导出/导入数据库
 
 ```bash
