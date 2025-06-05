@@ -3,6 +3,10 @@ sidebar_position: 11
 title: Strapi 相关
 ---
 
+## 使用须知
+
+1. User 表中的 email 字段可以相同，但 username 字段不能相同。
+
 ## 通过接口创建新用户
 
 ### 准备工作
