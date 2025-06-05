@@ -31,9 +31,23 @@ axios.post(`${process.env.STRAPI_URL}/auth/local/register`, {
   })
 ```
 
-### 注册时设置角色【不可行】
+### 设置角色
 
 出于安全考虑，Strapi 禁止在调用注册接口时设置用户角色，不然普通用户在注册时把自己设置成管理员就乱套了。
+
+但是可以在用户账户创建完成之后，为用户分配指定角色：
+
+```js
+await strapi.documents('plugin::users-permissions.user').update({
+  documentId: userDocumentId,
+  data: {
+    role: {
+      id: ydContributorRole.id,
+      documentId: ydContributorRole.documentId,
+    },
+  },
+})
+```
 
 ## 配置接口的限流策略
 
