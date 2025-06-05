@@ -42,8 +42,8 @@ await strapi.documents('plugin::users-permissions.user').update({
   documentId: userDocumentId,
   data: {
     role: {
-      id: ydContributorRole.id,
-      documentId: ydContributorRole.documentId,
+      id: someRole.id,
+      documentId: someRole.documentId,
     },
   },
 })
