@@ -7,6 +7,24 @@ title: Strapi 相关
 
 1. User 表中的 email 字段可以相同，但 username 字段不能相同。
 
+## 上传文件并关联至某张表中的指定字段
+
+根据 [documentId and refId of /api/upload](https://github.com/strapi/strapi/issues/21427) 这个 Strapi issue 讨论得出的最终结果，用下面的代码，可以实现上传文件后关联至某个表中指定字段的需求。
+
+```js
+  const file = await blobFrom(`./images/${filename}`, 'image/jpg')
+  const form = new FormData()
+  form.append('files', file, filename)
+  const uploadResp = await axios.post('http://127.0.0.1:1338/api/upload', form);
+  const linkResp = await axios.put(`http://127.0.0.1:1338/api/someResource/${someItem.documentId}`, {
+    data: {
+      images: {
+        connect: [uploadResp.data[0].id]
+      }
+    }
+  })
+```
+
 ## 通过接口创建新用户
 
 ### 准备工作
