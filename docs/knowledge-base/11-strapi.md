@@ -67,6 +67,10 @@ await strapi.documents('plugin::users-permissions.user').update({
 })
 ```
 
+## 使表的 ID 字段从 1 开始
+
+用 TRUNCATE 命令清空表之后，新的纪录 ID 会从 1 开始。
+
 ## 配置接口的限流策略
 
 ### 参考资料
