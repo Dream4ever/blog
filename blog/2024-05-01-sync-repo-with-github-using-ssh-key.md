@@ -17,7 +17,9 @@ tags: [git, github, ssh, ssh-key]
 
 ## 新建 SSH key
 
-参考 [Generating a new SSH key and adding it to the ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)，在 `~\.ssh` 目录下面执行命令 `ssh-keygen -t ed25519 -C "your_email@example.com"` 一路回车，按默认设置来即可。
+参考 [Generating a new SSH key and adding it to the ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)，在 `~\.ssh` 目录下面执行命令 `ssh-keygen -t ed25519 -C "your_email@example.com -f path/and/filename"` 一路回车，按默认设置来即可。
+
+如果是在 Windows 环境下运行该命令，则 `-f` 参数后面的路径应当用完整的路径，不能用 `~/.ssh/...` 这种，因为 Windows 下不能解析。
 
 如果不按默认设置来，手动修改了生成的 SSH key 的名称，那么在后面将私钥添加到本地的 ssh-agent 这一步时会失败。
 
