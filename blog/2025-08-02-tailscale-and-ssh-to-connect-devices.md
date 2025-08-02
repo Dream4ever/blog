@@ -1,4 +1,4 @@
-``---
+---
 slug: tailscale-and-ssh-to-connect-devices
 title: 利用 tailscale + ssh 实现设备互连
 authors: HeWei
