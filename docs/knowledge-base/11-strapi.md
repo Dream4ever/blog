@@ -6,6 +6,8 @@ title: Strapi 相关
 ## 使用须知
 
 1. User 表中的 email 字段可以相同，但 username 字段不能相同。
+2. strapi.db.query 的 updateMany 方法，无法用于设置和其他表的关联，如果有这个需求，就只能挨个执行 update 方法。
+3. strapi.db.query 的 update 方法如果需要 connect 其他表的数据，传入的应当是 id 而不是 documentId。
 
 ## 非 SuerAdmin 关联查询其他表的内容
 
