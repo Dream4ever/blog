@@ -7,6 +7,10 @@ title: Strapi 相关
 
 1. User 表中的 email 字段可以相同，但 username 字段不能相同。
 
+## 非 SuerAdmin 关联查询其他表的内容
+
+如果某张表中的一个字段是其他表的 relation，如果在查询时设置了 `populate: '*'` 但依然查不到其他表的结果，可能是权限不够，需要给查询的用户所属的角色/Token，设置其他表的 `find/findOne` 字段的权限。
+
 ## 上传文件并关联至某张表中的指定字段
 
 根据 [documentId and refId of /api/upload](https://github.com/strapi/strapi/issues/21427) 这个 Strapi issue 讨论得出的最终结果，用下面的代码，可以实现上传文件后关联至某个表中指定字段的需求。
